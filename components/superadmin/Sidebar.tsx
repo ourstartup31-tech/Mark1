@@ -14,8 +14,6 @@ const NAV_ITEMS = [
     { href: "/superadmin/stores", label: "Stores", icon: Store },
     { href: "/superadmin/admins", label: "Admins", icon: Users },
     { href: "/superadmin/subscriptions", label: "Subscriptions", icon: CreditCard },
-    { href: "/superadmin/revenue", label: "Revenue", icon: DollarSign },
-    { href: "/superadmin/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/superadmin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -30,26 +28,24 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
     const { logout } = useAuth();
 
     return (
-        <aside className="flex flex-col h-full text-white transition-all duration-300"
-            style={{ background: "linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%)", width: "100%" }}>
+        <aside className="flex flex-col h-full text-white transition-all duration-300 bg-slate-900 border-r border-slate-800"
+            style={{ width: "100%" }}>
 
             {/* Header */}
-            <div className={`flex items-center px-5 h-16 border-b border-white/10 ${collapsed ? "justify-center" : "justify-between"}`}>
+            <div className={`flex items-center px-5 h-16 border-b border-white/5 ${collapsed ? "justify-center" : "justify-between"}`}>
                 {!collapsed && (
                     <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
+                        <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center flex-shrink-0">
                             <Layers size={18} className="text-white" />
                         </div>
                         <div className="min-w-0">
                             <p className="text-white font-bold text-sm tracking-tight truncate">SuperMart</p>
-                            <p className="text-indigo-400 text-[10px] font-medium tracking-widest uppercase">Control Center</p>
+                            <p className="text-slate-400 text-[9px] font-bold tracking-widest uppercase">Admin Panel</p>
                         </div>
                     </div>
                 )}
                 {collapsed && (
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                        style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
+                    <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center">
                         <Layers size={18} className="text-white" />
                     </div>
                 )}
@@ -59,7 +55,7 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
                 </button>
                 {/* Desktop collapse toggle */}
                 <button onClick={onToggleCollapse}
-                    className="hidden lg:flex p-1.5 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                    className="hidden lg:flex p-1.5 text-white/40 hover:text-white hover:bg-white/5 rounded-lg transition-all">
                     {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
                 </button>
             </div>
@@ -74,41 +70,36 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
                     return (
                         <Link key={href} href={href}
                             className={`
-                flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 group
+                flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-200 group
                 ${isActive
-                                    ? "text-white"
-                                    : "text-white/50 hover:text-white hover:bg-white/5"
+                                    ? "text-white bg-indigo-600 shadow-sm"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                 }
                 ${collapsed ? "justify-center" : ""}
               `}
-                            style={isActive ? { background: "linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.2))", borderLeft: "2px solid #6366f1", paddingLeft: collapsed ? "11px" : "11px" } : {}}
                         >
-                            <Icon size={18} className={isActive ? "text-indigo-400" : "text-white/40 group-hover:text-white/70"} />
+                            <Icon size={18} className={isActive ? "text-white" : "text-slate-400 group-hover:text-slate-200"} />
                             {!collapsed && <span className="truncate">{label}</span>}
-                            {!collapsed && isActive && (
-                                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                            )}
                         </Link>
                     );
                 })}
             </nav>
 
             {/* Footer */}
-            <div className="px-3 pb-4 border-t border-white/10 pt-4">
-                <div className={`flex items-center gap-3 px-3 py-3 rounded-xl bg-white/5 mb-2 ${collapsed ? "justify-center" : ""}`}>
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
-                        <span className="text-white font-bold text-xs">SA</span>
+            <div className="px-3 pb-4 border-t border-white/5 pt-4">
+                <div className={`flex items-center gap-3 px-3 py-3 rounded-lg bg-white/5 mb-2 ${collapsed ? "justify-center" : ""}`}>
+                    <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-xs uppercase">S</span>
                     </div>
                     {!collapsed && (
                         <div className="min-w-0 flex-1">
-                            <p className="text-white text-xs font-semibold truncate">Superadmin</p>
-                            <p className="text-white/40 text-[10px] truncate">superadmin@platform.com</p>
+                            <p className="text-white text-[11px] font-bold truncate">Superadmin</p>
+                            <p className="text-slate-500 text-[10px] truncate uppercase font-medium">Owner Access</p>
                         </div>
                     )}
                 </div>
                 <button onClick={logout}
-                    className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-white/50 hover:text-red-400 hover:bg-red-500/10 transition-all text-sm font-medium ${collapsed ? "justify-center" : ""}`}>
+                    className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-red-600/10 transition-all text-xs font-semibold uppercase tracking-wider ${collapsed ? "justify-center" : ""}`}>
                     <LogOut size={16} />
                     {!collapsed && <span>Logout</span>}
                 </button>

@@ -11,10 +11,10 @@ export function OffersBanner() {
     ];
 
     return (
-        <section id="offers" className="bg-white py-10">
-            <div className="max-w-7xl mx-auto px-6">
+        <section id="offers" className="bg-white py-12 lg:py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <AnimatedSection>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
                         {offers.map((o) => (
                             <div
                                 key={o.label}
@@ -22,13 +22,13 @@ export function OffersBanner() {
                                     o.bg,
                                     "border",
                                     o.border,
-                                    "rounded-3xl p-5 flex items-center gap-4 hover:shadow-lg hover:shadow-gray-200/40 hover:-translate-y-0.5 transition-all cursor-pointer group"
+                                    "rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-0.5 transition-all cursor-pointer group"
                                 )}
                             >
-                                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{o.emoji}</span>
+                                <span className="text-2xl sm:text-3xl group-hover:scale-110 transition-transform duration-300">{o.emoji}</span>
                                 <div>
-                                    <p className="font-bold text-sm text-black mb-0.5">{o.label}</p>
-                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{o.discount}</p>
+                                    <p className="font-bold text-xs sm:text-sm text-black mb-0.5 uppercase tracking-tight">{o.label}</p>
+                                    <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider">{o.discount}</p>
                                 </div>
                             </div>
                         ))}

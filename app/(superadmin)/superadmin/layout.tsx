@@ -21,26 +21,21 @@ export default function SuperAdminDashboardLayout({ children }: { children: Reac
 
     if (isLoading || role !== "superadmin") {
         return (
-            <div className="h-screen w-full flex flex-col items-center justify-center bg-[#0f0f1a] gap-4">
-                <div className="relative">
-                    <div className="w-16 h-16 border-4 border-indigo-900 border-t-indigo-500 rounded-full animate-spin" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-7 h-7 bg-indigo-600 rounded-lg" />
-                    </div>
-                </div>
-                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.25em] animate-pulse">
-                    Verifying SuperAdmin Access...
+            <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
+                <div className="w-10 h-10 border-2 border-slate-100 border-t-indigo-600 rounded-full animate-spin" />
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Authenticating SuperAdmin...
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="flex h-screen bg-[#f8f9fc] overflow-hidden">
+        <div className="flex h-screen bg-white overflow-hidden">
             {/* Mobile overlay */}
             {mobileSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-[60] lg:hidden backdrop-blur-sm"
+                    className="fixed inset-0 bg-black/20 z-[60] lg:hidden backdrop-blur-sm"
                     onClick={() => setMobileSidebarOpen(false)}
                 />
             )}
@@ -49,8 +44,8 @@ export default function SuperAdminDashboardLayout({ children }: { children: Reac
             <div className={`
         fixed lg:relative top-0 left-0 z-[70] h-full transition-all duration-300
         ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        ${sidebarCollapsed ? "lg:w-[72px]" : "lg:w-[260px]"}
-        w-[260px]
+        ${sidebarCollapsed ? "lg:w-[68px]" : "lg:w-[240px]"}
+        w-[240px]
       `}>
                 <SuperAdminSidebar
                     collapsed={sidebarCollapsed}
@@ -66,8 +61,10 @@ export default function SuperAdminDashboardLayout({ children }: { children: Reac
                     onMobileMenuOpen={() => setMobileSidebarOpen(true)}
                     sidebarCollapsed={sidebarCollapsed}
                 />
-                <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-                    {children}
+                <main className="flex-1 overflow-y-auto bg-slate-50/50 p-6 lg:p-10">
+                    <div className="max-w-6xl mx-auto">
+                        {children}
+                    </div>
                 </main>
             </div>
         </div>

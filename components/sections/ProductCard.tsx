@@ -73,16 +73,18 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Content */}
-            <div className="p-5">
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">{product.category}</p>
-                <h3 className="font-bold text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors">{product.name}</h3>
-                <p className="text-xs text-gray-400 mb-4">{product.unit}</p>
+            <div className="p-4 sm:p-5">
+                <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-[0.15em] mb-2">{product.category}</p>
+                <h3 className="font-bold text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
+                    {product.name}
+                </h3>
+                <p className="text-[10px] sm:text-xs text-slate-400 font-medium mb-4">{product.unit}</p>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-5">
-                    <span className="text-xl font-bold text-black tracking-tight">₹{product.price}</span>
+                    <span className="text-lg sm:text-xl font-bold text-black tracking-tight">₹{product.price}</span>
                     {product.originalPrice && (
-                        <span className="text-sm text-gray-300 line-through font-medium">₹{product.originalPrice}</span>
+                        <span className="text-xs sm:text-sm text-slate-300 line-through font-medium">₹{product.originalPrice}</span>
                     )}
                 </div>
 
@@ -91,10 +93,10 @@ export function ProductCard({ product }: ProductCardProps) {
                     <button
                         onClick={handleAdd}
                         className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all duration-200",
+                            "w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-bold text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300",
                             justAdded
-                                ? "bg-green-500 text-white scale-95"
-                                : "bg-white border border-gray-200 text-black hover:bg-black hover:text-white hover:border-black active:scale-95"
+                                ? "bg-green-500 text-white scale-95 shadow-lg shadow-green-500/20"
+                                : "bg-white border-2 border-slate-50 text-black hover:bg-black hover:text-white hover:border-black active:scale-95 shadow-sm"
                         )}
                     >
                         {justAdded ? (
@@ -104,22 +106,22 @@ export function ProductCard({ product }: ProductCardProps) {
                         )}
                     </button>
                 ) : (
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         <button
                             onClick={() => decrement(product.id)}
-                            className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:border-black hover:text-black transition-all"
+                            className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border-2 border-slate-50 text-slate-400 hover:border-black hover:text-black transition-all"
                         >
                             <Minus size={14} />
                         </button>
                         <button
                             onClick={openCart}
-                            className="flex-1 flex items-center justify-center h-10 rounded-lg bg-black text-white font-bold text-sm hover:bg-gray-900 transition-all"
+                            className="flex-1 flex items-center justify-center h-10 sm:h-11 rounded-lg bg-black text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-slate-900 transition-all shadow-md shadow-black/10"
                         >
                             {quantity} in Cart
                         </button>
                         <button
                             onClick={() => increment(product.id)}
-                            className="w-10 h-10 flex items-center justify-center rounded-lg bg-black text-white hover:bg-gray-900 transition-all"
+                            className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg bg-black text-white hover:bg-slate-900 transition-all shadow-md shadow-black/10"
                         >
                             <Plus size={14} />
                         </button>

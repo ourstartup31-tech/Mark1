@@ -56,22 +56,22 @@ export function CartDrawer() {
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col animate-slide-in-r rounded-l-[2rem] overflow-hidden">
+            <div className="fixed top-0 right-0 bottom-0 z-50 w-full xs:max-w-md bg-white shadow-2xl flex flex-col animate-slide-in-r sm:rounded-l-[2rem] overflow-hidden">
 
                 {/* Header */}
-                <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
-                    <div className="flex items-center gap-2">
-                        <ShoppingBag size={20} className="text-[#D60000]" />
-                        <h2 className="font-bold text-xl text-black tracking-tight">Your Cart</h2>
+                <div className="flex items-center justify-between px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-100">
+                    <div className="flex items-center gap-2.5">
+                        <ShoppingBag size={18} className="text-[#D60000] sm:w-5 sm:h-5" />
+                        <h2 className="font-bold text-lg sm:text-xl text-black tracking-tight uppercase tracking-widest">Your Cart</h2>
                         {totalItems > 0 && (
-                            <span className="bg-black text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                            <span className="bg-black text-white text-[9px] sm:text-[10px] font-bold rounded-full w-4.5 h-4.5 sm:w-5 sm:h-5 flex items-center justify-center">
                                 {totalItems}
                             </span>
                         )}
                     </div>
                     <button
                         onClick={closeCart}
-                        className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-black transition-colors"
+                        className="p-2 rounded-xl hover:bg-gray-50 text-gray-400 hover:text-black transition-colors"
                         aria-label="Close cart"
                     >
                         <X size={20} />
@@ -101,53 +101,46 @@ export function CartDrawer() {
                         <div className="flex-1 overflow-y-auto custom-scrollbar">
 
                             {/* Items */}
-                            <div className="px-8 py-6 space-y-4">
+                            <div className="px-6 py-5 sm:px-8 sm:py-6 space-y-3 sm:space-y-4">
                                 {items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="group flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 hover:border-black hover:shadow-lg hover:shadow-gray-200/40 transition-all duration-300"
+                                        className="group flex items-center gap-3 sm:gap-4 bg-white border border-slate-50 rounded-2xl p-3 sm:p-4 hover:border-black hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300"
                                     >
-                                        <div className="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 flex-shrink-0 group-hover:scale-110 transition-transform">
-                                            <ImageIcon size={20} className="text-gray-300" />
+                                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 flex-shrink-0 group-hover:scale-105 transition-transform">
+                                            <ImageIcon size={18} className="text-slate-300 sm:w-5 sm:h-5" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-bold text-sm text-black truncate mb-0.5">{item.name}</p>
-                                            <p className="text-black font-bold text-sm">
+                                            <p className="font-bold text-xs sm:text-sm text-black truncate mb-0.5 uppercase tracking-tight">{item.name}</p>
+                                            <p className="text-black font-bold text-sm sm:text-base">
                                                 ₹{(item.price * item.quantity).toFixed(0)}
                                             </p>
                                         </div>
                                         {/* Qty controls */}
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-1.5 sm:gap-2">
                                             <button
                                                 onClick={() => decrement(item.id)}
-                                                className="w-8 h-8 rounded-lg bg-gray-50 text-gray-400 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white transition-all"
+                                                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-50 text-slate-400 font-bold text-xs flex items-center justify-center hover:bg-black hover:text-white transition-all border border-transparent"
                                             >
                                                 −
                                             </button>
-                                            <span className="w-4 text-center font-bold text-sm">{item.quantity}</span>
+                                            <span className="w-3 text-center font-bold text-xs sm:text-sm">{item.quantity}</span>
                                             <button
                                                 onClick={() => increment(item.id)}
-                                                className="w-8 h-8 rounded-lg bg-black text-white font-bold text-sm flex items-center justify-center hover:bg-gray-900 transition-all"
+                                                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-black text-white font-bold text-xs flex items-center justify-center hover:bg-slate-900 transition-all"
                                             >
                                                 +
                                             </button>
                                         </div>
-                                        <button
-                                            onClick={() => removeItem(item.id)}
-                                            className="p-2 rounded-lg text-gray-300 hover:text-[#D60000] hover:bg-red-50 transition-colors"
-                                            aria-label="Remove item"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="h-px bg-gray-100 mx-8" />
+                            <div className="h-px bg-slate-50 mx-6 sm:mx-8" />
 
                             {/* Pickup time selector */}
-                            <div className="px-8 py-8">
-                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                            <div className="px-6 py-6 sm:px-8 sm:py-8">
+                                <h3 className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                     <CalendarClock size={12} className="text-[#D60000]" />
                                     Pickup Schedule
                                 </h3>
@@ -157,15 +150,15 @@ export function CartDrawer() {
                                 />
                             </div>
 
-                            <div className="h-px bg-gray-100 mx-8" />
+                            <div className="h-px bg-slate-50 mx-6 sm:mx-8" />
 
                             {/* Payment method */}
-                            <div className="px-8 py-8">
-                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                            <div className="px-6 py-6 sm:px-8 sm:py-8">
+                                <h3 className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                     <CreditCard size={12} className="text-[#D60000]" />
                                     Payment Preference
                                 </h3>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                                     {[
                                         { id: "pay-online" as const, label: "Pay Online", sub: "UPI / Card", icon: Smartphone },
                                         { id: "pay-at-store" as const, label: "Pay at Store", sub: "Cash / Card", icon: Store },
@@ -175,18 +168,18 @@ export function CartDrawer() {
                                             type="button"
                                             onClick={() => setPaymentMethod(method.id)}
                                             className={cn(
-                                                "group flex flex-col items-center gap-2 p-6 rounded-[2rem] border transition-all duration-300",
+                                                "group flex flex-col items-center gap-2 p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] border transition-all duration-300",
                                                 paymentMethod === method.id
                                                     ? "border-black bg-black text-white shadow-xl shadow-black/10"
-                                                    : "border-gray-100 bg-white hover:border-gray-300"
+                                                    : "border-slate-100 bg-white hover:border-slate-300"
                                             )}
                                         >
-                                            <method.icon size={22} className={cn("transition-colors", paymentMethod === method.id ? "text-white" : "text-gray-400")} />
+                                            <method.icon size={20} className={cn("transition-colors", paymentMethod === method.id ? "text-white" : "text-slate-400")} />
                                             <div className="text-center">
-                                                <span className={cn("block font-bold text-sm tracking-tight", paymentMethod === method.id ? "text-white" : "text-black")}>
+                                                <span className={cn("block font-bold text-[11px] sm:text-sm tracking-tight", paymentMethod === method.id ? "text-white" : "text-black")}>
                                                     {method.label}
                                                 </span>
-                                                <span className={cn("text-[10px] font-medium uppercase tracking-wider", paymentMethod === method.id ? "text-gray-400" : "text-gray-400")}>
+                                                <span className={cn("text-[8px] sm:text-[9px] font-bold uppercase tracking-widest", paymentMethod === method.id ? "text-white/40" : "text-slate-400")}>
                                                     {method.sub}
                                                 </span>
                                             </div>

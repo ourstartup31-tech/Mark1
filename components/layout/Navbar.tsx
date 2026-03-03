@@ -20,6 +20,28 @@ export function Navbar() {
     const [searchOpen, setSearchOpen] = useState(false);
     const [prevCount, setPrevCount] = useState(0);
     const [badgeKey, setBadgeKey] = useState(0);
+    const [isNearFooter, setIsNearFooter] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsNearFooter(entry.isIntersecting);
+            },
+            {
+                // Using rootMargin to only trigger when the footer reaches the top of the screen
+                // -80px (approx navbar height) ensures it doesn't switch too early
+                rootMargin: "-0px 0px -99% 0px",
+                threshold: 0
+            }
+        );
+
+        const footer = document.getElementById("contact");
+        if (footer) observer.observe(footer);
+
+        return () => {
+            if (footer) observer.unobserve(footer);
+        };
+    }, []);
 
     useEffect(() => {
         const fn = () => setScrolled(window.scrollY > 16);
@@ -36,19 +58,25 @@ export function Navbar() {
         <>
             <header
                 className={cn(
-                    "fixed top-0 inset-x-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300",
-                    scrolled ? "shadow-sm py-2" : "py-4"
+                    "fixed top-0 inset-x-0 z-40 transition-all duration-500",
+                    isNearFooter
+                        ? "bg-white/95 text-black border-b border-gray-100 shadow-sm"
+                        : "bg-black/90 text-white border-b border-white/10",
+                    scrolled ? "py-2 backdrop-blur-md" : "py-4 backdrop-blur-sm"
                 )}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
 
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-                        <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center border border-gray-100 shadow-sm group-hover:scale-105 transition-transform">
+                        <div className={cn(
+                            "w-9 h-9 rounded-xl flex items-center justify-center border shadow-sm group-hover:scale-105 transition-all duration-300",
+                            isNearFooter ? "bg-white border-gray-100" : "bg-black border-white/20"
+                        )}>
                             <span className="text-[#D60000] font-bold text-base">F</span>
                         </div>
                         <div>
-                            <p className="font-bold text-lg leading-none tracking-tight text-black">
+                            <p className={cn("font-bold text-lg leading-none tracking-tight transition-colors", isNearFooter ? "text-black" : "text-white")}>
                                 Fresh<span className="text-gray-400">Mart</span>
                             </p>
                             <p className="text-[10px] text-gray-400 font-medium leading-none mt-1">
@@ -63,7 +91,10 @@ export function Navbar() {
                             <Link
                                 key={l.href}
                                 href={l.href}
-                                className="relative text-sm font-medium text-gray-500 hover:text-black px-4 py-2 rounded-md transition-colors group"
+                                className={cn(
+                                    "relative text-sm font-medium px-4 py-2 rounded-md transition-all group",
+                                    isNearFooter ? "text-gray-500 hover:text-black" : "text-gray-400 hover:text-white"
+                                )}
                             >
                                 {l.label}
                                 <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D60000] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
@@ -76,24 +107,33 @@ export function Navbar() {
                         {/* Search */}
                         <div className="relative">
                             {searchOpen ? (
-                                <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                                <div className={cn(
+                                    "flex items-center gap-2 border rounded-lg px-3 py-2 transition-colors",
+                                    isNearFooter ? "bg-gray-50 border-gray-200" : "bg-white/10 border-white/20"
+                                )}>
                                     <Search size={16} className="text-gray-400 flex-shrink-0" />
                                     <input
                                         autoFocus
                                         placeholder="Search products..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-40 sm:w-52 text-sm outline-none bg-transparent text-black placeholder:text-gray-400"
+                                        className={cn(
+                                            "w-40 sm:w-52 text-sm outline-none bg-transparent placeholder:text-gray-400",
+                                            isNearFooter ? "text-black" : "text-white"
+                                        )}
                                         onBlur={() => !searchQuery && setSearchOpen(false)}
                                     />
                                     <button onClick={() => { setSearchQuery(""); setSearchOpen(false); }}>
-                                        <X size={14} className="text-gray-400 hover:text-black" />
+                                        <X size={14} className="text-gray-400 hover:text-gray-200" />
                                     </button>
                                 </div>
                             ) : (
                                 <button
                                     onClick={() => setSearchOpen(true)}
-                                    className="p-2.5 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                                    className={cn(
+                                        "p-2.5 rounded-lg transition-colors",
+                                        isNearFooter ? "text-gray-600 hover:bg-gray-50" : "text-gray-300 hover:bg-white/10"
+                                    )}
                                     aria-label="Search"
                                 >
                                     <Search size={19} />
@@ -104,7 +144,10 @@ export function Navbar() {
                         {/* Cart */}
                         <button
                             onClick={openCart}
-                            className="relative p-2.5 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                            className={cn(
+                                "relative p-2.5 rounded-lg transition-colors",
+                                isNearFooter ? "text-gray-600 hover:bg-gray-50" : "text-gray-300 hover:bg-white/10"
+                            )}
                             aria-label={`Cart (${totalItems} items)`}
                         >
                             <ShoppingCart size={19} />
@@ -121,14 +164,20 @@ export function Navbar() {
                         {/* Login button */}
                         <Link
                             href="/login"
-                            className="hidden sm:inline-flex items-center gap-1.5 bg-black text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
+                            className={cn(
+                                "hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-lg active:scale-95 transition-all shadow-sm",
+                                isNearFooter ? "bg-black text-white hover:bg-gray-900" : "bg-white text-black hover:bg-gray-100"
+                            )}
                         >
                             Login
                         </Link>
 
                         {/* Mobile hamburger */}
                         <button
-                            className="md:hidden p-2.5 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                            className={cn(
+                                "md:hidden p-2.5 rounded-lg transition-colors",
+                                isNearFooter ? "text-gray-600 hover:bg-gray-50" : "text-gray-300 hover:bg-white/10"
+                            )}
                             onClick={() => setMobileOpen(true)}
                             aria-label="Open menu"
                         >

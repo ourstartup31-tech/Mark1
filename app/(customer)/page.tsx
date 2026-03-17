@@ -6,7 +6,6 @@ import { OffersBanner } from "@/components/sections/OffersBanner";
 import { Categories } from "@/components/sections/Categories";
 import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { TrustSection } from "@/components/sections/TrustSection";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       <OffersBanner />
       <Categories />
       <FeaturedProducts />
-      <TrustSection />
       <HowItWorks />
       <Footer />
     </main>

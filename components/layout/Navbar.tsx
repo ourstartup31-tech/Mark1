@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogOut, Package } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -15,6 +16,7 @@ const navLinks = [
 
 export function Navbar() {
     const { totalItems, openCart, searchQuery, setSearchQuery } = useCart();
+    const { role, logout } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [prevCount, setPrevCount] = useState(0);
@@ -99,13 +101,30 @@ export function Navbar() {
                             )}
                         </button>
 
-                        {/* Login button - Desktop */}
-                        <Link
-                            href="/login"
-                            className="hidden sm:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
-                        >
-                            Login
-                        </Link>
+                        {/* Auth Button - Desktop */}
+                        {role ? (
+                            <div className="hidden sm:flex items-center gap-3">
+                                <Link
+                                    href="/orders"
+                                    className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
+                                >
+                                    My Orders
+                                </Link>
+                                <button
+                                    onClick={logout}
+                                    className="inline-flex items-center gap-1.5 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-black active:scale-95 transition-all shadow-sm"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="hidden sm:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
+                            >
+                                Login
+                            </Link>
+                        )}
 
                         {/* Mobile hamburger */}
                         <button
@@ -163,13 +182,33 @@ export function Navbar() {
                                 <ShoppingCart size={16} />
                                 View Cart {totalItems > 0 && `(${totalItems})`}
                             </button>
-                            <Link
-                                href="/login"
-                                className="w-full flex items-center justify-center border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                Login / Sign Up
-                            </Link>
+                            {role ? (
+                                <>
+                                    <Link
+                                        href="/orders"
+                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        <Package size={16} />
+                                        My Orders
+                                    </Link>
+                                    <button
+                                        onClick={() => { setMobileOpen(false); logout(); }}
+                                        className="w-full flex items-center justify-center gap-2 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-black active:scale-95 transition-all shadow-md shadow-black/5"
+                                    >
+                                        <LogOut size={16} />
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    className="w-full flex items-center justify-center border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    Login
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </>

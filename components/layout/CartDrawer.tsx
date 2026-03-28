@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { X, Trash2, ShoppingBag, Store, ShoppingCart, CalendarClock, CreditCard, Smartphone, AlertTriangle, ImageIcon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { TimeSlotSelector } from "@/components/ui/TimeSlotSelector";
 import { useRouter } from "next/navigation";
@@ -19,30 +20,48 @@ export function CartDrawer() {
         setPickupSlot,
         totalPrice,
         totalItems,
-        clearCart,
+        clearCartOnServer,
     } = useCart();
     const { showToast } = useToast();
-
     const router = useRouter();
-    const { items, isOpen, paymentMethod, pickupSlot } = state;
+    const { user, apiFetch, requireAuth } = useAuth();
+    const { items, isOpen, paymentMethod, pickupSlot, isLoading } = state;
 
-    const canCheckout = items.length > 0 && pickupSlot?.slot;
+    const canCheckout = items.length > 0 && pickupSlot?.slot && !isLoading;
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
+        if (!requireAuth()) return;
         if (!pickupSlot?.slot) {
             showToast("Please select a pickup time slot", "error");
             return;
         }
 
-        const mockOrderId = "FM" + Math.floor(100000 + Math.random() * 900000);
-        showToast("Processing your order...", "info");
+        showToast("Placing your order...", "info");
 
-        setTimeout(() => {
-            closeCart();
-            showToast("Order placed successfully!", "success");
-            router.push(`/order-confirmation?orderId=${mockOrderId}&slot=${pickupSlot.slot}&day=${pickupSlot.day}&total=${totalPrice}&payment=${paymentMethod}`);
-            clearCart();
-        }, 1500);
+        try {
+            const res = await apiFetch("/api/orders", {
+                method: "POST",
+                body: JSON.stringify({
+                    pickup_slot: pickupSlot.slot,
+                    pickup_day: pickupSlot.day,
+                    payment_method: paymentMethod
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                closeCart();
+                showToast("Order placed successfully!", "success");
+                // Just take the first order ID for the confirmation page for now
+                const orderId = data.orders?.[0]?.id || "SUCCESS";
+                router.push(`/order-confirmation?orderId=${orderId}&slot=${pickupSlot.slot}&day=${pickupSlot.day}&total=${totalPrice}&payment=${paymentMethod}`);
+            } else {
+                const data = await res.json();
+                showToast(data.error || "Failed to place order", "error");
+            }
+        } catch (e) {
+            showToast("Network error during checkout", "error");
+        }
     };
 
     if (!isOpen) return null;
@@ -108,25 +127,27 @@ export function CartDrawer() {
                                         className="group flex items-center gap-3 sm:gap-4 bg-white border border-slate-50 rounded-2xl p-3 sm:p-4 hover:border-black hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300"
                                     >
                                         <div className="w-12 h-12 sm:w-14 sm:h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 flex-shrink-0 group-hover:scale-105 transition-transform">
-                                            <ImageIcon size={18} className="text-slate-300 sm:w-5 sm:h-5" />
+                                            <div className="text-xl sm:text-2xl">
+                                                {item.products.emoji || "📦"}
+                                            </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-bold text-xs sm:text-sm text-black truncate mb-0.5 uppercase tracking-tight">{item.name}</p>
+                                            <p className="font-bold text-xs sm:text-sm text-black truncate mb-0.5 uppercase tracking-tight">{item.products.name}</p>
                                             <p className="text-black font-bold text-sm sm:text-base">
-                                                ₹{(item.price * item.quantity).toFixed(0)}
+                                                ₹{(Number(item.price) * item.quantity).toFixed(0)}
                                             </p>
                                         </div>
                                         {/* Qty controls */}
                                         <div className="flex items-center gap-1.5 sm:gap-2">
                                             <button
-                                                onClick={() => decrement(item.id)}
+                                                onClick={() => decrement(item.product_id)}
                                                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-50 text-slate-400 font-bold text-xs flex items-center justify-center hover:bg-black hover:text-white transition-all border border-transparent"
                                             >
                                                 −
                                             </button>
                                             <span className="w-3 text-center font-bold text-xs sm:text-sm">{item.quantity}</span>
                                             <button
-                                                onClick={() => increment(item.id)}
+                                                onClick={() => increment(item.product_id)}
                                                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-black text-white font-bold text-xs flex items-center justify-center hover:bg-slate-900 transition-all"
                                             >
                                                 +

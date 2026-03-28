@@ -62,23 +62,9 @@ interface SuperAdminContextType {
 
 const SuperAdminContext = createContext<SuperAdminContextType | null>(null);
 
-const INITIAL_STORES: Store[] = [
-    { id: "s1", name: "FreshMart Central", owner: "Rajesh Kumar", email: "rajesh@freshmart.com", phone: "+91 98765-43210", plan: "Enterprise", status: "Active", createdDate: "Jan 10, 2026", revenue: 485000, orders: 1240 },
-    { id: "s2", name: "Green Basket", owner: "Priya Sharma", email: "priya@greenbasket.in", phone: "+91 87654-32109", plan: "Pro", status: "Active", createdDate: "Jan 22, 2026", revenue: 212000, orders: 680 },
-    { id: "s3", name: "KiraanHub", owner: "Amit Patel", email: "amit@kiraanhub.com", phone: "+91 76543-21098", plan: "Basic", status: "Expired", createdDate: "Feb 3, 2026", revenue: 94000, orders: 310 },
-    { id: "s4", name: "Daily Needs Co.", owner: "Sunita Joshi", email: "sunita@dailyneeds.in", phone: "+91 65432-10987", plan: "Pro", status: "Suspended", createdDate: "Feb 12, 2026", revenue: 138000, orders: 420 },
-    { id: "s5", name: "QuickGrocer", owner: "Vikram Singh", email: "vikram@quickgrocer.com", phone: "+91 54321-09876", plan: "Basic", status: "Active", createdDate: "Feb 20, 2026", revenue: 57000, orders: 195 },
-    { id: "s6", name: "MegaMart Express", owner: "Deepa Nair", email: "deepa@megamart.in", phone: "+91 43210-98765", plan: "Enterprise", status: "Expired", createdDate: "Mar 1, 2026", revenue: 320000, orders: 890 },
-];
+const INITIAL_STORES: Store[] = [];
 
-const INITIAL_ADMINS: StoreAdmin[] = [
-    { id: "a1", name: "Rajesh Kumar", email: "rajesh@freshmart.com", phone: "+91 98765-43210", assignedStore: "FreshMart Central", status: "Active", joinedDate: "Jan 10, 2026" },
-    { id: "a2", name: "Priya Sharma", email: "priya@greenbasket.in", phone: "+91 87654-32109", assignedStore: "Green Basket", status: "Active", joinedDate: "Jan 22, 2026" },
-    { id: "a3", name: "Amit Patel", email: "amit@kiraanhub.com", phone: "+91 76543-21098", assignedStore: "KiraanHub", status: "Active", joinedDate: "Feb 3, 2026" },
-    { id: "a4", name: "Sunita Joshi", email: "sunita@dailyneeds.in", phone: "+91 65432-10987", assignedStore: "Daily Needs Co.", status: "Inactive", joinedDate: "Feb 12, 2026" },
-    { id: "a5", name: "Vikram Singh", email: "vikram@quickgrocer.com", phone: "+91 54321-09876", assignedStore: "QuickGrocer", status: "Active", joinedDate: "Feb 20, 2026" },
-    { id: "a6", name: "Deepa Nair", email: "deepa@megamart.in", phone: "+91 43210-98765", assignedStore: "MegaMart Express", status: "Active", joinedDate: "Mar 1, 2026" },
-];
+const INITIAL_ADMINS: StoreAdmin[] = [];
 
 const INITIAL_PLANS: Plan[] = [
     { id: "p1", name: "Basic", price: 999, maxProducts: 100, maxStaff: 3, customBranding: false, prioritySupport: false },

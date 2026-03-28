@@ -1,58 +1,89 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Eye, EyeOff, ArrowRight, ShoppingBag, Loader2, Smartphone, ShieldCheck } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowRight, ShoppingBag, Loader2, Smartphone, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
-    const [form, setForm] = useState({ phone: "", password: "" });
-    const [showPw, setShowPw] = useState(false);
-    const [errors, setErrors] = useState<{ phone?: string; password?: string }>({});
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl");
+    const [step, setStep] = useState<"phone" | "otp">("phone");
+    const [phone, setPhone] = useState("");
+    const [otp, setOtp] = useState("");
+    const [receivedOtp, setReceivedOtp] = useState(""); // For demo testing
+    const [errors, setErrors] = useState<{ phone?: string; otp?: string }>({});
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const [timer, setTimer] = useState(0);
+    const { sendOtp, verifyOtp } = useAuth();
     const router = useRouter();
 
-    const validate = () => {
-        const e: typeof errors = {};
-        if (!form.phone.trim()) e.phone = "Mobile number is required";
-        else if (form.phone.length < 10) e.phone = "Enter a valid mobile number";
-        if (!form.password) e.password = "Password is required";
-        return e;
-    };
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (timer > 0) {
+            interval = setInterval(() => setTimer((t) => t - 1), 1000);
+        }
+        return () => clearInterval(interval);
+    }, [timer]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm((p) => ({ ...p, [name]: value }));
-        if (errors[name as keyof typeof errors])
-            setErrors((p) => ({ ...p, [name]: undefined }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();
-        const errs = validate();
-        if (Object.keys(errs).length) { setErrors(errs); return; }
+        if (!phone || phone.length < 10) {
+            setErrors({ phone: "Enter a valid 10-digit mobile number" });
+            return;
+        }
 
         setLoading(true);
-        const { role: authRole } = await (async () => {
-            await login(form.phone, form.password);
-            const role = localStorage.getItem("supermarket_role");
-            return { role };
-        })();
+        const result = await sendOtp(phone);
         setLoading(false);
 
-        if (authRole === "superadmin") {
-            router.push("/superadmin/dashboard");
-        } else if (authRole === "admin") {
-            router.push("/dashboard");
+        if (result.success) {
+            setStep("otp");
+            setErrors({});
+            setSuccessMessage("OTP sent successfully!");
+            setTimer(30);
+            if (result.otp) setReceivedOtp(result.otp);
+            // Clear success message after 5 seconds
+            setTimeout(() => setSuccessMessage(null), 5000);
         } else {
-            router.push("/");
+            setErrors({ phone: result.error || "Failed to send OTP" });
         }
     };
 
-    const isValid = form.phone && form.password;
+    const handleVerifyOtp = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (loading) return;
+        if (!otp || otp.length < 6) {
+            setErrors({ otp: "Enter the 6-digit OTP" });
+            return;
+        }
+
+        setLoading(true);
+        const result = await verifyOtp(phone, otp);
+        setLoading(false);
+
+        if (result.success) {
+            // Check role and redirect
+            const savedUser = localStorage.getItem("supermarket_user");
+            const userData = savedUser ? JSON.parse(savedUser) : null;
+            const authRole = userData?.role;
+
+            if (callbackUrl) {
+                router.push(callbackUrl);
+            } else if (authRole === "superadmin") {
+                router.push("/superadmin/dashboard");
+            } else if (authRole === "admin") {
+                router.push("/admin/dashboard");
+            } else {
+                router.push("/");
+            }
+        } else {
+            setErrors({ otp: result.error || "Invalid OTP" });
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col lg:flex-row">
@@ -75,25 +106,27 @@ export default function LoginPage() {
                 <div className="relative space-y-5 py-10 lg:py-0">
                     <div className="inline-flex items-center gap-2 bg-[#D60000]/20 text-[#D60000] text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#D60000]" />
-                        Secure Checkout
+                        Secure OTP Login
                     </div>
                     <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] tracking-tight">
-                        Welcome
+                        {step === "phone" ? "Ready to" : "Verify Your"}
                         <br />
-                        Back.
+                        {step === "phone" ? "Shop?" : "Device."}
                     </h1>
                     <p className="text-gray-400 text-base lg:text-lg font-medium leading-relaxed max-w-xs">
-                        Enter your credentials to manage your store or start shopping.
+                        {step === "phone" 
+                            ? "Enter your mobile number to receive a secure login code." 
+                            : `We've sent a 6-digit code to ${phone}.`}
                     </p>
 
                     <div className="flex flex-col gap-2.5 pt-4">
                         {[
-                            { icon: "🌿", text: "Fresh products, daily" },
-                            { icon: "⚡", text: "Pick up in 30 mins" },
-                            { icon: "🔒", text: "Secure SSL encryption" },
-                        ].map((t) => (
-                            <div key={t.text} className="flex items-center gap-3">
-                                <span className="text-lg">{t.icon}</span>
+                            { icon: <ShieldCheck size={18} />, text: "No passwords to remember" },
+                            { icon: <Smartphone size={18} />, text: "Secure one-time codes" },
+                            { icon: <CheckCircle2 size={18} />, text: "Instant account access" },
+                        ].map((t, i) => (
+                            <div key={i} className="flex items-center gap-3">
+                                <span className="text-[#D60000]">{t.icon}</span>
                                 <span className="text-gray-400 text-sm font-medium">{t.text}</span>
                             </div>
                         ))}
@@ -101,7 +134,7 @@ export default function LoginPage() {
                 </div>
 
                 <p className="relative text-gray-600 text-xs font-medium">
-                    © 2026 Supermarket Store. All rights reserved.
+                    © 2026 FreshMart. All rights reserved.
                 </p>
             </div>
 
@@ -110,83 +143,127 @@ export default function LoginPage() {
                 <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="mb-10 text-center lg:text-left">
                         <h2 className="text-4xl font-bold text-black tracking-tight">
-                            Login
+                            {step === "phone" ? "Login" : "Verification"}
                         </h2>
-                        <p className="text-gray-400 font-medium mt-2 italic">
-                            Demo: Use 9999999999 / 1234 for Admin
+                        <p className="text-gray-400 font-medium mt-2">
+                            {step === "phone" 
+                                ? "Enter your phone number to continue" 
+                                : "Enter the code sent to your mobile"}
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} noValidate className="space-y-6">
-                        <Input
-                            label="Mobile Number"
-                            type="tel"
-                            name="phone"
-                            id="phone"
-                            placeholder="9999999999"
-                            autoComplete="tel"
-                            value={form.phone}
-                            onChange={handleChange}
-                            error={errors.phone}
-                        />
+                    {successMessage && (
+                        <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 text-sm font-bold rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                            <CheckCircle2 size={18} />
+                            {successMessage}
+                        </div>
+                    )}
 
-                        <Input
-                            label="Password"
-                            type={showPw ? "text" : "password"}
-                            name="password"
-                            id="password"
-                            placeholder="••••"
-                            autoComplete="current-password"
-                            value={form.password}
-                            onChange={handleChange}
-                            error={errors.password}
-                            rightElement={
+
+                    {step === "phone" ? (
+                        <form onSubmit={handleSendOtp} className="space-y-6">
+                            <Input
+                                label="Mobile Number"
+                                type="tel"
+                                name="phone"
+                                id="phone"
+                                placeholder="9999999999"
+                                autoComplete="tel"
+                                value={phone}
+                                onChange={(e) => {
+                                    setPhone(e.target.value);
+                                    if (errors.phone) setErrors({});
+                                }}
+                                error={errors.phone}
+                            />
+
+                            <button
+                                type="submit"
+                                disabled={loading || !phone}
+                                className="w-full h-16 flex items-center justify-center gap-3 bg-[#D60000] text-white font-bold text-sm uppercase tracking-widest rounded-2xl hover:bg-black active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-red-600/10 mt-4"
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Sending OTP...
+                                    </>
+                                ) : (
+                                    <>
+                                        Get One-Time Code
+                                        <ArrowRight size={18} />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    ) : (
+                        <form onSubmit={handleVerifyOtp} className="space-y-6">
+                            <div className="relative">
+                                <Input
+                                    label="6-Digit OTP"
+                                    type="text"
+                                    name="otp"
+                                    id="otp"
+                                    placeholder="000000"
+                                    maxLength={6}
+                                    value={otp}
+                                    onChange={(e) => {
+                                        setOtp(e.target.value.replace(/\D/g, ""));
+                                        if (errors.otp) setErrors({});
+                                    }}
+                                    error={errors.otp}
+                                />
+                                {receivedOtp && (
+                                    <p className="absolute -top-1 right-0 text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
+                                        Demo OTP: {receivedOtp}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-4">
+                                <button
+                                    type="submit"
+                                    disabled={loading || otp.length < 6}
+                                    className="w-full h-16 flex items-center justify-center gap-3 bg-black text-white font-bold text-sm uppercase tracking-widest rounded-2xl hover:bg-[#D60000] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl mt-4"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 size={18} className="animate-spin" />
+                                            Verifying...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Verify & Continue
+                                            <ArrowRight size={18} />
+                                        </>
+                                    )}
+                                </button>
+
                                 <button
                                     type="button"
-                                    onClick={() => setShowPw((p) => !p)}
-                                    className="text-gray-400 hover:text-black transition-colors"
+                                    disabled={loading || timer > 0}
+                                    onClick={handleSendOtp}
+                                    className="w-full text-center text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-black disabled:opacity-50 transition-colors"
                                 >
-                                    {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    {timer > 0 ? `Resend OTP in ${timer}s` : "Didn't receive code? Resend"}
                                 </button>
-                            }
-                        />
-
-                        <button
-                            type="submit"
-                            disabled={loading || !isValid}
-                            className="w-full h-16 flex items-center justify-center gap-3 bg-[#D60000] text-white font-bold text-sm uppercase tracking-widest rounded-2xl hover:bg-black active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-red-600/10 mt-4"
-                        >
-                            {loading ? (
-                                <>
-                                    <Loader2 size={18} className="animate-spin" />
-                                    Authenticating...
-                                </>
-                            ) : (
-                                <>
-                                    Sign In Now
-                                    <ArrowRight size={18} />
-                                </>
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="mt-10 p-6 bg-gray-50 rounded-[2rem] border border-gray-100 flex items-start gap-4">
-                        <div className="p-2 bg-white rounded-xl shadow-sm">
-                            <ShieldCheck size={20} className="text-green-500" />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-black uppercase tracking-wider mb-1">Demo Credentials</p>
-                            <p className="text-[10px] text-gray-500 font-medium leading-relaxed italic">
-                                Use the above credentials to access the internal store management system.
-                            </p>
-                        </div>
-                    </div>
+                                
+                                <button
+                                    type="button"
+                                    onClick={() => setStep("phone")}
+                                    className="w-full text-center text-xs font-bold text-[#D60000] uppercase tracking-widest hover:underline"
+                                >
+                                    Change Phone Number
+                                </button>
+                            </div>
+                        </form>
+                    )}
 
                     <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mt-10">
-                        © 2026 Retail Group · Professional Edition
+                        © 2026 FreshMart · Secure Authentication
                     </p>
                 </div>
             </div>
         </div>
     );
 }
+

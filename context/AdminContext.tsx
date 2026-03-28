@@ -14,7 +14,7 @@ interface Order {
 }
 
 interface Staff {
-    id: number;
+    id: string;
     name: string;
     email: string;
     phone: string;
@@ -40,13 +40,13 @@ interface AdminContextType {
     setSearchQuery: (q: string) => void;
     addProduct: (p: any) => void;
     updateProduct: (p: any) => void;
-    deleteProduct: (id: number) => void;
+    deleteProduct: (id: string) => void;
     addCategory: (c: any) => void;
     updateCategory: (c: any) => void;
-    deleteCategory: (id: number) => void;
+    deleteCategory: (id: string) => void;
     addStaff: (s: any) => void;
     updateStaff: (s: any) => void;
-    deleteStaff: (id: number) => void;
+    deleteStaff: (id: string) => void;
     updateStoreSettings: (s: Partial<StoreSettings>) => void;
     updateOrderStatus: (id: string, status: string) => void;
 }
@@ -61,8 +61,8 @@ const MOCK_ORDERS: Order[] = [
 ];
 
 const MOCK_STAFF: Staff[] = [
-    { id: 1, name: "Arjun Mehta", email: "arjun@market.com", phone: "+91 99887-76655", role: "Staff", status: "Active" },
-    { id: 2, name: "Sarah Khan", email: "sarah@market.com", phone: "+91 88776-65544", role: "Staff", status: "Active" },
+    { id: "1", name: "Arjun Mehta", email: "arjun@market.com", phone: "+91 99887-76655", role: "Staff", status: "Active" },
+    { id: "2", name: "Sarah Khan", email: "sarah@market.com", phone: "+91 88776-65544", role: "Staff", status: "Active" },
 ];
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
@@ -98,7 +98,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     };
 
     const addProduct = (p: any) => {
-        const newProducts = [...products, { ...p, id: Date.now() }];
+        const newProducts = [...products, { ...p, id: Date.now().toString() }];
         setProducts(newProducts);
         persist("admin_products", newProducts);
     };
@@ -109,14 +109,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         persist("admin_products", newProducts);
     };
 
-    const deleteProduct = (id: number) => {
+    const deleteProduct = (id: string) => {
         const newProducts = products.filter(item => item.id !== id);
         setProducts(newProducts);
         persist("admin_products", newProducts);
     };
 
     const addCategory = (c: any) => {
-        const newCats = [...categories, { ...c, id: Date.now(), count: 0 }];
+        const newCats = [...categories, { ...c, id: Date.now().toString(), count: 0 }];
         setCategories(newCats);
         persist("admin_categories", newCats);
     };
@@ -127,14 +127,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         persist("admin_categories", newCats);
     };
 
-    const deleteCategory = (id: number) => {
+    const deleteCategory = (id: string) => {
         const newCats = categories.filter(item => item.id !== id);
         setCategories(newCats);
         persist("admin_categories", newCats);
     };
 
     const addStaff = (s: any) => {
-        const newStaff = [...staff, { ...s, id: Date.now() }];
+        const newStaff = [...staff, { ...s, id: Date.now().toString() }];
         setStaff(newStaff);
         persist("admin_staff", newStaff);
     };
@@ -145,7 +145,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         persist("admin_staff", newStaff);
     };
 
-    const deleteStaff = (id: number) => {
+    const deleteStaff = (id: string) => {
         const newStaff = staff.filter(item => item.id !== id);
         setStaff(newStaff);
         persist("admin_staff", newStaff);

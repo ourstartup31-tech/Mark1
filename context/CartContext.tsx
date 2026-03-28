@@ -1,10 +1,14 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useReducer, useMemo, useEffect } from "react";
 import type { Product } from "@/data/products";
 
-export interface CartItem extends Product {
+export interface CartItem {
+    id: string;
+    product_id: string;
     quantity: number;
+    price: number;
+    products: Product & { is_available: boolean; store_id: string };
 }
 
 export type PaymentMethod = "pay-online" | "pay-at-store";
@@ -17,57 +21,32 @@ export interface PickupSlot {
 interface CartState {
     items: CartItem[];
     isOpen: boolean;
+    isLoading: boolean;
     paymentMethod: PaymentMethod;
     pickupSlot: PickupSlot | null;
     searchQuery: string;
 }
 
 type CartAction =
-    | { type: "ADD_ITEM"; payload: Product }
-    | { type: "REMOVE_ITEM"; payload: number }
-    | { type: "INCREMENT"; payload: number }
-    | { type: "DECREMENT"; payload: number }
+    | { type: "SET_ITEMS"; payload: { items: CartItem[]; total: string } }
+    | { type: "SET_LOADING"; payload: boolean }
     | { type: "OPEN_CART" }
     | { type: "CLOSE_CART" }
     | { type: "SET_PAYMENT"; payload: PaymentMethod }
     | { type: "SET_PICKUP_SLOT"; payload: PickupSlot }
     | { type: "CLEAR_CART" }
-    | { type: "LOAD_CART"; payload: Partial<CartState> }
     | { type: "SET_SEARCH_QUERY"; payload: string };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
     switch (action.type) {
-        case "ADD_ITEM": {
-            const existing = state.items.find((i) => i.id === action.payload.id);
-            if (existing) {
-                return {
-                    ...state,
-                    items: state.items.map((i) =>
-                        i.id === action.payload.id ? { ...i, quantity: i.quantity + 1 } : i
-                    ),
-                };
-            }
-            return {
-                ...state,
-                items: [...state.items, { ...action.payload, quantity: 1 }],
+        case "SET_ITEMS":
+            return { 
+                ...state, 
+                items: action.payload.items,
+                isLoading: false
             };
-        }
-        case "REMOVE_ITEM":
-            return { ...state, items: state.items.filter((i) => i.id !== action.payload) };
-        case "INCREMENT":
-            return {
-                ...state,
-                items: state.items.map((i) =>
-                    i.id === action.payload ? { ...i, quantity: i.quantity + 1 } : i
-                ),
-            };
-        case "DECREMENT":
-            return {
-                ...state,
-                items: state.items
-                    .map((i) => (i.id === action.payload ? { ...i, quantity: i.quantity - 1 } : i))
-                    .filter((i) => i.quantity > 0),
-            };
+        case "SET_LOADING":
+            return { ...state, isLoading: action.payload };
         case "OPEN_CART":
             return { ...state, isOpen: true };
         case "CLOSE_CART":
@@ -78,8 +57,6 @@ function cartReducer(state: CartState, action: CartAction): CartState {
             return { ...state, pickupSlot: action.payload };
         case "CLEAR_CART":
             return { ...state, items: [], pickupSlot: null };
-        case "LOAD_CART":
-            return { ...state, ...action.payload };
         case 'SET_SEARCH_QUERY':
             return { ...state, searchQuery: action.payload };
         default:
@@ -87,9 +64,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     }
 }
 
+import { useAuth } from "./AuthContext";
+import { useToast } from "./ToastContext";
+
 const initialState: CartState = {
     items: [],
     isOpen: false,
+    isLoading: false,
     paymentMethod: "pay-online",
     pickupSlot: null,
     searchQuery: "",
@@ -97,62 +78,149 @@ const initialState: CartState = {
 
 interface CartContextValue {
     state: CartState;
-    addItem: (p: Product) => void;
-    removeItem: (id: number) => void;
-    increment: (id: number) => void;
-    decrement: (id: number) => void;
+    addItem: (productId: string) => Promise<void>;
+    removeItem: (productId: string) => Promise<void>;
+    increment: (productId: string) => Promise<void>;
+    decrement: (productId: string) => Promise<void>;
     openCart: () => void;
     closeCart: () => void;
     setPaymentMethod: (m: PaymentMethod) => void;
     setPickupSlot: (slot: PickupSlot) => void;
-    clearCart: () => void;
+    clearCartOnServer: () => Promise<void>;
     setSearchQuery: (q: string) => void;
+    fetchCart: () => Promise<void>;
     searchQuery: string;
     totalItems: number;
     totalPrice: number;
+    isLoading: boolean;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [state, dispatch] = useReducer(cartReducer, initialState);
+    const { user, apiFetch } = useAuth();
+    const { showToast } = useToast();
 
-    useEffect(() => {
-        const saved = localStorage.getItem("supermarket_cart");
-        if (saved) {
-            dispatch({ type: "LOAD_CART", payload: JSON.parse(saved) });
+    const fetchCart = async () => {
+        if (!user || user.role !== "customer") return;
+        dispatch({ type: "SET_LOADING", payload: true });
+        try {
+            const res = await apiFetch("/api/cart");
+            if (res.ok) {
+                const data = await res.json();
+                dispatch({ type: "SET_ITEMS", payload: data });
+            }
+        } catch (e) {
+            console.error("Failed to fetch cart", e);
+        } finally {
+            dispatch({ type: "SET_LOADING", payload: false });
         }
-    }, []);
+    };
 
     useEffect(() => {
-        const { isOpen, ...toSave } = state;
-        localStorage.setItem("supermarket_cart", JSON.stringify(toSave));
-    }, [state]);
+        if (user) {
+            fetchCart();
+        } else {
+            dispatch({ type: "SET_ITEMS", payload: { items: [], total: "0" } });
+        }
+    }, [user]);
 
     const totalItems = useMemo(
         () => state.items.reduce((s, i) => s + i.quantity, 0),
         [state.items]
     );
+
     const totalPrice = useMemo(
-        () => state.items.reduce((s, i) => s + i.price * i.quantity, 0),
+        () => state.items.reduce((sum, item) => {
+            const price = Number(item.price);
+            return sum + (price * item.quantity);
+          }, 0),
         [state.items]
     );
 
+    const addItem = async (productId: string) => {
+        try {
+            const res = await apiFetch("/api/cart/add", {
+                method: "POST",
+                body: JSON.stringify({ product_id: productId, quantity: 1 })
+            });
+            if (res.ok) {
+                showToast("Item added to cart", "success");
+                await fetchCart();
+            } else {
+                const data = await res.json();
+                showToast(data.error || "Failed to add item", "error");
+            }
+        } catch (e) {
+            showToast("Network error", "error");
+        }
+    };
+
+    const updateQuantity = async (productId: string, quantity: number) => {
+        try {
+            const res = await apiFetch("/api/cart/update", {
+                method: "PUT",
+                body: JSON.stringify({ product_id: productId, quantity })
+            });
+            if (res.ok) {
+                await fetchCart();
+            }
+        } catch (e) {
+            showToast("Failed to update quantity", "error");
+        }
+    };
+
+    const removeItem = async (productId: string) => {
+        try {
+            const res = await apiFetch("/api/cart/remove", {
+                method: "DELETE",
+                body: JSON.stringify({ product_id: productId })
+            });
+            if (res.ok) {
+                showToast("Item removed", "success");
+                await fetchCart();
+            }
+        } catch (e) {
+            showToast("Failed to remove item", "error");
+        }
+    };
+
+    const clearCartOnServer = async () => {
+        try {
+            const res = await apiFetch("/api/cart/clear", { method: "DELETE" });
+            if (res.ok) {
+                dispatch({ type: "CLEAR_CART" });
+                showToast("Cart cleared", "success");
+            }
+        } catch (e) {
+            showToast("Failed to clear cart", "error");
+        }
+    };
+
     const value: CartContextValue = {
         state,
-        addItem: (p) => dispatch({ type: "ADD_ITEM", payload: p }),
-        removeItem: (id) => dispatch({ type: "REMOVE_ITEM", payload: id }),
-        increment: (id) => dispatch({ type: "INCREMENT", payload: id }),
-        decrement: (id) => dispatch({ type: "DECREMENT", payload: id }),
+        addItem,
+        removeItem,
+        increment: (id) => {
+            const item = state.items.find(i => i.product_id === id);
+            return updateQuantity(id, (item?.quantity || 0) + 1);
+        },
+        decrement: (id) => {
+            const item = state.items.find(i => i.product_id === id);
+            return updateQuantity(id, (item?.quantity || 1) - 1);
+        },
         openCart: () => dispatch({ type: "OPEN_CART" }),
         closeCart: () => dispatch({ type: "CLOSE_CART" }),
         setPaymentMethod: (m) => dispatch({ type: "SET_PAYMENT", payload: m }),
         setPickupSlot: (slot) => dispatch({ type: "SET_PICKUP_SLOT", payload: slot }),
-        clearCart: () => dispatch({ type: "CLEAR_CART" }),
+        clearCartOnServer,
         setSearchQuery: (q) => dispatch({ type: "SET_SEARCH_QUERY", payload: q }),
+        fetchCart,
         searchQuery: state.searchQuery,
         totalItems,
         totalPrice,
+        isLoading: state.isLoading
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

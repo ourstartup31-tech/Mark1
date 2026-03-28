@@ -1,30 +1,34 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
 import { CheckCircle, ArrowLeft, Loader2, Store, MapPin } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
 const STORE_ADDRESS = "FreshMart Store, Main Market, City Centre — Open 8 AM – 10 PM";
 
 export default function CheckoutPage() {
-    const { state, totalPrice, clearCart } = useCart();
+    const { state, totalPrice, clearCartOnServer } = useCart();
+    const { user, apiFetch } = useAuth();
     const { items, pickupSlot, paymentMethod } = state;
     const router = useRouter();
 
-    const [billing, setBilling] = useState({ name: "", phone: "", email: "" });
+    const [billing, setBilling] = useState({ 
+        name: user?.name || "", 
+        phone: user?.phone || "", 
+        email: "" 
+    });
     const [errors, setErrors] = useState<Partial<typeof billing>>({});
     const [loading, setLoading] = useState(false);
+    const [apiError, setApiError] = useState<string | null>(null);
 
     const validate = () => {
         const e: Partial<typeof billing> = {};
         if (!billing.name.trim()) e.name = "Full name is required";
         if (!billing.phone.trim()) e.phone = "Phone number is required";
-        else if (!/^\d{10}$/.test(billing.phone.replace(/\s/g, ""))) e.phone = "Enter a valid 10-digit number";
-        if (!billing.email.trim()) e.email = "Email is required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(billing.email)) e.email = "Enter a valid email";
         return e;
     };
 
@@ -36,13 +40,49 @@ export default function CheckoutPage() {
     };
 
     const handlePlaceOrder = async () => {
+        if (!user) {
+            router.push("/login?callbackUrl=/checkout");
+            return;
+        }
+
+        if (!pickupSlot?.slot) {
+            setApiError("Please select a pickup slot in your cart first");
+            return;
+        }
+
         const errs = validate();
         if (Object.keys(errs).length) { setErrors(errs); return; }
+        
         setLoading(true);
-        await new Promise((r) => setTimeout(r, 2000));
-        const orderId = `FM${Date.now().toString().slice(-6)}`;
-        clearCart();
-        router.push(`/order-confirmation?orderId=${orderId}&name=${encodeURIComponent(billing.name)}&slot=${encodeURIComponent(pickupSlot?.slot ?? "")}&day=${pickupSlot?.day ?? "today"}&payment=${paymentMethod}&total=${totalPrice.toFixed(0)}`);
+        setApiError(null);
+
+        try {
+            const res = await apiFetch("/api/orders", {
+                method: "POST",
+                body: JSON.stringify({
+                    pickup_slot: pickupSlot.slot,
+                    pickup_day: pickupSlot.day,
+                    payment_method: paymentMethod
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to place order");
+            }
+
+            const orderId = data.orders?.[0]?.id || data.id || "SUCCESS";
+            // The CartContext handles clearing local state if fetchCart is called or if we clear it manually.
+            // But we already have clearCartOnServer in context. Let's just use it or rely on the backend clearing it.
+            // The context usually refreshes items after api calls.
+            
+            router.push(`/order-confirmation?orderId=${orderId}&name=${encodeURIComponent(billing.name)}&slot=${encodeURIComponent(pickupSlot.slot)}&day=${pickupSlot.day}&payment=${paymentMethod}&total=${totalPrice.toFixed(0)}`);
+        } catch (error: any) {
+            setApiError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const isValid = billing.name && billing.phone && billing.email;
@@ -99,6 +139,11 @@ export default function CheckoutPage() {
 
                     {/* Left — Billing */}
                     <div className="space-y-8">
+                        {apiError && (
+                            <div className="p-4 bg-red-50 border border-red-100 text-red-600 text-sm font-bold rounded-2xl animate-in fade-in slide-in-from-top-2">
+                                ⚠️ {apiError}
+                            </div>
+                        )}
                         <div className="bg-white rounded-[2rem] border border-gray-100 p-10">
                             <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-[#D60000]" />
@@ -193,14 +238,14 @@ export default function CheckoutPage() {
                                 {items.map((item) => (
                                     <div key={item.id} className="flex items-center gap-4">
                                         <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 flex-shrink-0">
-                                            <span className="text-xl">{item.emoji}</span>
+                                            <span className="text-xl">{item.products.emoji || "📦"}</span>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-bold text-black truncate">{item.name}</p>
+                                            <p className="text-sm font-bold text-black truncate">{item.products.name}</p>
                                             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Qty: {item.quantity}</p>
                                         </div>
                                         <p className="font-bold text-sm text-black">
-                                            ₹{(item.price * item.quantity).toFixed(0)}
+                                            ₹{(Number(item.price) * item.quantity).toFixed(0)}
                                         </p>
                                     </div>
                                 ))}

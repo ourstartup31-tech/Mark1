@@ -15,12 +15,12 @@ import {
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Products", href: "/products", icon: Box },
-    { label: "Categories", href: "/categories", icon: ListTree },
-    { label: "Orders", href: "/orders", icon: ShoppingBag },
-    { label: "Staff", href: "/staff", icon: Users },
-    { label: "Store Settings", href: "/store-settings", icon: Settings },
+    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+    { label: "Products", href: "/admin/products", icon: Box },
+    { label: "Categories", href: "/admin/categories", icon: ListTree },
+    { label: "Orders", href: "/admin/orders", icon: ShoppingBag },
+    { label: "Staff", href: "/admin/staff", icon: Users },
+    { label: "Store Settings", href: "/admin/store-settings", icon: Settings },
 ];
 
 export function Sidebar() {

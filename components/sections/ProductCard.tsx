@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { Plus, Minus, ShoppingCart, Check, ImageIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import type { Product } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -23,8 +24,8 @@ const palettes: { bg: string; icon: string }[] = [
     { bg: "bg-pink-50", icon: "text-pink-300" },
 ];
 
-function ImagePlaceholder({ id }: { id: number }) {
-    const p = palettes[id % palettes.length];
+function ImagePlaceholder({ id }: { id: string }) {
+    const p = palettes[Number(id) % palettes.length];
     return (
         <div className={cn("w-full h-44 flex flex-col items-center justify-center gap-2", p.bg)}>
             <ImageIcon size={36} className={p.icon} strokeWidth={1.5} />
@@ -35,13 +36,15 @@ function ImagePlaceholder({ id }: { id: number }) {
 
 export function ProductCard({ product }: ProductCardProps) {
     const { state, addItem, increment, decrement, openCart } = useCart();
+    const { requireAuth } = useAuth();
     const [justAdded, setJustAdded] = useState(false);
 
-    const cartItem = state.items.find((i) => i.id === product.id);
+    const cartItem = state.items.find((i) => i.product_id === product.id);
     const quantity = cartItem?.quantity ?? 0;
 
     const handleAdd = () => {
-        addItem(product);
+        if (!requireAuth()) return;
+        addItem(product.id);
         setJustAdded(true);
         setTimeout(() => setJustAdded(false), 1400);
     };
@@ -58,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {/* Badges */}
             <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
                 {product.badge && <Badge variant="default" className="shadow-sm bg-black text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">{product.badge}</Badge>}
-                {discount > 0 && <Badge variant="green" className="bg-green-50 text-green-700 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">{discount}% off</Badge>}
+                {discount > 0 && <Badge variant="secondary" className="bg-green-50 text-green-700 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">{discount}% off</Badge>}
             </div>
 
             {/* Image placeholder or actual image */}

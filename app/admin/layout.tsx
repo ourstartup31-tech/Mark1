@@ -18,12 +18,12 @@ export default function AdminLayout({
     const router = useRouter();
 
     useEffect(() => {
-        if (!isLoading && role !== "admin") {
+        if (!isLoading && role !== "admin" && role !== "superadmin") {
             router.push("/login");
         }
     }, [role, isLoading, router]);
 
-    if (isLoading || role !== "admin") {
+    if (isLoading || (role !== "admin" && role !== "superadmin")) {
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
                 <div className="relative">

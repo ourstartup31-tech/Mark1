@@ -11,8 +11,7 @@ import {
 
 const NAV_ITEMS = [
     { href: "/superadmin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/superadmin/stores", label: "Stores", icon: Store },
-    { href: "/superadmin/admins", label: "Admins", icon: Users },
+    { href: "/superadmin/stores", label: "Manage Stores", icon: Store },
     { href: "/superadmin/subscriptions", label: "Subscriptions", icon: CreditCard },
     { href: "/superadmin/settings", label: "Settings", icon: Settings },
 ];

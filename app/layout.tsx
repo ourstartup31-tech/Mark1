@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
@@ -29,13 +29,13 @@ export default function RootLayout({
     <html lang="en" className={poppins.variable}>
       <body className="antialiased">
         <AuthProvider>
-          <SuperAdminProvider>
-            <AdminProvider>
-              <ToastProvider>
+          <ToastProvider>
+            <SuperAdminProvider>
+              <AdminProvider>
                 <CartProvider>{children}</CartProvider>
-              </ToastProvider>
-            </AdminProvider>
-          </SuperAdminProvider>
+              </AdminProvider>
+            </SuperAdminProvider>
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>

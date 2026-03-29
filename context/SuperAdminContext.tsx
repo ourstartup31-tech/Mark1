@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export interface Store {
     id: string;
     name: string;
+    city?: string;
     owner: string;
     email: string;
     phone: string;
@@ -78,55 +79,200 @@ const DEFAULT_SETTINGS: PlatformSettings = {
     logoUrl: "",
 };
 
+import { useAuth } from "./AuthContext";
+import { useToast } from "./ToastContext";
+
 export function SuperAdminProvider({ children }: { children: React.ReactNode }) {
     const [stores, setStores] = useState<Store[]>([]);
     const [admins, setAdmins] = useState<StoreAdmin[]>([]);
     const [plans, setPlans] = useState<Plan[]>([]);
     const [platformSettings, setPlatformSettings] = useState<PlatformSettings>(DEFAULT_SETTINGS);
+    const { user, apiFetch } = useAuth();
+    const { showToast } = useToast();
+
+    const fetchStores = async () => {
+        if (!user || user.role !== "superadmin") return;
+        try {
+            const res = await apiFetch("/api/admin/stores");
+            if (res.ok) {
+                const data = await res.json();
+                // Map DB stores to UI Store interface
+                const mapped: Store[] = data.map((s: any) => ({
+                    id: s.id,
+                    name: s.name,
+                    city: s.city || "N/A",
+                    owner: s.owner?.name || "No Owner",
+                    email: s.email || "N/A",
+                    phone: s.phone || "N/A",
+                    plan: "Basic", // Mocked for now as not in DB
+                    status: s.is_active ? "Active" : "Suspended",
+                    createdDate: new Date(s.created_at).toLocaleDateString(),
+                    revenue: 0,
+                    orders: 0
+                }));
+                setStores(mapped);
+            }
+        } catch (e) {
+            console.error("Failed to fetch stores", e);
+        }
+    };
+
+    const fetchAdmins = async () => {
+        if (!user || user.role !== "superadmin") return;
+        try {
+            const res = await apiFetch("/api/admin/admins");
+            if (res.ok) {
+                const data = await res.json();
+                const mapped: StoreAdmin[] = data.map((a: any) => ({
+                    id: a.id,
+                    name: a.name || "Unknown",
+                    email: a.email || "N/A",
+                    phone: a.phone,
+                    assignedStore: a.assigned_store?.name || "Unassigned",
+                    status: a.role === "admin" || a.role === "superadmin" ? "Active" : "Inactive",
+                    joinedDate: new Date(a.created_at).toLocaleDateString()
+                }));
+                setAdmins(mapped);
+            }
+        } catch (e) {
+            console.error("Failed to fetch admins", e);
+        }
+    };
 
     useEffect(() => {
-        setStores(JSON.parse(localStorage.getItem("sa_stores") || JSON.stringify(INITIAL_STORES)));
-        setAdmins(JSON.parse(localStorage.getItem("sa_admins") || JSON.stringify(INITIAL_ADMINS)));
+        if (user?.role === "superadmin") {
+            fetchStores();
+            fetchAdmins();
+        }
+        
         setPlans(JSON.parse(localStorage.getItem("sa_plans") || JSON.stringify(INITIAL_PLANS)));
         const savedSettings = localStorage.getItem("sa_settings");
         if (savedSettings) setPlatformSettings(JSON.parse(savedSettings));
-    }, []);
+    }, [user]);
 
     const persist = (key: string, data: unknown) => localStorage.setItem(key, JSON.stringify(data));
 
-    const addStore = (s: Omit<Store, "id" | "revenue" | "orders">) => {
-        const newStore: Store = { ...s, id: `s${Date.now()}`, revenue: 0, orders: 0 };
-        const updated = [...stores, newStore];
-        setStores(updated); persist("sa_stores", updated);
-    };
-    const updateStore = (s: Store) => {
-        const updated = stores.map(x => x.id === s.id ? s : x);
-        setStores(updated); persist("sa_stores", updated);
-    };
-    const deleteStore = (id: string) => {
-        const updated = stores.filter(x => x.id !== id);
-        setStores(updated); persist("sa_stores", updated);
-    };
-    const toggleStoreStatus = (id: string) => {
-        const updated = stores.map(x => x.id === id ? { ...x, status: x.status === "Active" ? "Suspended" : "Active" as "Active" | "Suspended" } : x);
-        setStores(updated); persist("sa_stores", updated);
+    const addStore = async (s: Omit<Store, "id" | "revenue" | "orders">) => {
+        try {
+            console.log("SuperAdminContext: addStore initiating...", s);
+            const res = await apiFetch("/api/admin/stores", {
+                method: "POST",
+                body: JSON.stringify({ 
+                    name: s.name, 
+                    city: s.city || "Default City",
+                    adminName: s.owner !== "Superadmin" ? s.owner : undefined,
+                    adminPhone: s.phone || undefined
+                })
+            });
+            console.log("SuperAdminContext: addStore response status:", res.status);
+            if (res.ok) {
+                showToast("Store created successfully", "success");
+                await fetchStores();
+                await fetchAdmins();
+            } else {
+                const err = await res.json();
+                console.error("SuperAdminContext: addStore failed:", err);
+                showToast(err.error || "Failed to create store", "error");
+            }
+        } catch (e) {
+            console.error("SuperAdminContext: addStore network error:", e);
+            showToast("Network error", "error");
+        }
     };
 
-    const addAdmin = (a: Omit<StoreAdmin, "id">) => {
-        const updated = [...admins, { ...a, id: `a${Date.now()}` }];
-        setAdmins(updated); persist("sa_admins", updated);
+    const updateStore = (s: Store) => {
+        const updated = stores.map(x => x.id === s.id ? s : x);
+        setStores(updated);
     };
+
+    const deleteStore = (id: string) => {
+        const updated = stores.filter(x => x.id !== id);
+        setStores(updated);
+    };
+
+    const toggleStoreStatus = async (id: string) => {
+        const store = stores.find(s => s.id === id);
+        if (!store) return;
+        
+        try {
+            const res = await apiFetch(`/api/admin/stores/${id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ is_active: store.status !== "Active" })
+            });
+            if (res.ok) {
+                showToast(`Store ${store.status === "Active" ? "suspended" : "activated"}`, "success");
+                await fetchStores();
+            }
+        } catch (e) {
+            showToast("Failed to update store status", "error");
+        }
+    };
+
+    const addAdmin = async (a: Omit<StoreAdmin, "id">) => {
+        try {
+            const res = await apiFetch("/api/admin/admins", {
+                method: "POST",
+                body: JSON.stringify({ 
+                    phone: a.phone, 
+                    name: a.name, 
+                    store_id: a.assignedStore, // UI should pass ID
+                    role: "admin"
+                })
+            });
+            if (res.ok) {
+                showToast("Admin created/updated successfully", "success");
+                await fetchAdmins();
+            } else {
+                const err = await res.json();
+                showToast(err.error || "Failed to create admin", "error");
+            }
+        } catch (e) {
+            showToast("Network error", "error");
+        }
+    };
+
     const updateAdmin = (a: StoreAdmin) => {
         const updated = admins.map(x => x.id === a.id ? a : x);
-        setAdmins(updated); persist("sa_admins", updated);
+        setAdmins(updated);
     };
-    const deleteAdmin = (id: string) => {
-        const updated = admins.filter(x => x.id !== id);
-        setAdmins(updated); persist("sa_admins", updated);
+    const deleteAdmin = async (id: string) => {
+        // Optimistic update: remove from UI immediately
+        const previousAdmins = [...admins];
+        setAdmins(admins.filter(a => a.id !== id));
+
+        try {
+            const res = await apiFetch(`/api/admin/admins/${id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) {
+                // Revert on failure
+                setAdmins(previousAdmins);
+                const err = await res.json();
+                showToast(err.error || "Failed to delete admin", "error");
+            } else {
+                showToast("Admin deleted successfully", "success");
+            }
+        } catch (e) {
+            setAdmins(previousAdmins);
+            showToast("Network error", "error");
+        }
     };
-    const toggleAdminStatus = (id: string) => {
-        const updated = admins.map(x => x.id === id ? { ...x, status: x.status === "Active" ? "Inactive" : "Active" as "Active" | "Inactive" } : x);
-        setAdmins(updated); persist("sa_admins", updated);
+    const toggleAdminStatus = async (id: string) => {
+        const admin = admins.find(a => a.id === id);
+        if (!admin) return;
+
+        try {
+            const res = await apiFetch(`/api/admin/admins/${id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ role: admin.status === "Active" ? "user" : "admin" })
+            });
+            if (res.ok) {
+                showToast(`Admin ${admin.status === "Active" ? "deactivated" : "activated"}`, "success");
+                await fetchAdmins();
+            }
+        } catch (e) {
+            showToast("Failed to update admin status", "error");
+        }
     };
 
     const addPlan = (p: Omit<Plan, "id">) => {

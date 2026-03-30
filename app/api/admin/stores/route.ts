@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { requireSuperAdmin } from "@/lib/auth";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const createStoreSchema = z.object({
   name: z.string().min(2, "Store name is required"),
   city: z.string().min(2, "City is required"),

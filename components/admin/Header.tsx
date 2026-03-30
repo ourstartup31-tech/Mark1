@@ -1,9 +1,10 @@
 import { Bell, Search, User, ChevronDown, LogOut } from "lucide-react";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useAdmin } from "@/context/AdminContext";
 
 export function Header() {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const { searchQuery, setSearchQuery } = useAdmin();
 
     return (
@@ -34,19 +35,23 @@ export function Header() {
 
                 <div className="h-8 w-px bg-gray-100" />
 
-                <button className="flex items-center gap-4 group">
+                <Link href="/admin/profile" className="flex items-center gap-4 group">
                     <div className="text-right hidden sm:block">
-                        <p className="text-sm font-bold text-black group-hover:text-[#D60000] transition-colors">Admin User</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Store Manager</p>
+                        <p className="text-sm font-bold text-black group-hover:text-[#D60000] transition-colors">
+                            {user?.name || (user?.role === 'admin' ? 'Admin User' : 'Staff')}
+                        </p>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                            {user?.phone || 'No Phone'}
+                        </p>
                     </div>
                     <div className="relative">
                         <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-bold group-hover:scale-105 transition-transform duration-300">
-                            AU
+                            {(user?.name || (user?.role === 'admin' ? 'Admin' : 'User')).substring(0, 2).toUpperCase()}
                         </div>
                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-4 border-white" />
                     </div>
                     <ChevronDown size={16} className="text-gray-300 group-hover:text-black transition-colors" />
-                </button>
+                </Link>
             </div>
         </header>
     );

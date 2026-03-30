@@ -1,11 +1,11 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { useAdmin } from "@/context/AdminContext";
+import { useStore } from "@/context/StoreContext";
 
 export function Categories() {
-    const { categories } = useAdmin();
+    const { categories } = useStore();
 
     return (
         <section id="categories" className="bg-white py-16 lg:py-24 scroll-mt-20">

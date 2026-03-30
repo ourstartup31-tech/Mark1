@@ -10,6 +10,7 @@ interface User {
     name: string | null;
     phone: string;
     role: UserRole;
+    store_id?: string | null;
 }
 
 interface AuthContextType {

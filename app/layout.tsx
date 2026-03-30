@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from "@/context/AuthContext";
 import { AdminProvider } from "@/context/AdminContext";
+import { StoreProvider } from "@/context/StoreContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { SuperAdminProvider } from "@/context/SuperAdminContext";
 
@@ -31,9 +32,11 @@ export default function RootLayout({
         <AuthProvider>
           <ToastProvider>
             <SuperAdminProvider>
-              <AdminProvider>
-                <CartProvider>{children}</CartProvider>
-              </AdminProvider>
+              <StoreProvider>
+                <AdminProvider>
+                  <CartProvider>{children}</CartProvider>
+                </AdminProvider>
+              </StoreProvider>
             </SuperAdminProvider>
           </ToastProvider>
         </AuthProvider>

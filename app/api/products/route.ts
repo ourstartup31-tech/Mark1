@@ -6,30 +6,12 @@ export async function GET(req: NextRequest) {
   try {
     const user = await getServerUser(req);
     const { searchParams } = new URL(req.url);
-    const queryStoreId = searchParams.get("store_id");
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const isCustomer = !user || user.role === "customer";
 
     let where: any = {};
 
-    if (user.role === "admin") {
-      // Admin ONLY sees their own store
-      if (!user.store_id) {
-        return NextResponse.json({ error: "Admin has no assigned store" }, { status: 400 });
-      }
-      where.store_id = user.store_id;
-    } else if (user.role === "customer") {
-      // Customer: MUST pass store_id as query param
-      if (!queryStoreId) {
-        return NextResponse.json({ error: "Store ID is required" }, { status: 400 });
-      }
-      where.store_id = queryStoreId;
-      where.is_available = true; // Only show available products to customers
-    } else if (user.role === "superadmin") {
-      // Superadmin returns ALL, can filter by query if provided
-      if (queryStoreId) where.store_id = queryStoreId;
+    if (isCustomer) {
+      where.is_available = true; // Customers only see available items
     }
 
     const products = await prisma.products.findMany({
@@ -51,22 +33,42 @@ export async function POST(req: NextRequest) {
   try {
     const user = await getServerUser(req);
     
-    // 1. Allow ONLY "admin"
-    if (!user || user.role !== "admin") {
+    // 1. Allow "admin" or "superadmin"
+    if (!user || (user.role !== "admin" && user.role !== "superadmin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (!user.store_id) {
-      return NextResponse.json({ error: "Admin has no assigned store" }, { status: 400 });
+    const body = await req.json();
+    let { name, description, price, category, category_id, stock, stock_quantity, image, image_url, is_available, inStock } = body;
+    
+    // Resolve category_id if name is provided instead
+    if (!category_id && category) {
+      const cat = await prisma.categories.findFirst({
+        where: { 
+          name: category,
+          // optional store_id check
+          ...(user.store_id ? { store_id: user.store_id } : {})
+        }
+      });
+      if (cat) category_id = cat.id;
     }
 
-    const body = await req.json();
-    
-    // 2. Force store_id from user profile (NOT from frontend)
+    // Standardize stock and availability
+    const finalStock = stock_quantity ?? stock ?? 0;
+    const finalAvailable = is_available ?? inStock ?? true;
+    const finalImageUrl = image_url ?? image ?? null;
+
+    // 2. Force store_id from user profile if available (otherwise null)
     const product = await prisma.products.create({ 
       data: { 
-        ...body, 
-        store_id: user.store_id 
+        name,
+        description,
+        price,
+        category_id,
+        stock_quantity: finalStock,
+        image_url: finalImageUrl,
+        is_available: finalAvailable,
+        store_id: user.store_id || undefined
       } 
     });
 
@@ -80,23 +82,33 @@ export async function PUT(req: NextRequest) {
   try {
     const user = await getServerUser(req);
     
-    // 1. Allow ONLY "admin"
-    if (!user || user.role !== "admin") {
+    // 1. Allow "admin" or "superadmin"
+    if (!user || (user.role !== "admin" && user.role !== "superadmin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const { id, name, price, stock, is_available } = body;
+    let { id, name, price, stock, stock_quantity, is_available, inStock, category, category_id } = body;
 
     if (!id) return NextResponse.json({ error: "Product ID is required" }, { status: 400 });
 
-    // 2. Fetch product and check ownership
+    // 2. Fetch product and check ownership (skipping store_id check in single-store setup)
     const existing = await prisma.products.findUnique({ where: { id } });
     if (!existing) return NextResponse.json({ error: "Product not found" }, { status: 404 });
 
-    if (existing.store_id !== user.store_id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    // Resolve category_id if name is provided instead
+    if (!category_id && category) {
+      const cat = await prisma.categories.findFirst({
+        where: { 
+          name: category,
+          store_id: user.store_id
+        }
+      });
+      if (cat) category_id = cat.id;
     }
+
+    const finalStock = stock_quantity ?? stock ?? existing.stock_quantity;
+    const finalAvailable = is_available ?? inStock ?? existing.is_available;
 
     // 3. Update allowed fields
     const product = await prisma.products.update({ 
@@ -104,8 +116,9 @@ export async function PUT(req: NextRequest) {
       data: {
         name,
         price,
-        stock_quantity: stock, // database field is stock_quantity
-        is_available
+        category_id: category_id || existing.category_id,
+        stock_quantity: finalStock,
+        is_available: finalAvailable
       } 
     });
 

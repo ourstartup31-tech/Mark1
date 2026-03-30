@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { products as initialProducts, categories as initialCategories, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { useAuth } from "@/context/AuthContext";
 
 interface Order {
     id: string;
@@ -36,36 +37,28 @@ interface AdminContextType {
     staff: Staff[];
     orders: Order[];
     storeSettings: StoreSettings;
+    isLoading: boolean;
+    error: string | null;
     searchQuery: string;
     setSearchQuery: (q: string) => void;
-    addProduct: (p: any) => void;
-    updateProduct: (p: any) => void;
-    deleteProduct: (id: string) => void;
-    addCategory: (c: any) => void;
-    updateCategory: (c: any) => void;
-    deleteCategory: (id: string) => void;
-    addStaff: (s: any) => void;
-    updateStaff: (s: any) => void;
-    deleteStaff: (id: string) => void;
-    updateStoreSettings: (s: Partial<StoreSettings>) => void;
-    updateOrderStatus: (id: string, status: string) => void;
+    refreshData: () => Promise<void>;
+    addProduct: (p: any) => Promise<void>;
+    updateProduct: (p: any) => Promise<void>;
+    deleteProduct: (id: string) => Promise<void>;
+    addCategory: (c: any) => Promise<void>;
+    updateCategory: (c: any) => Promise<void>;
+    deleteCategory: (id: string) => Promise<void>;
+    addStaff: (s: any) => Promise<void>;
+    updateStaff: (s: any) => Promise<void>;
+    deleteStaff: (id: string) => Promise<void>;
+    updateStoreSettings: (s: Partial<StoreSettings>) => Promise<void>;
+    updateOrderStatus: (id: string, status: string) => Promise<void>;
 }
 
 const AdminContext = createContext<AdminContextType | null>(null);
 
-const MOCK_ORDERS: Order[] = [
-    { id: "#ORD-8829", customer: "Rahul Sharma", date: "Mar 1, 2026", time: "10:30 AM", method: "Online", status: "Pending", total: "₹1,240" },
-    { id: "#ORD-8828", customer: "Priya Patel", date: "Mar 1, 2026", time: "09:45 AM", method: "At Store", status: "Pickup", total: "₹850" },
-    { id: "#ORD-8827", customer: "Amit Kumar", date: "Feb 28, 2026", time: "07:15 PM", method: "Online", status: "Completed", total: "₹2,100" },
-    { id: "#ORD-8826", customer: "Sneha G.", date: "Feb 28, 2026", time: "06:30 PM", method: "Online", status: "Cancelled", total: "₹450" },
-];
-
-const MOCK_STAFF: Staff[] = [
-    { id: "1", name: "Arjun Mehta", email: "arjun@market.com", phone: "+91 99887-76655", role: "Staff", status: "Active" },
-    { id: "2", name: "Sarah Khan", email: "sarah@market.com", phone: "+91 88776-65544", role: "Staff", status: "Active" },
-];
-
 export function AdminProvider({ children }: { children: React.ReactNode }) {
+    const { apiFetch, user } = useAuth();
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [staff, setStaff] = useState<Staff[]>([]);
@@ -77,96 +70,219 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         timing: {},
         closedDates: []
     });
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const fetchData = async () => {
+        if (!user || user.role !== "admin") {
+            setIsLoading(false);
+            return;
+        }
+        
+        setIsLoading(true);
+        setError(null);
+        try {
+            const [prodRes, catRes, orderRes, staffRes] = await Promise.all([
+                apiFetch("/api/products", { cache: "no-store" }),
+                apiFetch("/api/categories", { cache: "no-store" }),
+                apiFetch("/api/admin/orders", { cache: "no-store" }),
+                apiFetch("/api/admin/staff", { cache: "no-store" })
+            ]);
+
+            if (prodRes.ok) setProducts(await prodRes.json());
+            if (catRes.ok) setCategories(await catRes.json());
+            if (staffRes.ok) {
+                const staffData = await staffRes.json();
+                setStaff(staffData.map((s: any) => ({
+                    ...s,
+                    status: s.store_id ? "Active" : "Inactive"
+                })));
+            }
+            if (orderRes.ok) {
+                const data = await orderRes.json();
+                // Map API orders to context Order interface if needed
+                const mappedOrders = data.map((o: any) => ({
+                    id: o.id,
+                    customer: o.users?.name || "Unknown",
+                    date: new Date(o.created_at).toLocaleDateString(),
+                    time: new Date(o.created_at).toLocaleTimeString(),
+                    method: "Online",
+                    status: o.status,
+                    total: `₹${o.total_amount}`
+                }));
+                setOrders(mappedOrders);
+            }
+            
+        } catch (err: any) {
+            console.error("Failed to fetch admin data", err);
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const savedProducts = localStorage.getItem("admin_products");
-        const savedCats = localStorage.getItem("admin_categories");
-        const savedStaff = localStorage.getItem("admin_staff");
-        const savedOrders = localStorage.getItem("admin_orders");
-        const savedSettings = localStorage.getItem("admin_settings");
+        fetchData();
+    }, [user?.id]);
 
-        setProducts(savedProducts ? JSON.parse(savedProducts) : initialProducts);
-        setCategories(savedCats ? JSON.parse(savedCats) : initialCategories);
-        setStaff(savedStaff ? JSON.parse(savedStaff) : MOCK_STAFF);
-        setOrders(savedOrders ? JSON.parse(savedOrders) : MOCK_ORDERS);
-        if (savedSettings) setStoreSettings(JSON.parse(savedSettings));
-    }, []);
-
-    const persist = (key: string, data: any) => {
-        localStorage.setItem(key, JSON.stringify(data));
+    const addProduct = async (p: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/products", {
+                method: "POST",
+                body: JSON.stringify(p)
+            });
+            if (!res.ok) throw new Error("Failed to add product");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const addProduct = (p: any) => {
-        const newProducts = [...products, { ...p, id: Date.now().toString() }];
-        setProducts(newProducts);
-        persist("admin_products", newProducts);
+    const updateProduct = async (p: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/products", {
+                method: "PUT",
+                body: JSON.stringify(p)
+            });
+            if (!res.ok) throw new Error("Failed to update product");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const updateProduct = (p: any) => {
-        const newProducts = products.map(item => item.id === p.id ? p : item);
-        setProducts(newProducts);
-        persist("admin_products", newProducts);
+    const deleteProduct = async (id: string) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch(`/api/products?id=${id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) throw new Error("Failed to delete product");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const deleteProduct = (id: string) => {
-        const newProducts = products.filter(item => item.id !== id);
-        setProducts(newProducts);
-        persist("admin_products", newProducts);
+    const addCategory = async (c: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/categories", {
+                method: "POST",
+                body: JSON.stringify(c)
+            });
+            if (!res.ok) throw new Error("Failed to add category");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const addCategory = (c: any) => {
-        const newCats = [...categories, { ...c, id: Date.now().toString(), count: 0 }];
-        setCategories(newCats);
-        persist("admin_categories", newCats);
+    const updateCategory = async (c: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/categories", {
+                method: "PUT",
+                body: JSON.stringify(c)
+            });
+            if (!res.ok) throw new Error("Failed to update category");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const updateCategory = (c: any) => {
-        const newCats = categories.map(item => item.id === c.id ? c : item);
-        setCategories(newCats);
-        persist("admin_categories", newCats);
+    const deleteCategory = async (id: string) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch(`/api/categories?id=${id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) throw new Error("Failed to delete category");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const deleteCategory = (id: string) => {
-        const newCats = categories.filter(item => item.id !== id);
-        setCategories(newCats);
-        persist("admin_categories", newCats);
+    const addStaff = async (s: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/admin/staff", {
+                method: "POST",
+                body: JSON.stringify(s)
+            });
+            if (!res.ok) throw new Error("Failed to add staff");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const addStaff = (s: any) => {
-        const newStaff = [...staff, { ...s, id: Date.now().toString() }];
-        setStaff(newStaff);
-        persist("admin_staff", newStaff);
+    const updateStaff = async (s: any) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/admin/staff", {
+                method: "POST", // Upsert logic in API
+                body: JSON.stringify(s)
+            });
+            if (!res.ok) throw new Error("Failed to update staff");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const updateStaff = (s: any) => {
-        const newStaff = staff.map(item => item.id === s.id ? s : item);
-        setStaff(newStaff);
-        persist("admin_staff", newStaff);
+    const deleteStaff = async (id: string) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch(`/api/admin/staff?id=${id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) throw new Error("Failed to remove staff");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const deleteStaff = (id: string) => {
-        const newStaff = staff.filter(item => item.id !== id);
-        setStaff(newStaff);
-        persist("admin_staff", newStaff);
+    const updateOrderStatus = async (id: string, status: string) => {
+        setIsLoading(true);
+        try {
+            const res = await apiFetch("/api/admin/orders/status", {
+                method: "PUT",
+                body: JSON.stringify({ id, status })
+            });
+            if (!res.ok) throw new Error("Failed to update order status");
+            await fetchData();
+        } catch (err: any) {
+            setError(err.message);
+            throw err;
+        }
     };
 
-    const updateOrderStatus = (id: string, status: string) => {
-        const newOrders = orders.map(o => o.id === id ? { ...o, status } : o);
-        setOrders(newOrders);
-        persist("admin_orders", newOrders);
-    };
-
-    const updateStoreSettings = (s: Partial<StoreSettings>) => {
+    const updateStoreSettings = async (s: Partial<StoreSettings>) => {
         const newSettings = { ...storeSettings, ...s };
         setStoreSettings(newSettings);
-        persist("admin_settings", newSettings);
     };
 
     return (
         <AdminContext.Provider value={{
             products, categories, staff, orders, storeSettings,
-            searchQuery, setSearchQuery,
+            isLoading, error, searchQuery,
+            setSearchQuery, refreshData: fetchData,
             addProduct, updateProduct, deleteProduct,
             addCategory, updateCategory, deleteCategory,
             addStaff, updateStaff, deleteStaff,

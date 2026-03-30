@@ -20,7 +20,7 @@ import {
 
 
 export default function OrdersPage() {
-    const { orders, searchQuery, setSearchQuery, updateOrderStatus } = useAdmin();
+    const { orders, searchQuery, setSearchQuery, updateOrderStatus, isLoading } = useAdmin();
     const [selectedOrder, setSelectedOrder] = React.useState<any>(null);
 
     const filteredOrders = orders.filter(o =>
@@ -41,9 +41,9 @@ export default function OrdersPage() {
             header: "Order ID",
             accessor: (item: any) => <span className="font-bold text-black">{item.id}</span>
         },
-        { header: "Customer", accessor: "customer" },
-        { header: "Pickup Date", accessor: "date" as const },
-        { header: "Pickup Time", accessor: "time" as const },
+        { header: "Customer", accessor: (item: any) => <span>{item.customer}</span> },
+        { header: "Pickup Date", accessor: (item: any) => <span>{item.date}</span> },
+        { header: "Pickup Time", accessor: (item: any) => <span>{item.time}</span> },
         {
             header: "Payment",
             accessor: (item: any) => (
@@ -82,8 +82,22 @@ export default function OrdersPage() {
         },
     ];
 
+    if (isLoading && orders.length === 0) {
+        return (
+            <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+                <div className="w-12 h-12 border-4 border-gray-100 border-t-amber-600 rounded-full animate-spin" />
+                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Orders...</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
+            {isLoading && (
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-50 flex items-center justify-center rounded-[3rem]">
+                    <div className="w-8 h-8 border-3 border-gray-100 border-t-amber-600 rounded-full animate-spin" />
+                </div>
+            )}
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-bold text-black tracking-tight">Order Overview</h1>
@@ -126,6 +140,7 @@ export default function OrdersPage() {
                 </div>
                 <Table columns={columns} data={filteredOrders} />
             </div>
+
 
             {/* Order Detail Modal */}
             <Modal

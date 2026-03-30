@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, LogOut, Package } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogOut, Package, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -105,6 +105,12 @@ export function Navbar() {
                         {role ? (
                             <div className="hidden sm:flex items-center gap-3">
                                 <Link
+                                    href="/profile"
+                                    className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
+                                >
+                                    My Profile
+                                </Link>
+                                <Link
                                     href="/orders"
                                     className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
                                 >
@@ -184,6 +190,14 @@ export function Navbar() {
                             </button>
                             {role ? (
                                 <>
+                                    <Link
+                                        href="/profile"
+                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        <User size={16} />
+                                        My Profile
+                                    </Link>
                                     <Link
                                         href="/orders"
                                         className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"

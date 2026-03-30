@@ -11,7 +11,7 @@ import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/context/ToastContext";
 
 export default function CategoriesPage() {
-    const { categories, addCategory, updateCategory, deleteCategory, searchQuery } = useAdmin();
+    const { categories, addCategory, updateCategory, deleteCategory, searchQuery, isLoading } = useAdmin();
     const { showToast } = useToast();
 
     const filteredCategories = categories.filter(c =>
@@ -40,11 +40,15 @@ export default function CategoriesPage() {
         setIsDeleteModalOpen(true);
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (selectedCategory) {
-            deleteCategory(selectedCategory.id);
-            showToast(`Category "${selectedCategory.name}" removed`, "success");
-            setIsDeleteModalOpen(false);
+            try {
+                await deleteCategory(selectedCategory.id);
+                showToast(`Category "${selectedCategory.name}" removed`, "success");
+                setIsDeleteModalOpen(false);
+            } catch (err) {
+                showToast("Failed to delete category", "error");
+            }
         }
     };
 
@@ -86,8 +90,22 @@ export default function CategoriesPage() {
         },
     ];
 
+    if (isLoading && categories.length === 0) {
+        return (
+            <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+                <div className="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin" />
+                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Categories...</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
+            {isLoading && (
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-50 flex items-center justify-center rounded-[3rem]">
+                    <div className="w-8 h-8 border-3 border-gray-100 border-t-black rounded-full animate-spin" />
+                </div>
+            )}
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-bold text-black tracking-tight">Manage Categories</h1>
@@ -111,19 +129,24 @@ export default function CategoriesPage() {
             >
                 <form
                     className="space-y-6"
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                         e.preventDefault();
-                        if (editingCategory) {
-                            updateCategory({ ...editingCategory, name: catName });
-                            showToast(`Category "${catName}" updated`, "success");
-                        } else {
-                            addCategory({ name: catName, emoji: "📁" });
-                            showToast(`Category "${catName}" added`, "success");
+                        try {
+                            if (editingCategory) {
+                                await updateCategory({ ...editingCategory, name: catName });
+                                showToast(`Category "${catName}" updated`, "success");
+                            } else {
+                                await addCategory({ name: catName, emoji: "📁" });
+                                showToast(`Category "${catName}" added`, "success");
+                            }
+                            setCatName("");
+                            setIsModalOpen(false);
+                        } catch (err) {
+                            showToast("Failed to save category", "error");
                         }
-                        setCatName("");
-                        setIsModalOpen(false);
                     }}
                 >
+
                     <Input
                         label="Category Name"
                         placeholder="e.g. Frozen Food"

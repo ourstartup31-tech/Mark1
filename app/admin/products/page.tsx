@@ -10,7 +10,7 @@ import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/context/ToastContext";
 
 export default function ProductsPage() {
-    const { products, categories, addProduct, updateProduct, deleteProduct, searchQuery } = useAdmin();
+    const { products, categories, addProduct, updateProduct, deleteProduct, searchQuery, isLoading } = useAdmin();
     const { showToast } = useToast();
     const [activeCategory, setActiveCategory] = useState("All");
 
@@ -40,11 +40,15 @@ export default function ProductsPage() {
         setIsDeleteModalOpen(true);
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (selectedProduct) {
-            deleteProduct(selectedProduct.id);
-            showToast("Product deleted successfully", "success");
-            setIsDeleteModalOpen(false);
+            try {
+                await deleteProduct(selectedProduct.id);
+                showToast("Product deleted successfully", "success");
+                setIsDeleteModalOpen(false);
+            } catch (err) {
+                showToast("Failed to delete product", "error");
+            }
         }
     };
 
@@ -99,8 +103,22 @@ export default function ProductsPage() {
         },
     ];
 
+    if (isLoading && products.length === 0) {
+        return (
+            <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+                <div className="w-12 h-12 border-4 border-gray-100 border-t-[#D60000] rounded-full animate-spin" />
+                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Products...</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
+            {isLoading && (
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-50 flex items-center justify-center rounded-[3rem]">
+                    <div className="w-8 h-8 border-3 border-gray-100 border-t-[#D60000] rounded-full animate-spin" />
+                </div>
+            )}
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-bold text-black tracking-tight">Manage Products</h1>
@@ -131,6 +149,7 @@ export default function ProductsPage() {
             </div>
 
             <Table columns={columns} data={filteredProducts} />
+
 
             <Modal
                 isOpen={isModalOpen}

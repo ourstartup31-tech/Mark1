@@ -25,7 +25,8 @@ const palettes: { bg: string; icon: string }[] = [
 ];
 
 function ImagePlaceholder({ id }: { id: string }) {
-    const p = palettes[Number(id) % palettes.length];
+    const charCodeSum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const p = palettes[charCodeSum % palettes.length];
     return (
         <div className={cn("w-full h-44 flex flex-col items-center justify-center gap-2", p.bg)}>
             <ImageIcon size={36} className={p.icon} strokeWidth={1.5} />

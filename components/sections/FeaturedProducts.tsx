@@ -1,23 +1,23 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { ProductCard } from "@/components/sections/ProductCard";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useCart } from "@/context/CartContext";
-import { useAdmin } from "@/context/AdminContext";
+import { useStore } from "@/context/StoreContext";
 import { cn } from "@/lib/utils";
 
 const ALL = "All";
 
 export function FeaturedProducts() {
     const { searchQuery } = useCart();
-    const { products, categories } = useAdmin();
+    const { products, categories } = useStore();
     const [active, setActive] = useState(ALL);
 
     const filtered = products.filter((p) => {
-        const matchesCategory = active === ALL || p.category === active;
+        const matchesCategory = active === ALL || (p.categories?.name === active || p.category === active);
         const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.category.toLowerCase().includes(searchQuery.toLowerCase());
+            (p.categories?.name || "").toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 

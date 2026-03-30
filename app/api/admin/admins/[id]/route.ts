@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { requireSuperAdmin } from "@/lib/auth";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const updateAdminSchema = z.object({
   role: z.enum(["user", "admin", "superadmin"]).optional(),
   store_id: z.string().uuid().nullable().optional(),

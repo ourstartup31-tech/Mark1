@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { requireSuperAdmin } from "@/lib/auth";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const updateStoreSchema = z.object({
   is_active: z.boolean(),
 });

@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { requireAdmin, getUserStoreAccess, getServerUser } from "@/lib/auth";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const updateStatusSchema = z.object({
   status: z.enum(["pending", "confirmed", "preparing", "ready", "completed", "cancelled"]),
 });

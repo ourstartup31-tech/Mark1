@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, ShoppingBag, Loader2, Smartphone, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 
-export default function LoginPage() {
+function LoginContent() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl");
     const [step, setStep] = useState<"phone" | "otp">("phone");
@@ -264,6 +264,22 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-black">
+                <div className="text-center space-y-4">
+                    <ShoppingBag className="text-[#D60000] animate-bounce mx-auto" size={48} />
+                    <Loader2 size={24} className="text-white animate-spin mx-auto" />
+                    <p className="font-bold text-gray-400 uppercase tracking-widest text-[10px]">Preparing Login Session…</p>
+                </div>
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     );
 }
 

@@ -4,12 +4,12 @@ import { requireAdmin, getUserStoreAccess } from "@/lib/auth";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { user, storeId, canAccessAll } = await getUserStoreAccess(req);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     // Verify ownership

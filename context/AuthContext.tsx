@@ -34,26 +34,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
 
     useEffect(() => {
-        const savedToken = localStorage.getItem("supermarket_token");
-        const savedUser = localStorage.getItem("supermarket_user");
-        
-        if (savedToken && savedUser) {
-            try {
-                const parsedUser = JSON.parse(savedUser);
-                setToken(savedToken);
-                setUser(parsedUser);
-                setRole(parsedUser.role);
-            } catch (e) {
-                console.error("Failed to parse saved user", e);
-                logout();
+        const initAuth = async () => {
+            const savedToken = localStorage.getItem("supermarket_token");
+            const savedUser = localStorage.getItem("supermarket_user");
+            
+            if (savedToken && savedUser) {
+                try {
+                    const parsedUser = JSON.parse(savedUser);
+                    setToken(savedToken);
+                    setUser(parsedUser);
+                    setRole(parsedUser.role);
+
+                    // Verify session with backend (via cookie)
+                    const res = await fetch("/api/auth/me", { credentials: "include" });
+                    if (!res.ok) {
+                        console.warn("Session invalid, logging out");
+                        logout();
+                    } else {
+                        const data = await res.json();
+                        setUser(data.user);
+                        setRole(data.user.role || "customer");
+                    }
+                } catch (e) {
+                    console.error("Failed to parse saved user", e);
+                    logout();
+                }
             }
-        }
-        setIsLoading(false);
+            setIsLoading(false);
+        };
+        initAuth();
     }, []);
 
     const logout = async () => {
         try {
-            await fetch("/api/auth/logout", { method: "POST" });
+            await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
         } catch (e) {
             console.error("Logout API failed", e);
         }
@@ -75,9 +89,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             ...(token ? { "Authorization": `Bearer ${token}` } : {})
         } as Record<string, string>;
 
-        const res = await fetch(url, { ...options, headers });
+        const res = await fetch(url, { ...options, headers, credentials: "include" });
         
-        if (res.status === 401) {
+        if (res.status === 401 && !isLoading) {
             logout();
             return res;
         }
@@ -86,6 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const requireAuth = () => {
+        if (isLoading) return true; // Wait for auth state to load
         if (!user) {
             const currentPath = window.location.pathname + window.location.search;
             router.push(`/login?callbackUrl=${encodeURIComponent(currentPath)}`);
@@ -101,6 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone }),
+                credentials: "include"
             });
             const data = await res.json();
             setIsLoading(false);
@@ -119,6 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone, otp }),
+                credentials: "include"
             });
             const data = await res.json();
             

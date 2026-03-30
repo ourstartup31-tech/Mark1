@@ -26,18 +26,29 @@ export async function getServerUser(req: NextRequest) {
     if (!token) {
       const cookieStore = await cookies();
       token = cookieStore.get("supermarket_token")?.value;
+      if (token) console.log("Auth: Token found in cookies");
     }
 
-    if (!token) return null;
-
+    // 3. Verify
+    if (!token) {
+      console.log("Auth: No token found in headers or cookies");
+      return null;
+    }
+    
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
-
     const user = await prisma.users.findUnique({
       where: { id: decoded.userId },
     });
 
+    if (!user) {
+      console.log("Auth: Token is valid but user not found in DB", decoded.userId);
+    } else {
+      console.log(`Auth: Authenticated user ${user.phone} (${user.role})`);
+    }
+
     return user;
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Auth: Error verifying token", error.message);
     return null;
   }
 }

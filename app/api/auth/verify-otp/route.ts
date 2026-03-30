@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       user = await prisma.users.create({
         data: {
           phone,
-          role: "user",
+          role: "customer",
         },
       });
     }

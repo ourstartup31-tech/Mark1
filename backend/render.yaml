@@ -13,8 +13,8 @@ services:
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
-      - key: https://mark1-1mix.vercel.app/
-        placeholder: "Enter your Vercel frontend URL here"
+      - key: FRONTEND_URL
+        value: https://mark1-1mix.vercel.app/
 
 databases:
   - name: supermarket-db

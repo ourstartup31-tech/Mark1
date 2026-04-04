@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
 interface StoreContextType {
     products: any[];
     categories: any[];
@@ -23,8 +25,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         setError(null);
         try {
             const [prodRes, catRes] = await Promise.all([
-                fetch("/api/products", { cache: "no-store" }),
-                fetch("/api/categories", { cache: "no-store" })
+                fetch(`${API_BASE_URL}/api/products`, { cache: "no-store" }),
+                fetch(`${API_BASE_URL}/api/categories`, { cache: "no-store" })
             ]);
 
             if (!prodRes.ok || !catRes.ok) {

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: supermarket-backend
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: supermarket-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: https://mark1-1mix.vercel.app/
+        placeholder: "Enter your Vercel frontend URL here"
+
+databases:
+  - name: supermarket-db
+    plan: free

@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
 type UserRole = "admin" | "customer" | "superadmin" | null;
 
 interface User {
@@ -46,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     setRole(parsedUser.role);
 
                     // Verify session with backend (via cookie)
-                    const res = await fetch("/api/auth/me", { credentials: "include" });
+                    const res = await fetch(`${API_BASE_URL}/api/auth/me`, { credentials: "include" });
                     if (!res.ok) {
                         console.warn("Session invalid, logging out");
                         logout();
@@ -67,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = async () => {
         try {
-            await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+            await fetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST", credentials: "include" });
         } catch (e) {
             console.error("Logout API failed", e);
         }
@@ -89,7 +91,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             ...(token ? { "Authorization": `Bearer ${token}` } : {})
         } as Record<string, string>;
 
-        const res = await fetch(url, { ...options, headers, credentials: "include" });
+        const fullUrl = url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
+        const res = await fetch(fullUrl, { ...options, headers, credentials: "include" });
         
         if (res.status === 401 && !isLoading) {
             logout();
@@ -112,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const sendOtp = async (phone: string) => {
         setIsLoading(true);
         try {
-            const res = await fetch("/api/auth/send-otp", {
+            const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone }),
@@ -131,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const verifyOtp = async (phone: string, otp: string) => {
         setIsLoading(true);
         try {
-            const res = await fetch("/api/auth/verify-otp", {
+            const res = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone, otp }),

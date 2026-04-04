@@ -18,15 +18,17 @@ export const sendOtp = async (req: Request, res: Response) => {
     const { phone } = req.body;
     if (!phone) return res.status(400).json({ error: "Phone number required" });
 
-    // Mock OTP for now (as in the Next.js app)
-    const otp = "123456"; 
+    // Generate 6-digit OTP (Random, not fixed)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60000); // 5 minutes
 
     await prisma.otp_codes.create({
       data: { phone, otp, expires_at: expiresAt }
     });
 
-    res.json({ message: "OTP sent successfully", otp }); // Including OTP for dev ease
+    // In production, the OTP should ONLY be sent via SMS. 
+    // Including it here for dev/testing ease as in previous logic.
+    res.json({ message: "OTP sent successfully", otp }); 
   } catch (error: any) {
     res.status(500).json({ error: "Failed to send OTP", details: error.message });
   }
@@ -50,10 +52,15 @@ export const verifyOtp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid or expired OTP" });
     }
 
+    // Check if user exists, otherwise auto-register
     let user = await prisma.users.findUnique({ where: { phone } });
     if (!user) {
+      // Auto-provision Superadmin if phone matches env var
+      const superadminPhone = process.env.SUPERADMIN_PHONE;
+      const role = (superadminPhone && phone === superadminPhone) ? "superadmin" : "customer";
+      
       user = await prisma.users.create({
-        data: { phone, role: "customer" },
+        data: { phone, role },
       });
     }
 

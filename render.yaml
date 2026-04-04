@@ -16,6 +16,8 @@ services:
         generateValue: true
       - key: FRONTEND_URL
         value: https://mark1-1mix.vercel.app
+      - key: SUPERADMIN_PHONE
+        sync: false
 
 databases:
   - name: supermarket-db

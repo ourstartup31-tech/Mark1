@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Health Check
-app.get("/health", (req, res) => {
+app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
@@ -39,7 +39,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 
 // Test DB Connection
-app.get("/api/test-db", async (req, res) => {
+app.get("/api/test-db", async (req: Request, res: Response) => {
   try {
     const count = await prisma.users.count();
     res.json({ success: true, userCount: count });

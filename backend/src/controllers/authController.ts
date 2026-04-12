@@ -74,8 +74,8 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
     res.cookie("supermarket_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/",
     });
@@ -95,6 +95,11 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie("supermarket_token");
+  res.clearCookie("supermarket_token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+  });
   res.json({ message: "Logged out successfully" });
 };

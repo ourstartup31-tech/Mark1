@@ -19,26 +19,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL,
-].filter(Boolean) as string[];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.some(o => origin.startsWith(o)) || 
-                      origin.endsWith(".vercel.app");
-                      
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      console.warn(`CORS blocked for origin: ${origin}`);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: "https://mark1-1mix.vercel.app",
   credentials: true
 }));
 app.use(express.json());

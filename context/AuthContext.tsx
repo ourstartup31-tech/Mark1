@@ -47,13 +47,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     setUser(parsedUser);
                     setRole(parsedUser.role);
 
-                    // Verify session with backend (via cookie)
-                    const res = await fetch(`${API_BASE_URL}/api/auth/me`, { credentials: "include" });
+                    // Verify session with backend (via cookie AND Bearer token for cross-domain reliability)
+                    console.log("AuthContext: Initializing session check with token...");
+                    const res = await fetch(`${API_BASE_URL}/api/auth/me`, { 
+                        headers: { "Authorization": `Bearer ${savedToken}` },
+                        credentials: "include" 
+                    });
+
                     if (!res.ok) {
-                        console.warn("Session invalid, logging out");
+                        console.warn("AuthContext: Session invalid on backend, logging out");
                         logout();
                     } else {
                         const data = await res.json();
+                        console.log("AuthContext: Session valid, user role:", data.user.role);
                         setUser(data.user);
                         setRole(data.user.role || "customer");
                     }

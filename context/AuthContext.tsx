@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+// Deployed Version: 1.0.1
 import { useRouter } from "next/navigation";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
@@ -156,7 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem("supermarket_token", data.token);
             localStorage.setItem("supermarket_user", JSON.stringify(data.user));
             
-            // CRITICAL: Set cookie manually on the frontend domain so middleware can see it
+            // CRITICAL: Force Sync Cookie (v1.0.1)
             // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
             const expires = new Date();
             expires.setDate(expires.getDate() + 7);

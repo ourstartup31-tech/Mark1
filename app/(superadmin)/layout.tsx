@@ -14,7 +14,7 @@ export default function SuperAdminGroupLayout({ children }: { children: React.Re
         }
     }, [role, isLoading, router]);
 
-    if (isLoading || role !== "superadmin") {
+    if (isLoading) {
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin" />

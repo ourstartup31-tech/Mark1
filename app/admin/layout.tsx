@@ -23,7 +23,7 @@ export default function AdminLayout({
         }
     }, [role, isLoading, router]);
 
-    if (isLoading || (role !== "admin" && role !== "superadmin")) {
+    if (isLoading) {
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
                 <div className="relative">

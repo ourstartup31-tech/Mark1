@@ -150,6 +150,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem("supermarket_token", data.token);
             localStorage.setItem("supermarket_user", JSON.stringify(data.user));
             
+            // CRITICAL: Set cookie manually on the frontend domain so middleware can see it
+            // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
+            document.cookie = `supermarket_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; samesite=lax`;
+
             setToken(data.token);
             setUser(data.user);
             setRole(data.user.role);

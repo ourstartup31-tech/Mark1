@@ -18,7 +18,7 @@ function LoginContent() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(0);
-    const { sendOtp, verifyOtp } = useAuth();
+    const { user, role, sendOtp, verifyOtp } = useAuth();
     const router = useRouter();
 
     useEffect(() => {

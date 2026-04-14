@@ -20,7 +20,7 @@ export const sendOtp = async (req: Request, res: Response) => {
 
     // Generate 6-digit OTP (Random, not fixed)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60000); // 5 minutes
+    const expiresAt = new Date(Date.now() + 15 * 60000); // 15 minutes for better reliability on Render
 
     await prisma.otp_codes.create({
       data: { phone, otp, expires_at: expiresAt }
@@ -43,7 +43,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
       where: {
         phone,
         otp,
-        expires_at: { gt: new Date() },
+        expires_at: { gt: new Date(Date.now() - 60000) }, // 1 minute buffer for clock skew
       },
       orderBy: { created_at: "desc" },
     });

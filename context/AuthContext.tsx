@@ -75,17 +75,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     const logout = async () => {
-        try {
-            await fetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST", credentials: "include" });
-        } catch (e) {
-            console.error("Logout API failed", e);
-        }
+        // 1. Immediate local cleanup
         setToken(null);
         setUser(null);
         setRole(null);
         localStorage.removeItem("supermarket_token");
         localStorage.removeItem("supermarket_user");
-        router.push("/login");
+        
+        // 2. Clear local domain cookie
+        document.cookie = "supermarket_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=lax; Secure";
+
+        // 3. Inform backend (fire and forget for better UX)
+        fetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST", credentials: "include" }).catch(e => console.error("Logout API background failed", e));
+        
+        // 4. Hard redirect for clean state
+        window.location.href = "/login";
     };
 
     /**

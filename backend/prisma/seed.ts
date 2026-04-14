@@ -55,7 +55,7 @@ async function main() {
   }
 
   // 3. Create Admin User linked to Store
-  const adminPhone = process.env.SEED_ADMIN_PHONE || "8888888888";
+  const adminPhone = process.env.SEED_ADMIN_PHONE || "9876467890";
   let admin = await prisma.users.findUnique({
     where: { phone: adminPhone },
   });

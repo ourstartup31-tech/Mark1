@@ -70,6 +70,7 @@ function LoginContent() {
             const savedUser = localStorage.getItem("supermarket_user");
             const userData = savedUser ? JSON.parse(savedUser) : null;
             const authRole = userData?.role;
+            console.log("LoginPage: Auth successful, checking role for redirect:", authRole);
 
             if (callbackUrl) {
                 router.push(callbackUrl);

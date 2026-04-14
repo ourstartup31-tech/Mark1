@@ -59,9 +59,12 @@ export const verifyOtp = async (req: Request, res: Response) => {
       const superadminPhone = process.env.SUPERADMIN_PHONE;
       const role = (superadminPhone && phone === superadminPhone) ? "superadmin" : "customer";
       
+      console.log(`[AUTH] New user created: ${phone} with role: ${role}`);
       user = await prisma.users.create({
         data: { phone, role },
       });
+    } else {
+      console.log(`[AUTH] Existing user found: ${user.phone} with role: ${user.role}`);
     }
 
     await prisma.otp_codes.deleteMany({ where: { phone } });

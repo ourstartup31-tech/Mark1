@@ -29,6 +29,17 @@ function LoginContent() {
         return () => clearInterval(interval);
     }, [timer]);
 
+    // Auto-redirect if already logged in
+    useEffect(() => {
+        if (user && !loading) {
+            console.log("LoginPage: User detected, redirecting based on role:", role);
+            if (role === "superadmin") router.push("/superadmin/dashboard");
+            else if (role === "admin") router.push("/admin/dashboard");
+            // Only redirect customers to home if they are on /login explicitly
+            else if (role === "customer" && !callbackUrl) router.push("/");
+        }
+    }, [user, role, loading, callbackUrl, router]);
+
     const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone || phone.length < 10) {

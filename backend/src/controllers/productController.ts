@@ -23,6 +23,11 @@ export const getProducts = async (req: AuthRequest, res: Response) => {
       orderBy: { created: "desc" }
     });
     
+    console.log(`[PRODUCTS] Fetching products. isCustomer: ${isCustomer}, Found: ${products.length}`);
+    if (products.length > 0) {
+      console.log(`[PRODUCTS] First product detail: Name: ${products[0].name}, Available: ${products[0].is_available}, StoreID: ${products[0].store_id}`);
+    }
+
     res.json(products);
   } catch (error: any) {
     res.status(500).json({ error: "Failed to fetch products", details: error.message });

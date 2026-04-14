@@ -62,6 +62,7 @@ function LoginContent() {
         }
 
         setLoading(true);
+        console.log("LoginPage: Attempting verification for", phone, "with OTP", otp);
         const result = await verifyOtp(phone, otp);
         setLoading(false);
 

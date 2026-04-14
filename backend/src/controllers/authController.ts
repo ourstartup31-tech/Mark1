@@ -39,17 +39,31 @@ export const verifyOtp = async (req: Request, res: Response) => {
     const body = verifyOtpSchema.parse(req.body);
     const { phone, otp } = body;
 
+    console.log(`[AUTH] Verifying OTP for ${phone}: ${otp}`);
+
     const otpRecord = await prisma.otp_codes.findFirst({
       where: {
         phone,
         otp,
-        expires_at: { gt: new Date(Date.now() - 60000) }, // 1 minute buffer for clock skew
       },
       orderBy: { created_at: "desc" },
     });
 
     if (!otpRecord) {
-      return res.status(400).json({ error: "Invalid or expired OTP" });
+      console.log(`[AUTH] OTP record not found in DB for ${phone} and OTP ${otp}`);
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+
+    // Manual expiry check to avoid DB clock skew issues
+    const now = new Date();
+    const expiry = new Date(otpRecord.expires_at);
+    // Add 1 minute grace period for safety
+    const isExpired = expiry.getTime() < now.getTime() - 60000;
+
+    console.log(`[AUTH] DB Expiry: ${expiry.toISOString()}, Current Server Time: ${now.toISOString()}, IsExpired: ${isExpired}`);
+
+    if (isExpired) {
+      return res.status(400).json({ error: "OTP has expired. Please request a new one." });
     }
 
     // Check if user exists, otherwise auto-register

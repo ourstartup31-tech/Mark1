@@ -46,6 +46,11 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
+    // If we're already on login, just let it pass so the user can see the login page
+    if (pathname === "/login") {
+        return NextResponse.next();
+    }
+    
     // Invalid token -> clear and redirect
     const response = NextResponse.redirect(new URL("/login", req.url));
     response.cookies.delete("supermarket_token");

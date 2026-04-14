@@ -17,10 +17,31 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// CORS Configuration
+const allowedOrigins = ( [
+  process.env.FRONTEND_URL,
+  "https://mark1-gray.vercel.app",
+  "http://localhost:3000"
+].filter(Boolean) as string[] );
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "*",
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is allowed or is a Vercel preview URL
+    const isAllowed = allowedOrigins.includes(origin) || origin.endsWith(".vercel.app");
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());

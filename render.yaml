@@ -16,7 +16,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: https://mark1-1mix.vercel.app
+        value: https://mark1-gray.vercel.app
       - key: SUPERADMIN_PHONE
         sync: false
 

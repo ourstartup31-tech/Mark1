@@ -20,11 +20,16 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 app.use(cors({
-  origin: "https://mark1-1mix.vercel.app",
+  origin: process.env.FRONTEND_URL || "*",
   credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
+
+// Root Route
+app.get("/", (req: Request, res: Response) => {
+  res.send("Supermarket API is running successfully!");
+});
 
 // Health Check
 app.get("/health", (req: Request, res: Response) => {

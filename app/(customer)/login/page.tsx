@@ -33,10 +33,10 @@ function LoginContent() {
     useEffect(() => {
         if (user && !loading) {
             console.log("LoginPage: User detected, redirecting based on role:", role);
-            if (role === "superadmin") router.push("/superadmin/dashboard");
-            else if (role === "admin") router.push("/admin/dashboard");
+            if (role === "superadmin") window.location.href = "/superadmin/dashboard";
+            else if (role === "admin") window.location.href = "/admin/dashboard";
             // Only redirect customers to home if they are on /login explicitly
-            else if (role === "customer" && !callbackUrl) router.push("/");
+            else if (role === "customer" && !callbackUrl) window.location.href = "/";
         }
     }, [user, role, loading, callbackUrl, router]);
 

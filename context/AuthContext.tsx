@@ -158,7 +158,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             
             // CRITICAL: Set cookie manually on the frontend domain so middleware can see it
             // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
-            document.cookie = `supermarket_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; samesite=lax`;
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 7);
+            document.cookie = `supermarket_token=${data.token}; path=/; expires=${expires.toUTCString()}; samesite=lax; Secure`;
 
             setToken(data.token);
             setUser(data.user);

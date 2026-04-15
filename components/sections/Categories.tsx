@@ -5,7 +5,16 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { useStore } from "@/context/StoreContext";
 
 export function Categories() {
-    const { categories } = useStore();
+    const { categories, setActiveCategory } = useStore();
+    
+    const handleCategoryClick = (name: string) => {
+        setActiveCategory(name);
+        // Smooth scroll to products section
+        const section = document.getElementById("products");
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
     return (
         <section id="categories" className="bg-white py-16 lg:py-24 scroll-mt-20">
@@ -26,7 +35,10 @@ export function Categories() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-6">
                     {categories.map((cat, i) => (
                         <AnimatedSection key={cat.id} delay={i * 60}>
-                            <button className="w-full group bg-white border border-slate-100 rounded-2xl p-4 sm:p-6 text-center hover:border-black hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                            <button 
+                                onClick={() => handleCategoryClick(cat.name)}
+                                className="w-full group bg-white border border-slate-100 rounded-2xl p-4 sm:p-6 text-center hover:border-black hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                            >
                                 <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                                     {cat.emoji}
                                 </div>

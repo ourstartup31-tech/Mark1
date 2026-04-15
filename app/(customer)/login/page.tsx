@@ -86,13 +86,13 @@ function LoginContent() {
             console.log("LoginPage: Auth successful, checking role for redirect:", authRole);
 
             if (callbackUrl) {
-                router.push(callbackUrl);
+                window.location.href = callbackUrl;
             } else if (authRole === "superadmin") {
-                router.push("/superadmin/dashboard");
+                window.location.href = "/superadmin/dashboard";
             } else if (authRole === "admin") {
-                router.push("/admin/dashboard");
+                window.location.href = "/admin/dashboard";
             } else {
-                router.push("/");
+                window.location.href = "/";
             }
         } else {
             setErrors({ otp: result.error || "Invalid OTP" });

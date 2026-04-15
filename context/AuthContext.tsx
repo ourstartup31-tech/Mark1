@@ -48,25 +48,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     setUser(parsedUser);
                     setRole(parsedUser.role);
 
-                    // Verify session with backend (via cookie AND Bearer token for cross-domain reliability)
+                    // Verify session with backend — 10s timeout to prevent infinite loading on mobile
                     console.log("AuthContext: Initializing session check with token...");
-                    const res = await fetch(`${API_BASE_URL}/api/auth/me`, { 
-                        headers: { "Authorization": `Bearer ${savedToken}` },
-                        credentials: "include" 
-                    });
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-                    if (!res.ok) {
-                        console.warn("AuthContext: Session invalid on backend, logging out");
-                        logout();
-                    } else {
-                        const data = await res.json();
-                        console.log("AuthContext: Session valid, user role:", data.user.role);
-                        setUser(data.user);
-                        setRole(data.user.role || "customer");
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/api/auth/me`, { 
+                            headers: { "Authorization": `Bearer ${savedToken}` },
+                            credentials: "include",
+                            signal: controller.signal,
+                        });
+                        clearTimeout(timeoutId);
+
+                        if (!res.ok) {
+                            console.warn("AuthContext: Session invalid on backend, logging out");
+                            localStorage.removeItem("supermarket_token");
+                            localStorage.removeItem("supermarket_user");
+                            setToken(null);
+                            setUser(null);
+                            setRole(null);
+                        } else {
+                            const data = await res.json();
+                            console.log("AuthContext: Session valid, user role:", data.user.role);
+                            setUser(data.user);
+                            setRole(data.user.role || "customer");
+                        }
+                    } catch (fetchError: any) {
+                        clearTimeout(timeoutId);
+                        if (fetchError.name === "AbortError") {
+                            // Timeout: trust localStorage data, don't logout
+                            console.warn("AuthContext: Session check timed out, trusting local data");
+                        } else {
+                            console.warn("AuthContext: Session check failed (network error), trusting local data");
+                        }
+                        // On network failure, keep user logged in with local data
                     }
                 } catch (e) {
                     console.error("Failed to parse saved user", e);
-                    logout();
+                    localStorage.removeItem("supermarket_token");
+                    localStorage.removeItem("supermarket_user");
+                    setToken(null);
+                    setUser(null);
+                    setRole(null);
                 }
             }
             setIsLoading(false);
@@ -161,11 +185,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem("supermarket_token", data.token);
             localStorage.setItem("supermarket_user", JSON.stringify(data.user));
             
-            // CRITICAL: Force Sync Cookie (v1.0.1)
+            // CRITICAL: Force Sync Cookie (v1.0.2)
             // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
+            // NOTE: 'Secure' flag only set in production (HTTPS). On HTTP/mobile dev it must be omitted.
             const expires = new Date();
             expires.setDate(expires.getDate() + 7);
-            document.cookie = `supermarket_token=${data.token}; path=/; expires=${expires.toUTCString()}; samesite=lax; Secure`;
+            const isSecure = window.location.protocol === "https:";
+            const secureFlag = isSecure ? "; Secure" : "";
+            document.cookie = `supermarket_token=${data.token}; path=/; expires=${expires.toUTCString()}; samesite=lax${secureFlag}`;
 
             setToken(data.token);
             setUser(data.user);

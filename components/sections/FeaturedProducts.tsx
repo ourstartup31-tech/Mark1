@@ -10,18 +10,25 @@ import { cn } from "@/lib/utils";
 const ALL = "All";
 
 export function FeaturedProducts() {
-    const { searchQuery } = useCart();
-    const { products, categories } = useStore();
-    const [active, setActive] = useState(ALL);
+    const { searchQuery, setSearchQuery } = useCart();
+    const { products, categories, activeCategory, setActiveCategory } = useStore();
 
     const filtered = products.filter((p) => {
-        const matchesCategory = active === ALL || (p.categories?.name === active || p.category === active);
+        const matchesCategory = activeCategory === ALL || (p.categories?.name === activeCategory || p.category === activeCategory);
         const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (p.categories?.name || "").toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
     const displayTabs = [ALL, ...categories.map(c => c.name)];
+
+    const handleViewAll = () => {
+        setActiveCategory(ALL);
+        setSearchQuery(""); // Clear search when viewing all
+        // Scroll to top of products section if not already there
+        const section = document.getElementById("products");
+        if (section) section.scrollIntoView({ behavior: "smooth" });
+    };
 
     return (
         <section id="products" className="bg-slate-50 py-16 lg:py-24">
@@ -39,10 +46,10 @@ export function FeaturedProducts() {
                         {displayTabs.map((tab: string) => (
                             <button
                                 key={tab}
-                                onClick={() => setActive(tab)}
+                                onClick={() => setActiveCategory(tab)}
                                 className={cn(
                                     "px-5 py-2 rounded-lg text-[11px] sm:text-xs font-bold transition-all duration-300 whitespace-nowrap uppercase tracking-widest",
-                                    active === tab
+                                    activeCategory === tab
                                         ? "bg-black text-white shadow-lg shadow-black/10"
                                         : "bg-white border border-slate-100 text-slate-400 hover:border-slate-300 hover:text-black"
                                 )}
@@ -62,7 +69,10 @@ export function FeaturedProducts() {
                 </div>
 
                 <AnimatedSection delay={300} className="text-center mt-12 sm:mt-16">
-                    <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-black text-black text-[11px] uppercase tracking-widest font-bold px-8 py-4 rounded hover:bg-black hover:text-white active:scale-95 transition-all">
+                    <button 
+                        onClick={handleViewAll}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-black text-black text-[11px] uppercase tracking-widest font-bold px-8 py-4 rounded hover:bg-black hover:text-white active:scale-95 transition-all"
+                    >
                         View All Products
                         <span>→</span>
                     </button>

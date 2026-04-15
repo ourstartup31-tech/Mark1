@@ -9,6 +9,8 @@ interface StoreContextType {
     categories: any[];
     isLoading: boolean;
     error: string | null;
+    activeCategory: string;
+    setActiveCategory: (category: string) => void;
     refreshData: () => Promise<void>;
 }
 
@@ -17,6 +19,7 @@ const StoreContext = createContext<StoreContextType | null>(null);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
     const [products, setProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
+    const [activeCategory, setActiveCategory] = useState<string>("All");
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -84,7 +87,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }, [fetchData]);
 
     return (
-        <StoreContext.Provider value={{ products, categories, isLoading, error, refreshData: fetchData }}>
+        <StoreContext.Provider value={{ 
+            products, 
+            categories, 
+            isLoading, 
+            error, 
+            activeCategory,
+            setActiveCategory,
+            refreshData: fetchData 
+        }}>
             {children}
         </StoreContext.Provider>
     );

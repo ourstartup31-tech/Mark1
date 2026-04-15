@@ -4,6 +4,7 @@ import {
   updateOrderStatus 
 } from "../controllers/orderController";
 import { authenticate, authorize } from "../middleware/auth";
+import prisma from "../lib/prisma";
 
 const router = Router();
 

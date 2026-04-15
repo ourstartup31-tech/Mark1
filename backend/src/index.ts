@@ -13,6 +13,7 @@ import productRoutes from "./routes/products";
 import categoryRoutes from "./routes/categories";
 import cartRoutes from "./routes/cart";
 import orderRoutes from "./routes/orders";
+import adminRoutes from "./routes/admin";
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Test DB Connection
 app.get("/api/test-db", async (req: Request, res: Response) => {

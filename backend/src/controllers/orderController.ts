@@ -202,3 +202,90 @@ export const getOrderById = async (req: AuthRequest, res: Response) => {
         return res.status(500).json({ error: "Failed to fetch order details" });
     }
 };
+
+/**
+ * Fetch all orders for the store associated with the logged-in admin
+ */
+export const getStoreOrders = async (req: AuthRequest, res: Response) => {
+    try {
+        const user = req.user;
+
+        if (user.role !== "admin" && user.role !== "superadmin") {
+            return res.status(403).json({ error: "Forbidden: Only admins can view store orders" });
+        }
+
+        // For admin, we use their assigned store_id. 
+        // For superadmin, we might allow passing store_id as query param or show all.
+        const storeId = user.store_id;
+
+        if (!storeId && user.role === "admin") {
+            return res.status(400).json({ error: "Admin is not assigned to any store" });
+        }
+
+        const dbOrders = await prisma.orders.findMany({
+            where: storeId ? { store_id: storeId } : {}, 
+            include: {
+                users: {
+                    select: {
+                        name: true,
+                        phone: true
+                    }
+                },
+                order_items: {
+                    include: {
+                        products: true
+                    }
+                }
+            },
+            orderBy: { created_at: "desc" }
+        });
+
+        // Add total_amount alias for frontend compatibility
+        const orders = dbOrders.map(o => ({
+            ...o,
+            total_amount: o.total_price
+        }));
+
+        return res.json(orders);
+    } catch (error: any) {
+        console.error("Get Store Orders Error:", error.message);
+        return res.status(500).json({ error: "Failed to fetch store orders" });
+    }
+};
+
+/**
+ * Update the status of an order (Admin Only)
+ */
+export const updateOrderStatus = async (req: AuthRequest, res: Response) => {
+    try {
+        const { id, status } = req.body;
+        const user = req.user;
+
+        if (!id || !status) {
+            return res.status(400).json({ error: "Order ID and status are required" });
+        }
+
+        const order = await prisma.orders.findUnique({
+            where: { id }
+        });
+
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        // Verify admin belongs to this store
+        if (user.role === "admin" && order.store_id !== user.store_id) {
+            return res.status(403).json({ error: "Forbidden: You can only update orders for your store" });
+        }
+
+        const updatedOrder = await prisma.orders.update({
+            where: { id },
+            data: { status }
+        });
+
+        return res.json({ message: "Status updated successfully", order: updatedOrder });
+    } catch (error: any) {
+        console.error("Update Order Status Error:", error.message);
+        return res.status(500).json({ error: "Failed to update order status" });
+    }
+};

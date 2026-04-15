@@ -11,6 +11,8 @@ import prisma from "./lib/prisma";
 import authRoutes from "./routes/auth";
 import productRoutes from "./routes/products";
 import categoryRoutes from "./routes/categories";
+import cartRoutes from "./routes/cart";
+import orderRoutes from "./routes/orders";
 
 dotenv.config();
 
@@ -62,6 +64,8 @@ app.get("/health", (req: Request, res: Response) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Test DB Connection
 app.get("/api/test-db", async (req: Request, res: Response) => {

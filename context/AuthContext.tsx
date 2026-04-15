@@ -184,6 +184,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             localStorage.setItem("supermarket_token", data.token);
             localStorage.setItem("supermarket_user", JSON.stringify(data.user));
+            console.log("AuthContext: verifyOtp - user saved to storage:", data.user.id, "Role:", data.user.role);
             
             // CRITICAL: Force Sync Cookie (v1.0.2)
             // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
@@ -197,6 +198,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setToken(data.token);
             setUser(data.user);
             setRole(data.user.role);
+            console.log("AuthContext: verifyOtp - state updated, returning success");
             setIsLoading(false);
             return { success: true };
         } catch (error) {

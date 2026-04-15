@@ -32,14 +32,20 @@ function LoginContent() {
     // Auto-redirect if already logged in
     useEffect(() => {
         if (user && !loading) {
-            console.log("LoginPage: User detected, redirecting based on role:", role);
+            console.log("LoginPage: Auth State Detect - User:", user.id, "Role:", role);
+            const savedUser = localStorage.getItem("supermarket_user");
+            const userData = savedUser ? JSON.parse(savedUser) : null;
+            const authRole = userData?.role || role;
+
+            console.log("LoginPage: Auto-redirecting based on role:", authRole, "Callback:", callbackUrl);
             setTimeout(() => {
-                if (role === "superadmin") window.location.href = "/superadmin/dashboard";
-                else if (role === "admin") window.location.href = "/admin/dashboard";
-                else if (role === "customer" && !callbackUrl) window.location.href = "/";
-            }, 500); // 500ms delay for cookie sync
+                if (callbackUrl) window.location.href = callbackUrl;
+                else if (authRole === "superadmin") window.location.href = "/superadmin/dashboard";
+                else if (authRole === "admin") window.location.href = "/admin/dashboard";
+                else if (authRole === "customer") window.location.href = "/";
+            }, 800); // Increased delay to 800ms for stable cookie sync on all devices
         }
-    }, [user, role, loading, callbackUrl, router]);
+    }, [user, role, loading, callbackUrl]);
 
     const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,21 +85,11 @@ function LoginContent() {
         setLoading(false);
 
         if (result.success) {
-            // Check role and redirect
-            const savedUser = localStorage.getItem("supermarket_user");
-            const userData = savedUser ? JSON.parse(savedUser) : null;
-            const authRole = userData?.role;
-            console.log("LoginPage: Auth successful, checking role for redirect:", authRole);
-
-            if (callbackUrl) {
-                window.location.href = callbackUrl;
-            } else if (authRole === "superadmin") {
-                window.location.href = "/superadmin/dashboard";
-            } else if (authRole === "admin") {
-                window.location.href = "/admin/dashboard";
-            } else {
-                window.location.href = "/";
-            }
+            console.log("LoginPage: verifyOtp successful. Waiting for useEffect to handle redirect...");
+            // We've set loading to false and user is set in context, 
+            // the useEffect above will now handle the redirection with the proper delay.
+            // This prevents duplicate and race-condition redirects.
+            setSuccessMessage("Login successful! Redirecting...");
         } else {
             setErrors({ otp: result.error || "Invalid OTP" });
         }

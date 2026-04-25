@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "FreshMart – Fresh Groceries Delivered to Your Doorstep",
+  title: "SuperMarket – Fresh Groceries at Your Doorstep",
   description:
     "Order daily essentials from your trusted local supermarket. Fresh fruits, vegetables, dairy, snacks, and more delivered fast.",
   keywords: ["grocery delivery", "supermarket online", "fresh produce", "order groceries"],

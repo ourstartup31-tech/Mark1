@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, LogOut, Package, User } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogOut, Package, User, Store } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -45,11 +45,11 @@ export function Navbar() {
                     {/* Logo - Mobile-first sizing */}
                     <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
                         <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#D60000]/5 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#D60000]/10 shadow-sm group-hover:scale-105 transition-transform">
-                            <span className="text-[#D60000] font-bold text-sm sm:text-base">F</span>
+                            <Store size={18} className="text-[#D60000]" />
                         </div>
                         <div className="hidden xs:block">
                             <p className="font-bold text-base sm:text-lg leading-none tracking-tight text-black">
-                                Fresh<span className="text-gray-600">Mart</span>
+                                Super<span className="text-gray-600">Market</span>
                             </p>
                         </div>
                     </Link>
@@ -156,10 +156,10 @@ export function Navbar() {
                         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 mb-2">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center shadow-sm">
-                                    <span className="text-[#D60000] font-bold text-xs">F</span>
+                                    <Store size={16} className="text-[#D60000]" />
                                 </div>
                                 <span className="font-bold text-base text-black uppercase tracking-tight">
-                                    FreshMart
+                                    SuperMarket
                                 </span>
                             </div>
                             <button onClick={() => setMobileOpen(false)} className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 transition-colors">

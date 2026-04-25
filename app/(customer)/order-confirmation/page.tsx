@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, MapPin, Clock, CreditCard, ShoppingBag, Store, BadgeCheck, Tag, Package, Loader2 } from "lucide-react";
 
-const STORE_ADDRESS = "FreshMart Store, Main Market, City Centre";
+const STORE_ADDRESS = "SuperMarket Store, Main Market, City Centre";
 
 function OrderConfirmationContent() {
     const params = useSearchParams();
-    const orderId = params.get("orderId") ?? "FM000000";
+    const orderId = params.get("orderId") ?? "SM000000";
     const name = params.get("name") ?? "Customer";
     const slot = params.get("slot") ?? "";
     const day = params.get("day") ?? "today";
@@ -28,10 +28,10 @@ function OrderConfirmationContent() {
             <div className="border-b border-gray-100">
                 <div className="max-w-4xl mx-auto px-6 h-20 flex items-center">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg transition-transform group-hover:scale-105">
-                            F
+                        <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                            <Store size={22} />
                         </div>
-                        <span className="font-bold text-xl tracking-tight">FreshMart</span>
+                        <span className="font-bold text-xl tracking-tight">SuperMarket</span>
                     </Link>
                 </div>
             </div>

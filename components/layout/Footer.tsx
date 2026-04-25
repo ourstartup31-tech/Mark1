@@ -1,5 +1,6 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
+import { Store } from "lucide-react";
 
 export function Footer() {
     const year = 2026;
@@ -10,10 +11,10 @@ export function Footer() {
                     {/* Brand */}
                     <div className="max-w-xs mx-auto sm:mx-0 text-center sm:text-left">
                         <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white text-black rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-lg transition-transform group-hover:scale-105">
-                                F
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white text-black rounded-lg sm:rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                                <Store size={20} />
                             </div>
-                            <span className="font-bold text-xl tracking-tight uppercase tracking-[0.05em]">FreshMart</span>
+                            <span className="font-bold text-xl tracking-tight uppercase tracking-[0.05em]">SuperMarket</span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-8">
                             Experience the future of local shopping. Pre-order fresh groceries and collect them at your convenience.
@@ -21,7 +22,7 @@ export function Footer() {
                         <div className="space-y-3 text-[11px] text-gray-500 font-bold uppercase tracking-widest">
                             <p className="flex items-center justify-center sm:justify-start gap-2">📍 123 Market Street, City</p>
                             <p className="flex items-center justify-center sm:justify-start gap-2">📞 +91 98765 43210</p>
-                            <p className="flex items-center justify-center sm:justify-start gap-2">✉ hello@freshmart.in</p>
+                            <p className="flex items-center justify-center sm:justify-start gap-2">✉ hello@supermarket.in</p>
                         </div>
                     </div>
 
@@ -72,7 +73,7 @@ export function Footer() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-10">
                     <p className="text-gray-600 text-[10px] font-bold uppercase tracking-[0.15em] text-center sm:text-left">
-                        © {year} FreshMart. Crafted for Quality.
+                        © {year} SuperMarket. Crafted for Quality.
                     </p>
                     <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-600">
                         <div className="flex items-center gap-2">

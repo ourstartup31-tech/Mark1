@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, ShoppingBag, Loader2, Smartphone, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Store, Loader2, Smartphone, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 
@@ -105,10 +105,10 @@ function LoginContent() {
                 {/* Logo */}
                 <Link href="/" className="relative flex items-center gap-2.5 w-fit group">
                     <div className="w-10 h-10 bg-[#D60000] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                        <ShoppingBag className="text-white" size={24} />
+                        <Store className="text-white" size={24} />
                     </div>
                     <span className="font-bold text-xl text-white tracking-tight uppercase tracking-widest">
-                        Fresh<span className="text-[#D60000]">Mart</span>
+                        Super<span className="text-[#D60000]">Market</span>
                     </span>
                 </Link>
 
@@ -269,7 +269,7 @@ function LoginContent() {
                     )}
 
                     <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mt-10">
-                        © 2026 FreshMart · Secure Authentication
+                        © 2026 SuperMarket · Secure Authentication
                     </p>
                 </div>
             </div>
@@ -282,7 +282,7 @@ export default function LoginPage() {
         <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center bg-black">
                 <div className="text-center space-y-4">
-                    <ShoppingBag className="text-[#D60000] animate-bounce mx-auto" size={48} />
+                    <Store className="text-[#D60000] animate-bounce mx-auto" size={48} />
                     <Loader2 size={24} className="text-white animate-spin mx-auto" />
                     <p className="font-bold text-gray-400 uppercase tracking-widest text-[10px]">Preparing Login Session…</p>
                 </div>

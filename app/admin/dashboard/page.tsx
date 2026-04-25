@@ -39,6 +39,8 @@ export default function DashboardPage() {
     const { orders, products, staff, isStoreActive, toggleStoreStatus } = useAdmin();
     const recentOrders = orders.slice(0, 4);
 
+    console.log('Dashboard Re-render: isStoreActive:', isStoreActive);
+
     return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Page Header */}

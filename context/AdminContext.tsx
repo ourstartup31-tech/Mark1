@@ -287,14 +287,18 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     };
 
     const toggleStoreStatus = async () => {
+        console.log("ToggleStoreStatus: Current:", isStoreActive);
         try {
             const newStatus = !isStoreActive;
             const res = await apiFetch("/api/admin/store-status", {
                 method: "PUT",
                 body: JSON.stringify({ isActive: newStatus })
             });
+            console.log("ToggleStoreStatus: Response OK:", res.ok);
             if (res.ok) {
-                setIsStoreActive(newStatus);
+                const data = await res.json();
+                console.log("ToggleStoreStatus: New Status from API:", data.isActive);
+                setIsStoreActive(data.isActive);
             }
         } catch (err) {
             console.error("Failed to toggle store status", err);

@@ -16,7 +16,10 @@ export async function GET(req: NextRequest) {
       select: { is_active: true }
     });
 
-    return NextResponse.json({ isActive: store?.is_active ?? true });
+    return NextResponse.json(
+      { isActive: store?.is_active ?? true },
+      { headers: { "Cache-Control": "no-store, max-age=0" } }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: "Failed to fetch status" }, { status: 500 });
   }
@@ -37,7 +40,10 @@ export async function PUT(req: NextRequest) {
       data: { is_active: isActive }
     });
 
-    return NextResponse.json({ isActive: store.is_active });
+    return NextResponse.json(
+      { isActive: store.is_active },
+      { headers: { "Cache-Control": "no-store, max-age=0" } }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: "Failed to update status" }, { status: 500 });
   }

@@ -32,14 +32,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                 fetch(`${API_BASE_URL}/api/categories`, { cache: "no-store" })
             ]);
 
-            if (!prodRes.ok || !catRes.ok) {
-                throw new Error("Failed to fetch store data");
-            }
-
-            const [prodData, catData] = await Promise.all([
-                prodRes.json(),
-                catRes.json()
-            ]);
+            if (!prodRes.ok) throw new Error(`Products API error: ${prodRes.status}`);
+            if (!catRes.ok) throw new Error(`Categories API error: ${catRes.status}`);
+            
+            const prodData = await prodRes.json();
+            const catData = await catRes.json();
 
             // Map Prisma products to the frontend Product interface
             const mappedProducts = prodData.map((p: any) => ({

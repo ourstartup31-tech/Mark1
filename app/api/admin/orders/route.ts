@@ -9,18 +9,28 @@ export async function GET(req: NextRequest) {
   if (response) return response;
 
   try {
-    // Admin can see orders for all their stores
-    // First find the store IDs owned by this admin
-    const ownedStores = await prisma.stores.findMany({
-      where: { owner_id: user.id },
-      select: { id: true }
-    });
-
-    const storeIds = ownedStores.map(s => s.id);
+    // 1. Identify which stores this admin can see
+    let storeIds: string[] = [];
+    
+    if (user.role === "superadmin") {
+      // Superadmin sees all
+    } else {
+      // 2. Find stores owned by this admin
+      const ownedStores = await prisma.stores.findMany({
+        where: { owner_id: user.id },
+        select: { id: true }
+      });
+      storeIds = ownedStores.map(s => s.id);
+      
+      // 3. Add specifically assigned store if not already included
+      if (user.store_id && !storeIds.includes(user.store_id)) {
+        storeIds.push(user.store_id);
+      }
+    }
 
     const orders = await prisma.orders.findMany({
       where: {
-        store_id: { in: storeIds }
+        ...(storeIds.length > 0 ? { store_id: { in: storeIds } } : {})
       },
       include: {
         users: {

@@ -86,7 +86,7 @@ export default function DashboardPage() {
                 <div className="lg:col-span-2 space-y-6">
                     <div className="flex items-center justify-between px-2">
                         <h3 className="text-xl font-bold text-black tracking-tight">Recent Activity</h3>
-                        <Link href="/orders" className="text-[10px] font-bold text-[#D60000] uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all">
+                        <Link href="/admin/orders" className="text-[10px] font-bold text-[#D60000] uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all">
                             View All Orders <ArrowRight size={14} />
                         </Link>
                     </div>

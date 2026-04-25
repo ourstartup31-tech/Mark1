@@ -109,7 +109,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                     time: new Date(o.created_at).toLocaleTimeString(),
                     method: "Online",
                     status: o.status,
-                    total: `₹${o.total_amount}`
+                    total: `₹${o.total_price}`
                 }));
                 setOrders(mappedOrders);
             }

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -9,14 +9,19 @@ export function Hero() {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        const checkStatus = () => {
-            const now = new Date();
-            const hours = now.getHours();
-            // Open from 8 AM to 10 PM
-            setIsOpen(hours >= 8 && hours < 22);
+        const fetchStatus = async () => {
+            try {
+                const res = await fetch("/api/store-status");
+                if (res.ok) {
+                    const data = await res.json();
+                    setIsOpen(data.isActive);
+                }
+            } catch (err) {
+                console.error("Failed to fetch store status", err);
+            }
         };
-        checkStatus();
-        const interval = setInterval(checkStatus, 60000);
+        fetchStatus();
+        const interval = setInterval(fetchStatus, 30000); // Check every 30 seconds
         return () => clearInterval(interval);
     }, []);
 
@@ -101,7 +106,7 @@ export function Hero() {
                                         isOpen ? "bg-[#5DFFAD] animate-pulse" : "bg-white/50"
                                     )}></div>
                                     <span className="text-[7.5px] lg:text-[9px] text-white font-black tracking-widest uppercase">
-                                        8am — 10pm
+                                        Store Status
                                     </span>
                                 </div>
                             </div>

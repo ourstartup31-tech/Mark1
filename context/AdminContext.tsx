@@ -54,6 +54,9 @@ interface AdminContextType {
     deleteStaff: (id: string) => Promise<void>;
     updateStoreSettings: (s: Partial<StoreSettings>) => Promise<void>;
     updateOrderStatus: (id: string, status: string) => Promise<void>;
+    isStoreActive: boolean;
+    setIsStoreActive: (active: boolean) => void;
+    toggleStoreStatus: () => Promise<void>;
 }
 
 const AdminContext = createContext<AdminContextType | null>(null);
@@ -71,6 +74,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         timing: {},
         closedDates: []
     });
+    const [isStoreActive, setIsStoreActive] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
@@ -84,11 +88,12 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(true);
         setError(null);
         try {
-            const [prodRes, catRes, orderRes, staffRes] = await Promise.all([
+            const [prodRes, catRes, orderRes, staffRes, statusRes] = await Promise.all([
                 apiFetch("/api/products", { cache: "no-store" }),
                 apiFetch("/api/categories", { cache: "no-store" }),
                 apiFetch("/api/admin/orders", { cache: "no-store" }),
-                apiFetch("/api/admin/staff", { cache: "no-store" })
+                apiFetch("/api/admin/staff", { cache: "no-store" }),
+                apiFetch("/api/admin/store-status", { cache: "no-store" })
             ]);
 
             if (prodRes.ok) setProducts(await prodRes.json());
@@ -99,6 +104,10 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                     ...s,
                     status: s.store_id ? "Active" : "Inactive"
                 })));
+            }
+            if (statusRes.ok) {
+                const statusData = await statusRes.json();
+                setIsStoreActive(statusData.isActive);
             }
             if (orderRes.ok) {
                 const data = await orderRes.json();
@@ -277,6 +286,21 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const toggleStoreStatus = async () => {
+        try {
+            const newStatus = !isStoreActive;
+            const res = await apiFetch("/api/admin/store-status", {
+                method: "PUT",
+                body: JSON.stringify({ isActive: newStatus })
+            });
+            if (res.ok) {
+                setIsStoreActive(newStatus);
+            }
+        } catch (err) {
+            console.error("Failed to toggle store status", err);
+        }
+    };
+
     const updateStoreSettings = async (s: Partial<StoreSettings>) => {
         const newSettings = { ...storeSettings, ...s };
         setStoreSettings(newSettings);
@@ -290,7 +314,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
             addProduct, updateProduct, deleteProduct,
             addCategory, updateCategory, deleteCategory,
             addStaff, updateStaff, deleteStaff,
-            updateStoreSettings, updateOrderStatus
+            updateStoreSettings, updateOrderStatus,
+            isStoreActive, setIsStoreActive, toggleStoreStatus
         }}>
             {children}
         </AdminContext.Provider>

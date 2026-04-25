@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import {
     ArrowRight,
     Eye,
-    Filter,
     Search,
     CheckCircle,
     Clock,
@@ -102,15 +101,6 @@ export default function OrdersPage() {
                 <div>
                     <h1 className="text-4xl font-bold text-black tracking-tight">Order Overview</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Track and manage customer pickup orders.</p>
-                </div>
-                <div className="flex gap-4">
-                    <Button variant="outline" className="px-6 py-6 rounded-2xl border-2 flex items-center gap-2">
-                        <Filter size={18} />
-                        Filters
-                    </Button>
-                    <Button className="bg-[#D60000] hover:bg-black text-white px-8 py-6 rounded-2xl transition-all shadow-xl shadow-red-600/10">
-                        Export Orders
-                    </Button>
                 </div>
             </div>
 

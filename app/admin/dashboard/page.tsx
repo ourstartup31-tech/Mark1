@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { Table } from "@/components/ui/Table";
 import { useAdmin } from "@/context/AdminContext";
+import { cn } from "@/lib/utils";
 
 
 const columns = [
@@ -35,7 +36,7 @@ const columns = [
 ];
 
 export default function DashboardPage() {
-    const { orders } = useAdmin();
+    const { orders, products, staff, isStoreActive, toggleStoreStatus } = useAdmin();
     const recentOrders = orders.slice(0, 4);
 
     return (
@@ -69,13 +70,13 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                     label="Total Products"
-                    value="1,420"
+                    value={products.length.toString()}
                     icon={Box}
                     trend={{ value: 3, isUp: true }}
                 />
                 <StatsCard
                     label="Active Staff"
-                    value="12"
+                    value={(staff.length + 1).toString()} // +1 for the admin themselves
                     icon={Users}
                 />
             </div>
@@ -96,29 +97,33 @@ export default function DashboardPage() {
                 {/* Store Status / Quick Actions */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-bold text-black tracking-tight px-2">Store Status</h3>
-                    <div className="bg-black rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
+                    <div className={cn(
+                        "rounded-[2.5rem] p-10 text-white relative overflow-hidden group transition-all duration-500",
+                        isStoreActive ? "bg-black" : "bg-gray-400"
+                    )}>
                         <div className="absolute top-0 right-0 w-32 h-32 bg-[#D60000] rounded-full -mr-16 -mt-16 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity" />
                         <div className="relative z-10">
                             <div className="flex items-center gap-3 mb-6">
-                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Live Now</span>
+                                <span className={cn(
+                                    "w-2 h-2 rounded-full",
+                                    isStoreActive ? "bg-green-500 animate-pulse" : "bg-red-500"
+                                )} />
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                                    {isStoreActive ? "Live Now" : "Currently Closed"}
+                                </span>
                             </div>
                             <p className="text-sm font-medium text-gray-400 mb-1">Current Status</p>
-                            <p className="text-3xl font-bold mb-8">Store is Open</p>
+                            <p className="text-3xl font-bold mb-8">
+                                Store is {isStoreActive ? "Open" : "Closed"}
+                            </p>
 
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between py-3 border-b border-white/10">
-                                    <span className="text-xs text-gray-400">Next Closure</span>
-                                    <span className="text-xs font-bold text-white">10:00 PM</span>
-                                </div>
-                                <div className="flex items-center justify-between py-3 border-b border-white/10">
-                                    <span className="text-xs text-gray-400">Staff on Duty</span>
-                                    <span className="text-xs font-bold text-white">4 Members</span>
-                                </div>
-                            </div>
 
-                            <button className="w-full mt-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-[#D60000] hover:text-white transition-all flex items-center justify-center gap-2">
-                                Change Store Status <ArrowUpRight size={16} />
+
+                            <button 
+                                onClick={toggleStoreStatus}
+                                className="w-full mt-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-[#D60000] hover:text-white transition-all flex items-center justify-center gap-2"
+                            >
+                                {isStoreActive ? "Close Store" : "Open Store"} <ArrowUpRight size={16} />
                             </button>
                         </div>
                     </div>

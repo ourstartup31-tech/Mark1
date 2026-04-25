@@ -6,12 +6,13 @@ export async function GET(req: NextRequest) {
   try {
     const user = await getServerUser(req);
     const { searchParams } = new URL(req.url);
-    const isCustomer = !user || user.role === "customer";
-
     let where: any = {};
+    const isCustomer = !user || user.role === "customer";
 
     if (isCustomer) {
       where.is_available = true; // Customers only see available items
+    } else if (user.role === "admin" && user.store_id) {
+      where.store_id = user.store_id; // Admins only see their store's products
     }
 
     const products = await prisma.products.findMany({

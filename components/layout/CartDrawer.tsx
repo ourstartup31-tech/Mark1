@@ -64,6 +64,18 @@ export function CartDrawer() {
         }
     };
 
+    // LOCK BODY SCROLL WHEN OPEN
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
@@ -75,7 +87,7 @@ export function CartDrawer() {
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 bottom-0 z-50 w-full xs:max-w-md bg-white shadow-2xl flex flex-col animate-slide-in-r sm:rounded-l-[2rem] overflow-hidden">
+            <div className="fixed top-0 right-0 bottom-0 z-50 w-full sm:max-w-md bg-white shadow-2xl flex flex-col animate-slide-in-r sm:rounded-l-[2.5rem] overflow-hidden">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-100">
@@ -120,7 +132,7 @@ export function CartDrawer() {
                         <div className="flex-1 overflow-y-auto custom-scrollbar">
 
                             {/* Items */}
-                            <div className="px-6 py-5 sm:px-8 sm:py-6 space-y-3 sm:space-y-4">
+                            <div className="px-4 py-4 sm:px-8 sm:py-6 space-y-3">
                                 {items.map((item) => (
                                     <div
                                         key={item.id}
@@ -160,7 +172,7 @@ export function CartDrawer() {
                             <div className="h-px bg-slate-50 mx-6 sm:mx-8" />
 
                             {/* Pickup time selector */}
-                            <div className="px-6 py-6 sm:px-8 sm:py-8">
+                            <div className="px-4 py-6 sm:px-8 sm:py-8">
                                 <h3 className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                     <CalendarClock size={12} className="text-[#D60000]" />
                                     Pickup Schedule
@@ -174,7 +186,7 @@ export function CartDrawer() {
                             <div className="h-px bg-slate-50 mx-6 sm:mx-8" />
 
                             {/* Payment method */}
-                            <div className="px-6 py-6 sm:px-8 sm:py-8">
+                            <div className="px-4 py-6 sm:px-8 sm:py-8">
                                 <h3 className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                     <CreditCard size={12} className="text-[#D60000]" />
                                     Payment Preference
@@ -211,7 +223,7 @@ export function CartDrawer() {
                         </div>
 
                         {/* Footer */}
-                        <div className="border-t border-gray-100 px-8 py-8 space-y-4 bg-white">
+                        <div className="border-t border-gray-100 px-6 py-6 sm:px-8 sm:py-8 space-y-4 bg-white">
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium text-gray-400 text-sm italic">Subtotal</span>

@@ -65,14 +65,14 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
             </div>
 
             {/* Slots grid */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 {slots.map((slot) => (
                     <button
                         key={slot}
                         type="button"
                         onClick={() => onChange({ day: activeDay, slot })}
                         className={cn(
-                            "py-4 px-4 rounded-2xl text-[10px] font-bold border transition-all duration-300 text-center uppercase tracking-widest",
+                            "py-3 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-bold border transition-all duration-300 text-center uppercase tracking-widest",
                             isSelected(slot)
                                 ? "bg-black border-black text-white shadow-xl shadow-black/10"
                                 : "bg-white border-gray-100 text-gray-500 hover:border-black hover:text-black"

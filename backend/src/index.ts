@@ -62,16 +62,52 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
+// Cleanup Stores (Temporary Route - Use once to fix multiple stores issue)
+app.get("/api/admin/cleanup-stores", async (req: Request, res: Response) => {
+  try {
+    // 1. Find the store we want to KEEP (the one with products or an owner)
+    const keepStore = await prisma.stores.findFirst({
+      where: { products: { some: {} } },
+      orderBy: { created_at: 'desc' }
+    });
+
+    if (!keepStore) return res.json({ message: "No stores with products found to keep." });
+
+    // 2. Delete all other stores
+    const deleted = await prisma.stores.deleteMany({
+      where: { id: { not: keepStore.id } }
+    });
+
+    res.json({ 
+      message: "Cleanup successful!", 
+      keptStore: { id: keepStore.id, name: keepStore.name },
+      deletedCount: deleted.count 
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Public Store Status (Used by Hero/Frontend)
 app.get("/api/store-status", async (req: Request, res: Response) => {
   try {
-    // Get the most recently updated store to ensure we see the latest changes
+    // Count total stores for debugging
+    const totalStores = await prisma.stores.count();
+    
+    // Find the store that is most likely the "real" one (has an owner or products)
     const store = await prisma.stores.findFirst({
-      orderBy: { id: 'desc' }, // Or any other reliable ordering
+      where: {
+        OR: [
+          { owner_id: { not: null } },
+          { products: { some: {} } }
+        ]
+      },
+      orderBy: { created_at: 'desc' },
       select: { id: true, name: true, is_active: true }
     });
     
-    console.log(`[Status Check] Store: ${store?.name} (${store?.id}), Active: ${store?.is_active}`);
+    console.log(`[Status Check] Total Stores in DB: ${totalStores}`);
+    console.log(`[Status Check] Selected Store: ${store?.name} (${store?.id}), Active: ${store?.is_active}`);
     
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.json({ isActive: store?.is_active ?? false });

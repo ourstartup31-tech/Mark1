@@ -14,6 +14,7 @@ import categoryRoutes from "./routes/categories";
 import cartRoutes from "./routes/cart";
 import orderRoutes from "./routes/orders";
 import adminRoutes from "./routes/admin";
+import storesRoutes from "./routes/stores";
 
 dotenv.config();
 
@@ -82,6 +83,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/stores", storesRoutes);
 
 // Test DB Connection
 app.get("/api/test-db", async (req: Request, res: Response) => {

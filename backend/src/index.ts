@@ -57,6 +57,23 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Supermarket API is running successfully!");
 });
 
+// Fix Admin Store Link (Temporary)
+app.get("/api/admin/fix-admin-store", async (req: Request, res: Response) => {
+  try {
+    const store = await prisma.stores.findFirst();
+    if (!store) return res.json({ message: "No store found" });
+
+    const updated = await prisma.users.updateMany({
+      where: { role: "admin" },
+      data: { store_id: store.id }
+    });
+
+    res.json({ message: "Admins linked to store", store: store.name, updatedCount: updated.count });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Health Check
 app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });

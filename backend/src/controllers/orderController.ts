@@ -223,7 +223,13 @@ export const getStoreOrders = async (req: AuthRequest, res: Response) => {
 
         // For admin, we use their assigned store_id. 
         // For superadmin, we might allow passing store_id as query param or show all.
-        const storeId = user.store_id;
+        let storeId = user.store_id;
+
+        // If it's a single store setup and storeId is missing, try to find the only store
+        if (!storeId) {
+            const onlyStore = await prisma.stores.findFirst({ select: { id: true } });
+            if (onlyStore) storeId = onlyStore.id;
+        }
 
         if (!storeId && user.role === "admin") {
             console.log(`[Order Fetch] Admin ${user.id} has no store_id assigned!`);

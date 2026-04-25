@@ -62,90 +62,17 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
-// Cleanup Stores (Robust Merge & Purge)
-app.get("/api/admin/cleanup-stores", async (req: Request, res: Response) => {
-  try {
-    // 1. Find the store we want to KEEP (the one with the most products or an owner)
-    const keepStore = await prisma.stores.findFirst({
-      where: { products: { some: {} } },
-      orderBy: { created_at: 'desc' }
-    }) || await prisma.stores.findFirst({ orderBy: { created_at: 'asc' } });
-
-    if (!keepStore) return res.json({ message: "No stores found at all." });
-
-    const otherStoreIds = (await prisma.stores.findMany({
-      where: { id: { not: keepStore.id } },
-      select: { id: true }
-    })).map(s => s.id);
-
-    if (otherStoreIds.length === 0) {
-      return res.json({ message: "Database is already clean. Only one store exists.", store: keepStore.name });
-    }
-
-    // 2. MOVE EVERYTHING to the KeepStore
-    await prisma.$transaction([
-      // Move Orders
-      prisma.orders.updateMany({
-        where: { store_id: { in: otherStoreIds } },
-        data: { store_id: keepStore.id }
-      }),
-      // Move Products
-      prisma.products.updateMany({
-        where: { store_id: { in: otherStoreIds } },
-        data: { store_id: keepStore.id }
-      }),
-      // Move Categories
-      prisma.categories.updateMany({
-        where: { store_id: { in: otherStoreIds } },
-        data: { store_id: keepStore.id }
-      }),
-      // Move Users/Staff
-      prisma.users.updateMany({
-        where: { store_id: { in: otherStoreIds } },
-        data: { store_id: keepStore.id }
-      }),
-      // FINALLY Delete Other Stores
-      prisma.stores.deleteMany({
-        where: { id: { in: otherStoreIds } }
-      })
-    ]);
-
-    res.json({ 
-      message: "Merge & Cleanup successful!", 
-      keptStore: { id: keepStore.id, name: keepStore.name },
-      mergedFromCount: otherStoreIds.length 
-    });
-  } catch (error: any) {
-    console.error("Cleanup Error:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // Public Store Status (Used by Hero/Frontend)
 app.get("/api/store-status", async (req: Request, res: Response) => {
   try {
-    // Count total stores for debugging
-    const totalStores = await prisma.stores.count();
-    
-    // Find the store that is most likely the "real" one (has an owner or products)
+    // There is now only one store, so findFirst is safe
     const store = await prisma.stores.findFirst({
-      where: {
-        OR: [
-          { owner_id: { not: null } },
-          { products: { some: {} } }
-        ]
-      },
-      orderBy: { created_at: 'desc' },
       select: { id: true, name: true, is_active: true }
     });
-    
-    console.log(`[Status Check] Total Stores in DB: ${totalStores}`);
-    console.log(`[Status Check] Selected Store: ${store?.name} (${store?.id}), Active: ${store?.is_active}`);
     
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.json({ isActive: store?.is_active ?? false });
   } catch (error) {
-    console.error("[Status Error]", error);
     res.status(500).json({ isActive: true });
   }
 });

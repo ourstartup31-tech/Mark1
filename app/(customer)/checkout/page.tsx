@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 const STORE_ADDRESS = "SuperMarket Store, Main Market, City Centre — Open 8 AM – 10 PM";
 
 export default function CheckoutPage() {
-    const { state, totalPrice, clearCartOnServer } = useCart();
+    const { state, totalPrice, clearCartOnServer, fetchCart } = useCart();
     const { user, apiFetch } = useAuth();
     const { items, pickupSlot, paymentMethod } = state;
     const router = useRouter();
@@ -73,9 +73,7 @@ export default function CheckoutPage() {
             }
 
             const orderId = data.orders?.[0]?.id || data.id || "SUCCESS";
-            // The CartContext handles clearing local state if fetchCart is called or if we clear it manually.
-            // But we already have clearCartOnServer in context. Let's just use it or rely on the backend clearing it.
-            // The context usually refreshes items after api calls.
+            await fetchCart(); // Clear cart state locally
             
             router.push(`/order-confirmation?orderId=${orderId}&name=${encodeURIComponent(billing.name)}&slot=${encodeURIComponent(pickupSlot.slot)}&day=${pickupSlot.day}&payment=${paymentMethod}&total=${totalPrice.toFixed(0)}`);
         } catch (error: any) {

@@ -21,6 +21,7 @@ export function CartDrawer() {
         totalPrice,
         totalItems,
         clearCartOnServer,
+        fetchCart,
     } = useCart();
     const { showToast } = useToast();
     const router = useRouter();
@@ -50,8 +51,9 @@ export function CartDrawer() {
 
             if (res.ok) {
                 const data = await res.json();
-                closeCart();
                 showToast("Order placed successfully!", "success");
+                await fetchCart();
+                closeCart();
                 // Just take the first order ID for the confirmation page for now
                 const orderId = data.orders?.[0]?.id || "SUCCESS";
                 router.push(`/order-confirmation?orderId=${orderId}&slot=${pickupSlot.slot}&day=${pickupSlot.day}&total=${totalPrice}&payment=${paymentMethod}`);

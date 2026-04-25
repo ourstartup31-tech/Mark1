@@ -28,6 +28,8 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    console.log(`Admin Orders: Fetching for storeIds: ${JSON.stringify(storeIds)}`);
+
     const orders = await prisma.orders.findMany({
       where: {
         ...(storeIds.length > 0 ? { store_id: { in: storeIds } } : {})
@@ -43,8 +45,11 @@ export async function GET(req: NextRequest) {
       orderBy: { created_at: "desc" }
     });
 
-    return NextResponse.json(orders);
+    console.log(`Admin Orders: Found ${orders.length} orders`);
+
+    return NextResponse.json({ orders });
   } catch (error: any) {
+    console.error("Admin Orders Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch admin orders", details: error.message },
       { status: 500 }

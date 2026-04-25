@@ -12,6 +12,7 @@ interface Order {
     method: string;
     status: string;
     total: string;
+    items: any[];
 }
 
 interface Staff {
@@ -101,15 +102,18 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
             }
             if (orderRes.ok) {
                 const data = await orderRes.json();
-                // Map API orders to context Order interface if needed
-                const mappedOrders = data.map((o: any) => ({
+                const ordersList = data.orders || [];
+                
+                // Map API orders to context Order interface
+                const mappedOrders = ordersList.map((o: any) => ({
                     id: o.id,
                     customer: o.users?.name || "Unknown",
                     date: new Date(o.created_at).toLocaleDateString(),
                     time: new Date(o.created_at).toLocaleTimeString(),
-                    method: "Online",
+                    method: o.payment_method || "Online",
                     status: o.status,
-                    total: `₹${o.total_price}`
+                    total: `₹${o.total_price}`,
+                    items: o.order_items || []
                 }));
                 setOrders(mappedOrders);
             }

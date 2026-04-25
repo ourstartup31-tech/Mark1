@@ -169,6 +169,29 @@ export default function OrdersPage() {
                     </div>
 
                     <div className="pt-6 border-t border-gray-100">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Items Ordered</p>
+                        <div className="space-y-3">
+                            {selectedOrder?.items?.map((item: any, idx: number) => (
+                                <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center font-bold text-lg shadow-sm border border-gray-100">
+                                            {item.products?.emoji || "📦"}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-black">{item.products?.name}</p>
+                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Qty: {item.quantity}</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm font-bold text-black">₹{item.price}</p>
+                                </div>
+                            ))}
+                            {(!selectedOrder?.items || selectedOrder.items.length === 0) && (
+                                <p className="text-center py-4 text-gray-400 text-xs italic">No item details available.</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="pt-6 border-t border-gray-100">
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Update Order Status</p>
                         <div className="grid grid-cols-2 gap-4">
                             <button

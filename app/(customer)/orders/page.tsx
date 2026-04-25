@@ -31,12 +31,13 @@ interface Order {
 }
 
 export default function OrdersPage() {
-    const { user, apiFetch, requireAuth } = useAuth();
+    const { user, apiFetch, requireAuth, isLoading } = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const fetchOrders = async () => {
+        if (isLoading || !user) return; // Wait for auth
         setLoading(true);
         setError(null);
         try {
@@ -57,7 +58,7 @@ export default function OrdersPage() {
     useEffect(() => {
         if (!requireAuth()) return;
         fetchOrders();
-    }, [user]);
+    }, [user, isLoading]);
 
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {

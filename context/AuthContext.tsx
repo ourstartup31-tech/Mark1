@@ -121,10 +121,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
      * Helper to make authenticated API calls
      */
     const apiFetch = async (url: string, options: RequestInit = {}) => {
+        // Fallback to localStorage if state token isn't ready yet
+        const activeToken = token || (typeof window !== "undefined" ? localStorage.getItem("supermarket_token") : null);
+
         const headers = {
             ...options.headers,
             "Content-Type": "application/json",
-            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+            ...(activeToken ? { "Authorization": `Bearer ${activeToken}` } : {})
         } as Record<string, string>;
 
         const fullUrl = url.startsWith("http") ? url : `${API_BASE_URL}${url}`;

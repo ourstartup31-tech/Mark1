@@ -91,8 +91,15 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
 
     // 2. Group items by store_id
     const itemsByStore: Record<string, typeof cartItems> = {};
+    
+    // Find a default store ID in case some products have null store_id
+    let defaultStoreId: string | null = null;
+    const firstStore = await prisma.stores.findFirst({ select: { id: true } });
+    if (firstStore) defaultStoreId = firstStore.id;
+
     cartItems.forEach(item => {
-      const sId = item.products?.store_id;
+      let sId = item.products?.store_id || defaultStoreId;
+      console.log(`[Order Create] Item: ${item.products?.name}, Final StoreID: ${sId}`);
       if (sId) {
         if (!itemsByStore[sId]) itemsByStore[sId] = [];
         itemsByStore[sId].push(item);
@@ -219,8 +226,11 @@ export const getStoreOrders = async (req: AuthRequest, res: Response) => {
         const storeId = user.store_id;
 
         if (!storeId && user.role === "admin") {
+            console.log(`[Order Fetch] Admin ${user.id} has no store_id assigned!`);
             return res.status(400).json({ error: "Admin is not assigned to any store" });
         }
+
+        console.log(`[Order Fetch] Fetching orders for StoreID: ${storeId || "ALL"}`);
 
         const dbOrders = await prisma.orders.findMany({
             where: storeId ? { store_id: storeId } : {}, 

@@ -65,14 +65,19 @@ app.get("/health", (req: Request, res: Response) => {
 // Public Store Status (Used by Hero/Frontend)
 app.get("/api/store-status", async (req: Request, res: Response) => {
   try {
-    // For now, getting the first store's status as it's a single store setup
+    // Get the most recently updated store to ensure we see the latest changes
     const store = await prisma.stores.findFirst({
-      select: { is_active: true }
+      orderBy: { id: 'desc' }, // Or any other reliable ordering
+      select: { id: true, name: true, is_active: true }
     });
-    res.set('Cache-Control', 'no-store');
-    res.json({ is_active: store?.is_active ?? false });
+    
+    console.log(`[Status Check] Store: ${store?.name} (${store?.id}), Active: ${store?.is_active}`);
+    
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.json({ isActive: store?.is_active ?? false });
   } catch (error) {
-    res.status(500).json({ is_active: true }); // Default to open on error
+    console.error("[Status Error]", error);
+    res.status(500).json({ isActive: true });
   }
 });
 

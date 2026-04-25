@@ -95,8 +95,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 apiFetch("/api/categories", { cache: "no-store" }),
                 apiFetch("/api/admin/orders", { cache: "no-store" }),
                 apiFetch("/api/admin/staff", { cache: "no-store" }),
-                apiFetch("/api/admin/store-status", { cache: "no-store" }),
-                apiFetch("/api/admin/stats", { cache: "no-store" })
+                apiFetch(`/api/admin/store-status?t=${Date.now()}`, { cache: "no-store" }),
+                apiFetch(`/api/admin/stats?t=${Date.now()}`, { cache: "no-store" })
             ]);
 
             if (prodRes.ok) setProducts(await prodRes.json());

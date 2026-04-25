@@ -46,6 +46,8 @@ router.put("/store-status", async (req, res) => {
             data: { is_active: isActive }
         });
 
+        console.log(`[Admin] Store Status Updated: ${storeId} -> ${isActive}`);
+
         res.json({ success: true, isActive });
     } catch (error: any) {
         res.status(500).json({ error: "Failed to update store status" });

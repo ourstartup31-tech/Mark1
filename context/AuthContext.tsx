@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 // Deployed Version: 1.0.1
 import { useRouter } from "next/navigation";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE_URL = ""; // Forced to empty to use Next.js internal API routes
 
 type UserRole = "admin" | "customer" | "superadmin" | null;
 

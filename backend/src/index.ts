@@ -62,28 +62,61 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
-// Cleanup Stores (Temporary Route - Use once to fix multiple stores issue)
+// Cleanup Stores (Robust Merge & Purge)
 app.get("/api/admin/cleanup-stores", async (req: Request, res: Response) => {
   try {
-    // 1. Find the store we want to KEEP (the one with products or an owner)
+    // 1. Find the store we want to KEEP (the one with the most products or an owner)
     const keepStore = await prisma.stores.findFirst({
       where: { products: { some: {} } },
       orderBy: { created_at: 'desc' }
-    });
+    }) || await prisma.stores.findFirst({ orderBy: { created_at: 'asc' } });
 
-    if (!keepStore) return res.json({ message: "No stores with products found to keep." });
+    if (!keepStore) return res.json({ message: "No stores found at all." });
 
-    // 2. Delete all other stores
-    const deleted = await prisma.stores.deleteMany({
-      where: { id: { not: keepStore.id } }
-    });
+    const otherStoreIds = (await prisma.stores.findMany({
+      where: { id: { not: keepStore.id } },
+      select: { id: true }
+    })).map(s => s.id);
+
+    if (otherStoreIds.length === 0) {
+      return res.json({ message: "Database is already clean. Only one store exists.", store: keepStore.name });
+    }
+
+    // 2. MOVE EVERYTHING to the KeepStore
+    await prisma.$transaction([
+      // Move Orders
+      prisma.orders.updateMany({
+        where: { store_id: { in: otherStoreIds } },
+        data: { store_id: keepStore.id }
+      }),
+      // Move Products
+      prisma.products.updateMany({
+        where: { store_id: { in: otherStoreIds } },
+        data: { store_id: keepStore.id }
+      }),
+      // Move Categories
+      prisma.categories.updateMany({
+        where: { store_id: { in: otherStoreIds } },
+        data: { store_id: keepStore.id }
+      }),
+      // Move Users/Staff
+      prisma.users.updateMany({
+        where: { store_id: { in: otherStoreIds } },
+        data: { store_id: keepStore.id }
+      }),
+      // FINALLY Delete Other Stores
+      prisma.stores.deleteMany({
+        where: { id: { in: otherStoreIds } }
+      })
+    ]);
 
     res.json({ 
-      message: "Cleanup successful!", 
+      message: "Merge & Cleanup successful!", 
       keptStore: { id: keepStore.id, name: keepStore.name },
-      deletedCount: deleted.count 
+      mergedFromCount: otherStoreIds.length 
     });
   } catch (error: any) {
+    console.error("Cleanup Error:", error);
     res.status(500).json({ error: error.message });
   }
 });

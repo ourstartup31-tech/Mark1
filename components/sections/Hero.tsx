@@ -11,7 +11,8 @@ export function Hero() {
     useEffect(() => {
         const fetchStatus = async () => {
             try {
-                const res = await fetch("/api/store-status");
+                const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+                const res = await fetch(`${baseUrl}/api/store-status`, { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     setIsOpen(data.isActive);

@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 // Deployed Version: 1.0.1
 import { useRouter } from "next/navigation";
 
-const API_BASE_URL = ""; // Forced to empty to use Next.js internal API routes
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
 
 type UserRole = "admin" | "customer" | "superadmin" | null;
 
@@ -40,7 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const initAuth = async () => {
             const savedToken = localStorage.getItem("supermarket_token");
             const savedUser = localStorage.getItem("supermarket_user");
-            
+
             if (savedToken && savedUser) {
                 try {
                     const parsedUser = JSON.parse(savedUser);
@@ -54,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
                     try {
-                        const res = await fetch(`${API_BASE_URL}/api/auth/me`, { 
+                        const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
                             headers: { "Authorization": `Bearer ${savedToken}` },
                             credentials: "include",
                             signal: controller.signal,
@@ -105,13 +106,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setRole(null);
         localStorage.removeItem("supermarket_token");
         localStorage.removeItem("supermarket_user");
-        
+
         // 2. Clear local domain cookie
         document.cookie = "supermarket_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=lax; Secure";
 
         // 3. Inform backend (fire and forget for better UX)
         fetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST", credentials: "include" }).catch(e => console.error("Logout API background failed", e));
-        
+
         // 4. Hard redirect for clean state
         window.location.href = "/login";
     };
@@ -128,12 +129,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const fullUrl = url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
         const res = await fetch(fullUrl, { ...options, headers, credentials: "include" });
-        
+
         if (res.status === 401 && !isLoading) {
             logout();
             return res;
         }
-        
+
         return res;
     };
 
@@ -176,7 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 credentials: "include"
             });
             const data = await res.json();
-            
+
             if (!res.ok) {
                 setIsLoading(false);
                 return { success: false, error: data.error };
@@ -185,7 +186,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem("supermarket_token", data.token);
             localStorage.setItem("supermarket_user", JSON.stringify(data.user));
             console.log("AuthContext: verifyOtp - user saved to storage:", data.user.id, "Role:", data.user.role);
-            
+
             // CRITICAL: Force Sync Cookie (v1.0.2)
             // Backend cookie is on .onrender.com, which is NOT visible to Vercel middleware.
             // NOTE: 'Secure' flag only set in production (HTTPS). On HTTP/mobile dev it must be omitted.

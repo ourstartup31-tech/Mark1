@@ -36,7 +36,7 @@ const columns = [
 ];
 
 export default function DashboardPage() {
-    const { orders, products, staff, isStoreActive, toggleStoreStatus } = useAdmin();
+    const { orders, products, staff, isStoreActive, toggleStoreStatus, stats } = useAdmin();
     const recentOrders = orders.slice(0, 4);
 
     console.log('Dashboard Re-render: isStoreActive:', isStoreActive);
@@ -72,13 +72,13 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                     label="Total Products"
-                    value={products.length.toString()}
+                    value={stats.totalProducts.toString()}
                     icon={Box}
                     trend={{ value: 3, isUp: true }}
                 />
                 <StatsCard
                     label="Active Staff"
-                    value={(staff.length + 1).toString()} // +1 for the admin themselves
+                    value={stats.activeStaff.toString()}
                     icon={Users}
                 />
             </div>

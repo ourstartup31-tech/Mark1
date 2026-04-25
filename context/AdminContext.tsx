@@ -57,6 +57,7 @@ interface AdminContextType {
     isStoreActive: boolean;
     setIsStoreActive: (active: boolean) => void;
     toggleStoreStatus: () => Promise<void>;
+    stats: { totalProducts: number; activeStaff: number };
 }
 
 const AdminContext = createContext<AdminContextType | null>(null);
@@ -75,6 +76,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         closedDates: []
     });
     const [isStoreActive, setIsStoreActive] = useState<boolean>(true);
+    const [stats, setStats] = useState({ totalProducts: 0, activeStaff: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
@@ -88,12 +90,13 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(true);
         setError(null);
         try {
-            const [prodRes, catRes, orderRes, staffRes, statusRes] = await Promise.all([
+            const [prodRes, catRes, orderRes, staffRes, statusRes, statsRes] = await Promise.all([
                 apiFetch("/api/products", { cache: "no-store" }),
                 apiFetch("/api/categories", { cache: "no-store" }),
                 apiFetch("/api/admin/orders", { cache: "no-store" }),
                 apiFetch("/api/admin/staff", { cache: "no-store" }),
-                apiFetch("/api/admin/store-status", { cache: "no-store" })
+                apiFetch("/api/admin/store-status", { cache: "no-store" }),
+                apiFetch("/api/admin/stats", { cache: "no-store" })
             ]);
 
             if (prodRes.ok) setProducts(await prodRes.json());
@@ -109,6 +112,12 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 const statusData = await statusRes.json();
                 setIsStoreActive(statusData.isActive);
             }
+            
+            if (statsRes.ok) {
+                const statsData = await statsRes.json();
+                setStats(statsData);
+            }
+
             if (orderRes.ok) {
                 const data = await orderRes.json();
                 const ordersList = data.orders || [];
@@ -319,7 +328,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
             addCategory, updateCategory, deleteCategory,
             addStaff, updateStaff, deleteStaff,
             updateStoreSettings, updateOrderStatus,
-            isStoreActive, setIsStoreActive, toggleStoreStatus
+            isStoreActive, setIsStoreActive, toggleStoreStatus,
+            stats
         }}>
             {children}
         </AdminContext.Provider>

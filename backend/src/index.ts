@@ -61,6 +61,20 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
+// Public Store Status (Used by Hero/Frontend)
+app.get("/api/store-status", async (req: Request, res: Response) => {
+  try {
+    // For now, getting the first store's status as it's a single store setup
+    const store = await prisma.stores.findFirst({
+      select: { is_active: true }
+    });
+    res.set('Cache-Control', 'no-store');
+    res.json({ is_active: store?.is_active ?? false });
+  } catch (error) {
+    res.status(500).json({ is_active: true }); // Default to open on error
+  }
+});
+
 // Register Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);

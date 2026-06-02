@@ -114,7 +114,13 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 }));
                 setProducts(mappedProducts);
             }
-            if (catRes.ok) setCategories(await catRes.json());
+            if (catRes.ok) {
+                const catData = await catRes.json();
+                setCategories(catData.map((c: any) => ({
+                    ...c,
+                    count: c._count?.products ?? 0
+                })));
+            }
             if (staffRes.ok) {
                 const staffData = await staffRes.json();
                 setStaff(staffData.map((s: any) => ({

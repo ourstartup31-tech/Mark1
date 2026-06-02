@@ -4,7 +4,12 @@ import prisma from "../lib/prisma";
 export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.categories.findMany({
-      orderBy: { name: "asc" }
+      orderBy: { name: "asc" },
+      include: {
+        _count: {
+          select: { products: true }
+        }
+      }
     });
     res.json(categories);
   } catch (error: any) {

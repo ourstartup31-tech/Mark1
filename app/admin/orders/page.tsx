@@ -149,8 +149,16 @@ export default function OrdersPage() {
                             <p className="text-sm font-bold text-black">{selectedOrder?.total}</p>
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Pickup Time</p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Order Placed</p>
                             <p className="text-sm font-bold text-black">{selectedOrder?.date} at {selectedOrder?.time}</p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Pickup Schedule</p>
+                            <p className="text-sm font-bold text-black capitalize">
+                                {selectedOrder?.pickup_day && selectedOrder?.pickup_slot
+                                    ? `${selectedOrder.pickup_day}, ${selectedOrder.pickup_slot}`
+                                    : "Not specified"}
+                            </p>
                         </div>
                         <div>
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Payment Method</p>

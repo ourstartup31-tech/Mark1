@@ -131,8 +131,9 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
             total_price: storeTotal,
             status: "pending",
             payment_method: payment_method || "pay-at-store",
-            // pickup_time placeholder logic if needed
-            pickup_time: new Date(), 
+            pickup_time: new Date(),
+            pickup_slot: pickup_slot || null,
+            pickup_day: pickup_day || null,
             order_items: {
               create: items.map((item: any) => ({
                 product_id: item.product_id,

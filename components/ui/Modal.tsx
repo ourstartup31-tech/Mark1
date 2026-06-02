@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,13 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -27,10 +35,10 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
         };
     }, [isOpen, onClose]);
 
-    if (!isOpen) return null;
+    if (!isOpen || !mounted) return null;
 
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    return createPortal(
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
@@ -39,11 +47,11 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
 
             {/* Modal Content */}
             <div className={cn(
-                "relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300",
+                "relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300 max-h-[90vh] overflow-y-auto",
                 className
             )}>
                 {/* Header */}
-                <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
+                <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 sticky top-0 bg-white z-10">
                     <h2 className="text-xl font-bold tracking-tight text-black">{title}</h2>
                     <button
                         onClick={onClose}
@@ -58,6 +66,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
                     {children}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

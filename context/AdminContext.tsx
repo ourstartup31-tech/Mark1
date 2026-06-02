@@ -134,18 +134,27 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
             if (orderRes.ok) {
                 const data = await orderRes.json();
-                const ordersList = data.orders || [];
+                // Backend returns a plain array, not { orders: [] }
+                const ordersList = Array.isArray(data) ? data : (data.orders || []);
                 
                 // Map API orders to context Order interface
                 const mappedOrders = ordersList.map((o: any) => ({
                     id: o.id,
-                    customer: o.users?.name || "Unknown",
-                    date: new Date(o.created_at).toLocaleDateString(),
-                    time: new Date(o.created_at).toLocaleTimeString(),
-                    method: o.payment_method || "Online",
+                    customer: o.users?.name || o.users?.phone || "Unknown Customer",
+                    date: new Date(o.created_at).toLocaleDateString("en-IN"),
+                    time: new Date(o.created_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
+                    method: o.payment_method || "Pay at Store",
                     status: o.status,
-                    total: `₹${o.total_price}`,
-                    items: o.order_items || []
+                    total: `₹${Number(o.total_price).toFixed(2)}`,
+                    pickup_slot: o.pickup_slot || null,
+                    pickup_day: o.pickup_day || null,
+                    items: (o.order_items || []).map((item: any) => ({
+                        ...item,
+                        products: {
+                            name: item.products?.name || "Product",
+                            emoji: item.products?.emoji || "📦"
+                        }
+                    }))
                 }));
                 setOrders(mappedOrders);
             }

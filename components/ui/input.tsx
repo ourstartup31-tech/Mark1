@@ -7,11 +7,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     label?: string;
     error?: string;
     hint?: string;
+    leftElement?: React.ReactNode;
     rightElement?: React.ReactNode;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, error, hint, rightElement, className, id, ...props }, ref) => {
+    ({ label, error, hint, leftElement, rightElement, className, id, ...props }, ref) => {
         const inputId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
         return (
             <div className="w-full space-y-1.5">
@@ -24,6 +25,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     </label>
                 )}
                 <div className="relative">
+                    {leftElement && (
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
+                            {leftElement}
+                        </div>
+                    )}
                     <input
                         ref={ref}
                         id={inputId}
@@ -33,13 +39,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             error
                                 ? "border-red-500 focus:border-[#D60000] focus:ring-4 focus:ring-[#D60000]/10"
                                 : "border-gray-200 focus:border-[#D60000] focus:ring-4 focus:ring-[#D60000]/10 hover:border-gray-300",
+                            leftElement ? "pl-14" : "",
                             rightElement ? "pr-12" : "",
                             className
                         )}
                         {...props}
                     />
                     {rightElement && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
                             {rightElement}
                         </div>
                     )}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Store, Loader2, Smartphone, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Store, Loader2, CheckCircle2, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 
@@ -49,13 +49,14 @@ function LoginContent() {
 
     const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!phone || phone.length < 10) {
+        const trimmedPhone = phone.trim();
+        if (!trimmedPhone || trimmedPhone.length < 10) {
             setErrors({ phone: "Enter a valid 10-digit mobile number" });
             return;
         }
 
         setLoading(true);
-        const result = await sendOtp(phone);
+        const result = await sendOtp(trimmedPhone);
         setLoading(false);
 
         if (result.success) {
@@ -80,8 +81,9 @@ function LoginContent() {
         }
 
         setLoading(true);
-        console.log("LoginPage: Attempting verification for", phone, "with OTP", otp);
-        const result = await verifyOtp(phone, otp);
+        const trimmedPhone = phone.trim();
+        console.log("LoginPage: Attempting verification for", trimmedPhone, "with OTP", otp);
+        const result = await verifyOtp(trimmedPhone, otp);
         setLoading(false);
 
         if (result.success) {
@@ -96,183 +98,175 @@ function LoginContent() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col lg:flex-row">
-            {/* ─── Left Panel — Black ─── */}
-            <div className="relative lg:w-[42%] bg-black flex flex-col justify-between p-10 lg:p-14 min-h-[240px] lg:min-h-screen overflow-hidden">
-                <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full opacity-30 pointer-events-none" style={{ background: "radial-gradient(circle, #D60000 0%, transparent 65%)" }} />
-                <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, #D60000 0%, transparent 70%)" }} />
+        <div className="min-h-screen flex flex-col bg-[#f8f9fa] md:bg-white">
+            <div className="flex-1 flex flex-col md:flex-row">
 
-                {/* Logo */}
-                <Link href="/" className="relative flex items-center gap-2.5 w-fit group">
-                    <div className="w-10 h-10 bg-[#D60000] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                        <Store className="text-white" size={24} />
+                {/* Mobile Header (Hidden on Desktop) */}
+                <div className="md:hidden w-full flex flex-col items-center pt-12 pb-6 px-6">
+                    <h1 className="text-3xl font-extrabold text-[#D60000] mb-8">FreshMart</h1>
+                    <h2 className="text-[28px] font-bold text-black mb-2">Ready to Shop?</h2>
+                    <p className="text-gray-500 text-center text-sm font-medium">Join the club for premium freshness delivered to your door.</p>
+                </div>
+
+                {/* Left Panel: Image Section */}
+                <div className="w-full md:w-1/2 relative flex flex-col">
+                    {/* Desktop Logo */}
+                    <div className="hidden md:block absolute top-10 left-12 z-10">
+                        <h1 className="text-2xl font-bold tracking-tight text-[#D60000]">FreshMart</h1>
                     </div>
-                    <span className="font-bold text-xl text-white tracking-tight uppercase tracking-widest">
-                        Super<span className="text-[#D60000]">Market</span>
-                    </span>
-                </Link>
 
-                {/* Hero copy */}
-                <div className="relative space-y-5 py-10 lg:py-0">
-                    <div className="inline-flex items-center gap-2 bg-[#D60000]/20 text-[#D60000] text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D60000]" />
-                        Secure OTP Login
-                    </div>
-                    <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] tracking-tight">
-                        {step === "phone" ? "Ready to" : "Verify Your"}
-                        <br />
-                        {step === "phone" ? "Shop?" : "Device."}
-                    </h1>
-                    <p className="text-gray-400 text-base lg:text-lg font-medium leading-relaxed max-w-xs">
-                        {step === "phone" 
-                            ? "Enter your mobile number to receive a secure login code." 
-                            : `We've sent a 6-digit code to ${phone}.`}
-                    </p>
-
-                    <div className="flex flex-col gap-2.5 pt-4">
-                        {[
-                            { icon: <ShieldCheck size={18} />, text: "No passwords to remember" },
-                            { icon: <Smartphone size={18} />, text: "Secure one-time codes" },
-                            { icon: <CheckCircle2 size={18} />, text: "Instant account access" },
-                        ].map((t, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <span className="text-[#D60000]">{t.icon}</span>
-                                <span className="text-gray-400 text-sm font-medium">{t.text}</span>
+                    <div className="px-6 md:px-0 w-full md:h-full">
+                        <div className="relative w-full aspect-[4/3] md:aspect-auto md:h-full rounded-2xl md:rounded-none overflow-hidden bg-gray-100">
+                            {/* Grocery Image Placeholder (Using generic Unsplash groceries image as placeholder since local image isn't available) */}
+                            <img
+                                src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1600"
+                                alt="Fresh groceries"
+                                className="w-full h-full object-cover"
+                            />
+                            {/* Desktop Overlay Gradient & Text */}
+                            <div className="hidden md:flex absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex-col justify-end p-12">
+                                <h3 className="text-white text-3xl font-medium mb-3">Freshness at your doorstep.</h3>
+                                <p className="text-gray-200 text-sm font-medium max-w-md">Discover curated artisanal products and farm-fresh produce delivered with care.</p>
                             </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
 
-                <p className="relative text-gray-600 text-xs font-medium">
-                    © 2026 FreshMart. All rights reserved.
-                </p>
-            </div>
-
-            {/* ─── Right Panel — White ─── */}
-            <div className="flex-1 bg-white flex items-center justify-center px-6 py-12 lg:py-0">
-                <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="mb-10 text-center lg:text-left">
-                        <h2 className="text-4xl font-bold text-black tracking-tight">
-                            {step === "phone" ? "Login" : "Verification"}
-                        </h2>
-                        <p className="text-gray-400 font-medium mt-2">
-                            {step === "phone" 
-                                ? "Enter your phone number to continue" 
-                                : "Enter the code sent to your mobile"}
-                        </p>
-                    </div>
-
-                    {successMessage && (
-                        <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 text-sm font-bold rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
-                            <CheckCircle2 size={18} />
-                            {successMessage}
+                {/* Right Panel: Form Section */}
+                <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 lg:p-24 bg-[#f8f9fa] md:bg-white">
+                    <div className="w-full max-w-[400px]">
+                        {/* Desktop Header */}
+                        <div className="hidden md:block mb-10">
+                            <h2 className="text-3xl font-bold text-black mb-3">Ready to Shop?</h2>
+                            <p className="text-gray-500 text-sm font-medium">Join the club for premium freshness delivered to your door.</p>
                         </div>
-                    )}
 
-
-                    {step === "phone" ? (
-                        <form onSubmit={handleSendOtp} className="space-y-6">
-                            <Input
-                                label="Mobile Number"
-                                type="tel"
-                                name="phone"
-                                id="phone"
-                                placeholder="9999999999"
-                                autoComplete="tel"
-                                value={phone}
-                                onChange={(e) => {
-                                    setPhone(e.target.value);
-                                    if (errors.phone) setErrors({});
-                                }}
-                                error={errors.phone}
-                            />
-
-                            <button
-                                type="submit"
-                                disabled={loading || !phone}
-                                className="w-full h-16 flex items-center justify-center gap-3 bg-[#D60000] text-white font-bold text-sm uppercase tracking-widest rounded-2xl hover:bg-black active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-red-600/10 mt-4"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 size={18} className="animate-spin" />
-                                        Sending OTP...
-                                    </>
-                                ) : (
-                                    <>
-                                        Get One-Time Code
-                                        <ArrowRight size={18} />
-                                    </>
-                                )}
-                            </button>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleVerifyOtp} className="space-y-6">
-                            <div className="relative">
-                                <Input
-                                    label="6-Digit OTP"
-                                    type="text"
-                                    name="otp"
-                                    id="otp"
-                                    placeholder="000000"
-                                    maxLength={6}
-                                    value={otp}
-                                    onChange={(e) => {
-                                        setOtp(e.target.value.replace(/\D/g, ""));
-                                        if (errors.otp) setErrors({});
-                                    }}
-                                    error={errors.otp}
-                                />
-                                {receivedOtp && (
-                                    <p className="absolute -top-1 right-0 text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
-                                        Demo OTP: {receivedOtp}
-                                    </p>
-                                )}
+                        {/* Status Messages */}
+                        {successMessage && (
+                            <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 text-sm font-bold rounded-xl flex items-center gap-3">
+                                <CheckCircle2 size={18} />
+                                {successMessage}
                             </div>
+                        )}
 
-                            <div className="space-y-4">
+                        {/* Form */}
+                        {step === "phone" ? (
+                            <form onSubmit={handleSendOtp} className="space-y-6">
+                                <div>
+                                    <label className="block text-[13px] font-bold text-black mb-2">Mobile Number</label>
+                                    <Input
+                                        type="tel"
+                                        name="phone"
+                                        id="phone"
+                                        placeholder="98765 43210"
+                                        autoComplete="tel"
+                                        maxLength={10}
+                                        value={phone}
+                                        onChange={(e) => {
+                                            setPhone(e.target.value.replace(/\D/g, ""));
+                                            if (errors.phone) setErrors({});
+                                        }}
+                                        error={errors.phone}
+                                        className="h-14 font-medium"
+                                        leftElement={
+                                            <div className="flex items-center gap-3 border-r border-gray-200 pr-3 h-6">
+                                                <span className="text-gray-500 font-medium text-[15px]">+91</span>
+                                            </div>
+                                        }
+                                    />
+                                </div>
+
                                 <button
                                     type="submit"
-                                    disabled={loading || otp.length < 6}
-                                    className="w-full h-16 flex items-center justify-center gap-3 bg-black text-white font-bold text-sm uppercase tracking-widest rounded-2xl hover:bg-[#D60000] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl mt-4"
+                                    disabled={loading || !phone}
+                                    className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all shadow-sm mt-6"
                                 >
-                                    {loading ? (
-                                        <>
-                                            <Loader2 size={18} className="animate-spin" />
-                                            Verifying...
-                                        </>
-                                    ) : (
-                                        <>
-                                            Verify & Continue
-                                            <ArrowRight size={18} />
-                                        </>
+                                    {loading ? <Loader2 size={18} className="animate-spin" /> : "Request OTP"}
+                                </button>
+
+                                <div className="flex items-center gap-4 py-4">
+                                    <div className="flex-1 h-px bg-gray-200"></div>
+                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Or continue with</span>
+                                    <div className="flex-1 h-px bg-gray-200"></div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button type="button" className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm">
+                                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-[18px] h-[18px]" />
+                                        Google
+                                    </button>
+                                    <button type="button" className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm">
+                                        <Mail size={18} />
+                                        Email
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleVerifyOtp} className="space-y-6">
+                                <div className="relative">
+                                    <label className="block text-[13px] font-bold text-black mb-2">6-Digit OTP</label>
+                                    <Input
+                                        type="text"
+                                        name="otp"
+                                        id="otp"
+                                        placeholder="000000"
+                                        maxLength={6}
+                                        value={otp}
+                                        onChange={(e) => {
+                                            setOtp(e.target.value.replace(/\D/g, ""));
+                                            if (errors.otp) setErrors({});
+                                        }}
+                                        error={errors.otp}
+                                        className="h-14 font-medium"
+                                    />
+                                    {receivedOtp && (
+                                        <p className="absolute -top-6 right-0 text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
+                                            Demo OTP: {receivedOtp}
+                                        </p>
                                     )}
-                                </button>
+                                </div>
 
-                                <button
-                                    type="button"
-                                    disabled={loading || timer > 0}
-                                    onClick={handleSendOtp}
-                                    className="w-full text-center text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-black disabled:opacity-50 transition-colors"
-                                >
-                                    {timer > 0 ? `Resend OTP in ${timer}s` : "Didn't receive code? Resend"}
-                                </button>
-                                
-                                <button
-                                    type="button"
-                                    onClick={() => setStep("phone")}
-                                    className="w-full text-center text-xs font-bold text-[#D60000] uppercase tracking-widest hover:underline"
-                                >
-                                    Change Phone Number
-                                </button>
-                            </div>
-                        </form>
-                    )}
+                                <div className="space-y-4">
+                                    <button
+                                        type="submit"
+                                        disabled={loading || otp.length < 6}
+                                        className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all shadow-sm mt-6"
+                                    >
+                                        {loading ? <Loader2 size={18} className="animate-spin" /> : "Verify OTP"}
+                                    </button>
 
-                    <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mt-10">
-                        © 2026 SuperMarket · Secure Authentication
-                    </p>
+                                    <button
+                                        type="button"
+                                        disabled={loading || timer > 0}
+                                        onClick={handleSendOtp}
+                                        className="w-full text-center text-xs font-semibold text-gray-500 hover:text-black disabled:opacity-50 transition-colors"
+                                    >
+                                        {timer > 0 ? `Resend OTP in ${timer}s` : "Didn't receive code? Resend"}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep("phone")}
+                                        className="w-full text-center text-xs font-semibold text-[#D60000] hover:underline"
+                                    >
+                                        Change Phone Number
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
                 </div>
             </div>
+
+            {/* Footer */}
+            <footer className="bg-[#f8f9fa] md:bg-[#F4F4F5] pt-12 pb-8 px-6 md:px-12 flex flex-col md:flex-row justify-center md:justify-between items-center gap-6 text-center md:text-left">
+                <div className="flex gap-6 text-sm text-gray-700 font-medium">
+                    <Link href="#" className="hover:text-black transition-colors">Privacy Policy</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Terms of Service</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Help Center</Link>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">© 2024 FreshMart Premium Retailers. All rights reserved.</p>
+            </footer>
         </div>
     );
 }
@@ -280,11 +274,10 @@ function LoginContent() {
 export default function LoginPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center bg-black">
+            <div className="min-h-screen flex items-center justify-center bg-white">
                 <div className="text-center space-y-4">
-                    <Store className="text-[#D60000] animate-bounce mx-auto" size={48} />
-                    <Loader2 size={24} className="text-white animate-spin mx-auto" />
-                    <p className="font-bold text-gray-400 uppercase tracking-widest text-[10px]">Preparing Login Session…</p>
+                    <h1 className="text-4xl font-extrabold text-[#D60000] animate-pulse">FreshMart</h1>
+                    <Loader2 size={24} className="text-[#D60000] animate-spin mx-auto" />
                 </div>
             </div>
         }>

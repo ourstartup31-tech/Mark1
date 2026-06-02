@@ -58,3 +58,25 @@ export const authorize = (roles: string[]) => {
     next();
   };
 };
+
+// Like authenticate but doesn't block the request if no token — just sets req.user if valid
+export const optionalAuthenticate = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    let token: string | undefined;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    }
+    if (!token && req.cookies) {
+      token = req.cookies.supermarket_token;
+    }
+    if (!token) return next(); // No token — continue as guest
+
+    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const user = await prisma.users.findUnique({ where: { id: decoded.userId } });
+    if (user) req.user = user;
+  } catch (_) {
+    // Invalid token — continue as guest, don't block
+  }
+  next();
+};

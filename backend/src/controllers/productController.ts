@@ -5,11 +5,18 @@ import { AuthRequest } from "../middleware/auth";
 export const getProducts = async (req: AuthRequest, res: Response) => {
   try {
     const user = req.user;
-    const isCustomer = !user || user.role === "customer";
+    const isAdmin = user && (user.role === "admin" || user.role === "superadmin");
 
     let where: any = {};
-    if (isCustomer) {
-      where.is_available = true; // Customers only see available items
+
+    if (isAdmin) {
+      // Admin sees ALL products for their store (including out-of-stock / unavailable)
+      if (user.store_id) {
+        where.store_id = user.store_id;
+      }
+    } else {
+      // Customers and guests only see available products
+      where.is_available = true;
     }
 
     const { category_id } = req.query;
@@ -22,11 +29,8 @@ export const getProducts = async (req: AuthRequest, res: Response) => {
       include: { categories: true },
       orderBy: { created: "desc" }
     });
-    
-    console.log(`[PRODUCTS] Fetching products. isCustomer: ${isCustomer}, Found: ${products.length}`);
-    if (products.length > 0) {
-      console.log(`[PRODUCTS] First product detail: Name: ${products[0].name}, Available: ${products[0].is_available}, StoreID: ${products[0].store_id}`);
-    }
+
+    console.log(`[PRODUCTS] Role: ${user?.role || "guest"}, StoreID: ${user?.store_id || "N/A"}, Found: ${products.length}`);
 
     res.json(products);
   } catch (error: any) {
@@ -70,13 +74,22 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
     }
 
     const { id } = req.params;
-    const { name, price, stock_quantity, is_available, category_id } = req.body;
+    const { name, price, stock_quantity, is_available, category_id, image_url, description } = req.body;
 
     if (!id) return res.status(400).json({ error: "Product ID is required" });
 
     const product = await prisma.products.update({ 
       where: { id }, 
-      data: { name, price, category_id, stock_quantity, is_available } 
+      data: { 
+        name, 
+        price, 
+        category_id, 
+        stock_quantity, 
+        is_available,
+        ...(image_url !== undefined && { image_url }),
+        ...(description !== undefined && { description })
+      },
+      include: { categories: true }
     });
 
     res.json(product);
@@ -85,24 +98,23 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
   }
 };
 
+
 export const deleteProduct = async (req: AuthRequest, res: Response) => {
   try {
     const user = req.user;
-    if (!user || user.role !== "admin") {
+    if (!user || (user.role !== "admin" && user.role !== "superadmin")) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
     const { id } = req.params;
     if (!id) return res.status(400).json({ error: "ID required" });
     
-    // Soft delete
-    const product = await prisma.products.update({ 
-      where: { id }, 
-      data: { is_available: false } 
-    });
+    // Hard delete - actually remove from DB
+    await prisma.products.delete({ where: { id } });
 
-    res.json({ message: "Product soft-deleted", product });
+    res.json({ message: "Product deleted successfully" });
   } catch (error: any) {
     res.status(500).json({ error: "Failed to delete product", details: error.message });
   }
 };
+

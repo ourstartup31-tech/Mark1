@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../controllers/productController";
-import { authenticate } from "../middleware/auth";
+import { authenticate, optionalAuthenticate } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", getProducts);
+router.get("/", optionalAuthenticate, getProducts);
 router.post("/", authenticate, createProduct);
 router.put("/:id", authenticate, updateProduct);
 router.delete("/:id", authenticate, deleteProduct);

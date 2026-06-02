@@ -109,17 +109,17 @@ function LoginContent() {
                 </div>
 
                 {/* Left Panel: Image Section */}
-                <div className="w-full md:w-1/2 relative flex flex-col">
+                <div className="w-full md:w-[58%] relative flex flex-col">
                     {/* Desktop Logo */}
-                    <div className="hidden md:block absolute top-10 left-12 z-10">
+                    <div className="hidden md:block absolute top-10 left-6 z-10">
                         <h1 className="text-2xl font-bold tracking-tight text-[#D60000]">FreshMart</h1>
                     </div>
 
                     <div className="px-6 md:px-0 w-full md:h-full">
-                        <div className="relative w-full aspect-[4/3] md:aspect-auto md:h-full rounded-2xl md:rounded-none overflow-hidden bg-gray-100">
-                            {/* Grocery Image Placeholder (Using generic Unsplash groceries image as placeholder since local image isn't available) */}
+                        <div className="relative w-full h-[380px] sm:h-[480px] md:h-full rounded-2xl md:rounded-none overflow-hidden bg-gray-100">
+                            {/* Grocery Image Placeholder */}
                             <img
-                                src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1600"
+                                src="/cart.jpg"
                                 alt="Fresh groceries"
                                 className="w-full h-full object-cover"
                             />
@@ -133,7 +133,7 @@ function LoginContent() {
                 </div>
 
                 {/* Right Panel: Form Section */}
-                <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 lg:p-24 bg-[#f8f9fa] md:bg-white">
+                <div className="w-full md:w-[42%] flex items-center justify-center md:justify-start p-6 md:py-8 md:pl-12 lg:pl-20 md:pr-6 bg-[#f8f9fa] md:bg-white">
                     <div className="w-full max-w-[400px]">
                         {/* Desktop Header */}
                         <div className="hidden md:block mb-10">
@@ -191,11 +191,19 @@ function LoginContent() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <button type="button" className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => window.open("https://accounts.google.com", "_blank")}
+                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
+                                    >
                                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-[18px] h-[18px]" />
                                         Google
                                     </button>
-                                    <button type="button" className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => window.open("https://mail.google.com", "_blank")}
+                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
+                                    >
                                         <Mail size={18} />
                                         Email
                                     </button>
@@ -265,7 +273,7 @@ function LoginContent() {
                     <Link href="#" className="hover:text-black transition-colors">Terms of Service</Link>
                     <Link href="#" className="hover:text-black transition-colors">Help Center</Link>
                 </div>
-                <p className="text-xs text-gray-500 font-medium">© 2024 FreshMart Premium Retailers. All rights reserved.</p>
+                <p className="text-xs text-gray-500 font-medium">© 2026 Premium Retailers. All rights reserved.</p>
             </footer>
         </div>
     );

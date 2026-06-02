@@ -99,7 +99,21 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 apiFetch(`/api/admin/stats?t=${Date.now()}`, { cache: "no-store" })
             ]);
 
-            if (prodRes.ok) setProducts(await prodRes.json());
+            if (prodRes.ok) {
+                const prodData = await prodRes.json();
+                const mappedProducts = prodData.map((p: any) => ({
+                    id: p.id,
+                    name: p.name,
+                    category: p.categories?.name || "Uncategorized",
+                    price: Number(p.price),
+                    stock: p.stock_quantity || 0,
+                    unit: p.description?.replace("Unit: ", "") || "per unit",
+                    inStock: p.is_available ?? true,
+                    image: p.image_url,
+                    category_id: p.category_id
+                }));
+                setProducts(mappedProducts);
+            }
             if (catRes.ok) setCategories(await catRes.json());
             if (staffRes.ok) {
                 const staffData = await staffRes.json();
@@ -151,37 +165,61 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     const addProduct = async (p: any) => {
         setIsLoading(true);
         try {
+            const categoryObj = categories.find(c => c.name === p.category);
+            const payload = {
+                name: p.name,
+                price: p.price,
+                stock_quantity: p.stock,
+                category_id: categoryObj?.id,
+                is_available: p.inStock,
+                image_url: p.image,
+                description: p.unit ? `Unit: ${p.unit}` : null
+            };
             const res = await apiFetch("/api/products", {
                 method: "POST",
-                body: JSON.stringify(p)
+                body: JSON.stringify(payload)
             });
             if (!res.ok) throw new Error("Failed to add product");
             await fetchData();
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const updateProduct = async (p: any) => {
         setIsLoading(true);
         try {
-            const res = await apiFetch("/api/products", {
+            const categoryObj = categories.find(c => c.name === p.category);
+            const payload = {
+                name: p.name,
+                price: p.price,
+                stock_quantity: p.stock,
+                category_id: categoryObj?.id,
+                is_available: p.inStock,
+                image_url: p.image,
+                description: p.unit ? `Unit: ${p.unit}` : null
+            };
+            const res = await apiFetch(`/api/products/${p.id}`, {
                 method: "PUT",
-                body: JSON.stringify(p)
+                body: JSON.stringify(payload)
             });
             if (!res.ok) throw new Error("Failed to update product");
             await fetchData();
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const deleteProduct = async (id: string) => {
         setIsLoading(true);
         try {
-            const res = await apiFetch(`/api/products?id=${id}`, {
+            const res = await apiFetch(`/api/products/${id}`, {
                 method: "DELETE"
             });
             if (!res.ok) throw new Error("Failed to delete product");
@@ -189,6 +227,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -204,6 +244,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -219,6 +261,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -233,6 +277,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -248,6 +294,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -263,6 +311,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -277,6 +327,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -292,6 +344,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         } catch (err: any) {
             setError(err.message);
             throw err;
+        } finally {
+            setIsLoading(false);
         }
     };
 

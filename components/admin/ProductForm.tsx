@@ -10,15 +10,16 @@ import { useAdmin } from "@/context/AdminContext";
 
 interface ProductFormProps {
     initialData?: any;
+    defaultCategory?: string;
     onSubmit: (data: any) => void;
     onCancel: () => void;
 }
 
-export function ProductForm({ initialData, onSubmit, onCancel }: ProductFormProps) {
+export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }: ProductFormProps) {
     const { categories } = useAdmin();
     const [formData, setFormData] = useState({
         name: initialData?.name || "",
-        category: initialData?.category || (categories[0]?.name || ""),
+        category: initialData?.category || defaultCategory || (categories[0]?.name || ""),
         price: initialData?.price || "",
         stock: initialData?.stock || "",
         unit: initialData?.unit || "per kg",

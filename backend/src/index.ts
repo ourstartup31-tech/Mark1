@@ -4,6 +4,9 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import { authenticate } from "./middleware/auth";
 import prisma from "./lib/prisma";
 
@@ -15,8 +18,6 @@ import cartRoutes from "./routes/cart";
 import orderRoutes from "./routes/orders";
 import adminRoutes from "./routes/admin";
 import storesRoutes from "./routes/stores";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,7 +53,8 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
 // Root Route

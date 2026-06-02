@@ -158,6 +158,7 @@ export default function ProductsPage() {
             >
                 <ProductForm
                     initialData={editingProduct}
+                    defaultCategory={activeCategory !== "All" ? activeCategory : undefined}
                     onCancel={() => setIsModalOpen(false)}
                     onSubmit={(data) => {
                         if (editingProduct) {

@@ -34,9 +34,8 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
 
     const handleDayChange = (day: "today" | "tomorrow") => {
         setActiveDay(day);
-        // Clear slot if it was from the other day
         if (value && value.day !== day) {
-            onChange({ day, slot: "" }); // reset slot
+            onChange({ day, slot: "" });
         }
     };
 
@@ -44,16 +43,16 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
         value?.day === activeDay && value?.slot === slot;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-2">
             {/* Day tabs */}
-            <div className="flex gap-2 p-1 bg-gray-50 rounded-2xl">
+            <div className="flex gap-1.5 p-0.5 bg-gray-100 rounded-xl">
                 {(["today", "tomorrow"] as const).map((day) => (
                     <button
                         key={day}
                         type="button"
                         onClick={() => handleDayChange(day)}
                         className={cn(
-                            "flex-1 py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all",
+                            "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
                             activeDay === day
                                 ? "bg-white text-black shadow-sm"
                                 : "text-gray-400 hover:text-black"
@@ -64,17 +63,17 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
                 ))}
             </div>
 
-            {/* Slots grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+            {/* Slots grid — 2 columns, compact */}
+            <div className="grid grid-cols-2 gap-1.5">
                 {slots.map((slot) => (
                     <button
                         key={slot}
                         type="button"
                         onClick={() => onChange({ day: activeDay, slot })}
                         className={cn(
-                            "py-3 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-bold border transition-all duration-300 text-center uppercase tracking-widest",
+                            "py-2 px-2 rounded-lg text-[9px] font-bold border transition-all duration-200 text-center leading-tight",
                             isSelected(slot)
-                                ? "bg-black border-black text-white shadow-xl shadow-black/10"
+                                ? "bg-black border-black text-white shadow-md"
                                 : "bg-white border-gray-100 text-gray-500 hover:border-black hover:text-black"
                         )}
                     >
@@ -84,10 +83,10 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
             </div>
 
             {value?.slot && (
-                <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 transition-all animate-reveal">
-                    <div className="w-2 h-2 rounded-full bg-[#D60000] shadow-[0_0_8px_rgba(214,0,0,0.3)]" />
-                    <p className="text-[10px] font-bold text-black uppercase tracking-[0.15em]">
-                        Confirmed: <span className="text-gray-400">{value.day}</span> @ {value.slot}
+                <div className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#D60000] flex-shrink-0" />
+                    <p className="text-[9px] font-bold text-black uppercase tracking-wide truncate">
+                        {value.day} @ {value.slot}
                     </p>
                 </div>
             )}

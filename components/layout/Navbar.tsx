@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ShoppingCart, Search, Menu, X, LogOut, Package, User, Store } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -15,7 +16,8 @@ const navLinks = [
 ];
 
 export function Navbar() {
-    const { totalItems, openCart, searchQuery, setSearchQuery } = useCart();
+    const { totalItems, searchQuery, setSearchQuery } = useCart();
+    const router = useRouter();
     const { role, logout } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -86,7 +88,7 @@ export function Navbar() {
 
                         {/* Cart */}
                         <button
-                            onClick={openCart}
+                            onClick={() => router.push("/cart")}
                             className="relative p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
                             aria-label={`Cart (${totalItems} items)`}
                         >
@@ -182,7 +184,7 @@ export function Navbar() {
 
                         <div className="px-6 pb-8 space-y-3">
                             <button
-                                onClick={() => { setMobileOpen(false); openCart(); }}
+                                onClick={() => { setMobileOpen(false); router.push("/cart"); }}
                                 className="w-full flex items-center justify-center gap-2 bg-black text-white text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-gray-900 active:scale-95 transition-all shadow-md shadow-black/5"
                             >
                                 <ShoppingCart size={16} />

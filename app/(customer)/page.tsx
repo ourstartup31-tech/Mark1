@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { CartDrawer } from "@/components/layout/CartDrawer";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
-      <CartDrawer />
       <Hero />
 
       <Categories />

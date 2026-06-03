@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Store, Loader2, CheckCircle2, Mail } from "lucide-react";
+import { Loader2, CheckCircle2, Mail, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 
@@ -102,7 +102,14 @@ function LoginContent() {
             <div className="flex-1 flex flex-col md:flex-row">
 
                 {/* Mobile Header (Hidden on Desktop) */}
-                <div className="md:hidden w-full flex flex-col items-center pt-12 pb-6 px-6">
+                <div className="md:hidden w-full flex flex-col items-center pt-12 pb-6 px-6 relative">
+                    <button
+                        onClick={() => router.back()}
+                        className="absolute top-0 left-4 flex items-center gap-1 text-gray-600 hover:text-black transition-colors p-2"
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
                     <h1 className="text-3xl font-extrabold text-[#D60000] mb-8">FreshMart</h1>
                     <h2 className="text-[28px] font-bold text-black mb-2">Ready to Shop?</h2>
                     <p className="text-gray-500 text-center text-sm font-medium">Join the club for premium freshness delivered to your door.</p>
@@ -110,8 +117,15 @@ function LoginContent() {
 
                 {/* Left Panel: Image Section */}
                 <div className="w-full md:w-[58%] relative flex flex-col">
-                    {/* Desktop Logo */}
-                    <div className="hidden md:block absolute top-10 left-6 z-10">
+                    {/* Desktop Logo + Back Button */}
+                    <div className="hidden md:flex absolute top-10 left-6 z-10 items-center gap-3">
+                        <button
+                            onClick={() => router.back()}
+                            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow-sm text-gray-700 hover:text-black transition-all backdrop-blur-sm"
+                            aria-label="Go back"
+                        >
+                            <ArrowLeft size={18} />
+                        </button>
                         <h1 className="text-2xl font-bold tracking-tight text-[#D60000]">FreshMart</h1>
                     </div>
 

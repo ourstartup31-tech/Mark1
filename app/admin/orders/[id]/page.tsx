@@ -15,6 +15,8 @@ export default function OrderDetailsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
     const [error, setError] = useState("");
+    const [cancellationReason, setCancellationReason] = useState("");
+    const [showCancelPrompt, setShowCancelPrompt] = useState(false);
 
     const orderId = params.id as string;
 
@@ -43,6 +45,16 @@ export default function OrderDetailsPage() {
     }, [token, orderId]);
 
     const updateStatus = async (newStatus: string) => {
+        if (newStatus === "Cancelled" && !showCancelPrompt) {
+            setShowCancelPrompt(true);
+            return;
+        }
+
+        if (newStatus === "Cancelled" && !cancellationReason.trim()) {
+            alert("Please provide a reason for cancellation.");
+            return;
+        }
+
         try {
             setIsUpdating(true);
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders/status`, {
@@ -51,10 +63,16 @@ export default function OrderDetailsPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({ id: orderId, status: newStatus })
+                body: JSON.stringify({ 
+                    id: orderId, 
+                    status: newStatus,
+                    cancellation_reason: newStatus === "Cancelled" ? cancellationReason : undefined
+                })
             });
             if (!res.ok) throw new Error("Failed to update status");
             await fetchOrder(); // Refresh to get the new status_changed_at
+            setShowCancelPrompt(false);
+            setCancellationReason("");
         } catch (err: any) {
             alert(err.message);
         } finally {
@@ -296,15 +314,105 @@ export default function OrderDetailsPage() {
                             </button>
                         </div>
 
-                        <div className="pt-4 border-t border-gray-100">
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Status Logs</p>
-                            <div className="flex items-center justify-between mt-2">
-                                <span className="text-xs text-gray-500">Last updated:</span>
-                                <span className="text-xs font-bold text-black">{statusChangedAt}</span>
+                        {showCancelPrompt && order.status !== "Cancelled" && (
+                            <div className="mb-6 bg-red-50 p-4 rounded-2xl border border-red-100">
+                                <p className="text-xs font-bold text-red-600 mb-2 uppercase tracking-widest">Reason for Cancellation</p>
+                                <textarea
+                                    value={cancellationReason}
+                                    onChange={(e) => setCancellationReason(e.target.value)}
+                                    placeholder="Enter reason..."
+                                    className="w-full bg-white border border-red-200 rounded-xl p-3 text-sm focus:outline-none focus:border-red-400 mb-3"
+                                    rows={3}
+                                />
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => setShowCancelPrompt(false)}
+                                        className="flex-1 bg-white border border-gray-200 text-gray-500 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-gray-50"
+                                    >
+                                        Back
+                                    </button>
+                                    <button 
+                                        onClick={() => updateStatus("Cancelled")}
+                                        className="flex-1 bg-red-600 text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-red-700"
+                                    >
+                                        Confirm Cancel
+                                    </button>
+                                </div>
                             </div>
+                        )}
+
+                        <div className="pt-4 border-t border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Order Timeline</p>
+                            <div className="space-y-4">
+                                {/* Timeline Item */}
+                                <div className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <div className={cn("w-3 h-3 rounded-full mt-1", order.created_at ? "bg-amber-500" : "bg-gray-200")} />
+                                        <div className="w-px h-full bg-gray-100 my-1" />
+                                    </div>
+                                    <div className="pb-4">
+                                        <p className={cn("text-sm font-bold", order.created_at ? "text-black" : "text-gray-400")}>Pending</p>
+                                        {order.created_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.created_at).toLocaleString("en-IN")}</p>}
+                                    </div>
+                                </div>
+                                {/* Timeline Item */}
+                                <div className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <div className={cn("w-3 h-3 rounded-full mt-1", order.confirmed_at ? "bg-blue-500" : "bg-gray-200")} />
+                                        <div className="w-px h-full bg-gray-100 my-1" />
+                                    </div>
+                                    <div className="pb-4">
+                                        <p className={cn("text-sm font-bold", order.confirmed_at ? "text-black" : "text-gray-400")}>Confirmed</p>
+                                        {order.confirmed_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.confirmed_at).toLocaleString("en-IN")}</p>}
+                                    </div>
+                                </div>
+                                {/* Timeline Item */}
+                                <div className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <div className={cn("w-3 h-3 rounded-full mt-1", order.preparing_at ? "bg-purple-500" : "bg-gray-200")} />
+                                        <div className="w-px h-full bg-gray-100 my-1" />
+                                    </div>
+                                    <div className="pb-4">
+                                        <p className={cn("text-sm font-bold", order.preparing_at ? "text-black" : "text-gray-400")}>Preparing</p>
+                                        {order.preparing_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.preparing_at).toLocaleString("en-IN")}</p>}
+                                    </div>
+                                </div>
+                                {/* Timeline Item */}
+                                <div className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <div className={cn("w-3 h-3 rounded-full mt-1", order.out_for_delivery_at ? "bg-indigo-500" : "bg-gray-200")} />
+                                        <div className="w-px h-full bg-gray-100 my-1" />
+                                    </div>
+                                    <div className="pb-4">
+                                        <p className={cn("text-sm font-bold", order.out_for_delivery_at ? "text-black" : "text-gray-400")}>Out For Delivery</p>
+                                        {order.out_for_delivery_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.out_for_delivery_at).toLocaleString("en-IN")}</p>}
+                                    </div>
+                                </div>
+                                {/* Timeline Item */}
+                                <div className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <div className={cn("w-3 h-3 rounded-full mt-1", order.delivered_at ? "bg-green-500" : "bg-gray-200")} />
+                                    </div>
+                                    <div>
+                                        <p className={cn("text-sm font-bold", order.delivered_at ? "text-black" : "text-gray-400")}>Delivered</p>
+                                        {order.delivered_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.delivered_at).toLocaleString("en-IN")}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {order.status === "Cancelled" && (
+                                <div className="mt-6 bg-red-50 p-4 rounded-xl border border-red-100">
+                                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                        <XCircle size={14} /> Cancelled
+                                    </p>
+                                    <p className="text-[10px] text-gray-500 mb-2">{new Date(order.cancelled_at || order.status_changed_at).toLocaleString("en-IN")}</p>
+                                    <p className="text-sm font-medium text-red-800 italic">"{order.cancellation_reason || "No reason provided"}"</p>
+                                </div>
+                            )}
+
                             {order.changed_by && (
-                                <div className="flex items-center justify-between mt-1">
-                                    <span className="text-xs text-gray-500">Changed by:</span>
+                                <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+                                    <span className="text-xs text-gray-500">Last changed by:</span>
                                     <span className="text-xs font-bold text-black">{order.changed_by.slice(0, 8)}...</span>
                                 </div>
                             )}

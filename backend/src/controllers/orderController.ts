@@ -281,7 +281,7 @@ export const getStoreOrders = async (req: AuthRequest, res: Response) => {
  */
 export const updateOrderStatus = async (req: AuthRequest, res: Response) => {
     try {
-        const { id, status } = req.body;
+        const { id, status, cancellation_reason } = req.body;
         const user = req.user;
 
         if (!id || !status) {
@@ -317,13 +317,27 @@ export const updateOrderStatus = async (req: AuthRequest, res: Response) => {
             return res.status(400).json({ error: `Invalid status transition from '${currentStatus}' to '${status}'` });
         }
 
+        const updateData: any = { 
+            status,
+            status_changed_at: new Date(),
+            changed_by: user.id
+        };
+
+        const now = new Date();
+        if (status === "Confirmed") updateData.confirmed_at = now;
+        if (status === "Preparing") updateData.preparing_at = now;
+        if (status === "Out For Delivery") updateData.out_for_delivery_at = now;
+        if (status === "Delivered") updateData.delivered_at = now;
+        if (status === "Cancelled") {
+            updateData.cancelled_at = now;
+            if (cancellation_reason) {
+                updateData.cancellation_reason = cancellation_reason;
+            }
+        }
+
         const updatedOrder = await prisma.orders.update({
             where: { id },
-            data: { 
-                status,
-                status_changed_at: new Date(),
-                changed_by: user.id
-            }
+            data: updateData
         });
 
         return res.json({ message: "Status updated successfully", order: updatedOrder });

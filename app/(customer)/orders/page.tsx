@@ -124,9 +124,10 @@ export default function OrdersPage() {
                 ) : (
                     <div className="space-y-6">
                         {orders.map((order) => (
-                            <div 
+                            <Link 
+                                href={`/orders/${order.id}`}
                                 key={order.id}
-                                className="group bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-[#D60000]/20 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-500"
+                                className="block group bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-[#D60000]/20 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-500"
                             >
                                 <div className="px-8 py-6 flex flex-wrap items-center justify-between gap-4 border-b border-gray-50">
                                     <div className="flex items-center gap-4">
@@ -185,7 +186,7 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 )}

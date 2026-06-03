@@ -12,6 +12,7 @@ interface StoreContextType {
     activeCategory: string;
     setActiveCategory: (category: string) => void;
     refreshData: () => Promise<void>;
+    isStoreOpen: boolean;
 }
 
 const StoreContext = createContext<StoreContextType | null>(null);
@@ -22,14 +23,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const [activeCategory, setActiveCategory] = useState<string>("All");
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isStoreOpen, setIsStoreOpen] = useState(true);
 
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
-            const [prodRes, catRes] = await Promise.all([
+            const [prodRes, catRes, statusRes] = await Promise.all([
                 fetch(`${API_BASE_URL}/api/products`, { cache: "no-store" }),
-                fetch(`${API_BASE_URL}/api/categories`, { cache: "no-store" })
+                fetch(`${API_BASE_URL}/api/categories`, { cache: "no-store" }),
+                fetch(`${API_BASE_URL}/api/store-status`, { cache: "no-store" })
             ]);
 
             if (!prodRes.ok) throw new Error(`Products API error: ${prodRes.status}`);
@@ -37,6 +40,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             
             const prodData = await prodRes.json();
             const catData = await catRes.json();
+            
+            if (statusRes.ok) {
+                const statusData = await statusRes.json();
+                setIsStoreOpen(statusData.isActive);
+            }
 
             // Map Prisma products to the frontend Product interface
             const mappedProducts = prodData.map((p: any) => ({
@@ -91,7 +99,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             error, 
             activeCategory,
             setActiveCategory,
-            refreshData: fetchData 
+            refreshData: fetchData,
+            isStoreOpen 
         }}>
             {children}
         </StoreContext.Provider>

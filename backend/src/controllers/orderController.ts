@@ -188,7 +188,13 @@ export const getOrderById = async (req: AuthRequest, res: Response) => {
                         products: true
                     }
                 },
-                stores: true
+                stores: true,
+                users: {
+                    select: {
+                        name: true,
+                        phone: true
+                    }
+                }
             }
         });
 
@@ -295,9 +301,29 @@ export const updateOrderStatus = async (req: AuthRequest, res: Response) => {
             return res.status(403).json({ error: "Forbidden: You can only update orders for your store" });
         }
 
+        // Define allowed transitions
+        const currentStatus = order.status || "Pending";
+        let allowed = false;
+
+        if (currentStatus === "Pending" && ["Confirmed", "Cancelled"].includes(status)) allowed = true;
+        else if (currentStatus === "Confirmed" && ["Preparing", "Cancelled"].includes(status)) allowed = true;
+        else if (currentStatus === "Preparing" && ["Out For Delivery", "Cancelled"].includes(status)) allowed = true;
+        else if (currentStatus === "Out For Delivery" && ["Delivered"].includes(status)) allowed = true;
+        
+        // If current status is the same as new status, it's technically fine or redundant
+        if (currentStatus === status) allowed = true;
+
+        if (!allowed) {
+            return res.status(400).json({ error: `Invalid status transition from '${currentStatus}' to '${status}'` });
+        }
+
         const updatedOrder = await prisma.orders.update({
             where: { id },
-            data: { status }
+            data: { 
+                status,
+                status_changed_at: new Date(),
+                changed_by: user.id
+            }
         });
 
         return res.json({ message: "Status updated successfully", order: updatedOrder });

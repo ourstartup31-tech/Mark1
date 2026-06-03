@@ -3,6 +3,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import type { PickupSlot } from "@/context/CartContext";
+import { useStore } from "@/context/StoreContext";
 
 const TODAY_SLOTS = [
     "10:00 AM – 11:00 AM",
@@ -26,9 +27,21 @@ interface TimeSlotSelectorProps {
 }
 
 export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
+    const { isStoreOpen } = useStore();
+
     const [activeDay, setActiveDay] = React.useState<"today" | "tomorrow">(
-        value?.day ?? "today"
+        value?.day ?? (isStoreOpen ? "today" : "tomorrow")
     );
+
+    // If store closes while component is mounted and today is active, switch to tomorrow
+    React.useEffect(() => {
+        if (!isStoreOpen && activeDay === "today") {
+            setActiveDay("tomorrow");
+            if (value?.day === "today") {
+                onChange({ day: "tomorrow", slot: "" });
+            }
+        }
+    }, [isStoreOpen, activeDay, value, onChange]);
 
     const slots = activeDay === "today" ? TODAY_SLOTS : TOMORROW_SLOTS;
 
@@ -45,23 +58,34 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
     return (
         <div className="space-y-2">
             {/* Day tabs */}
-            <div className="flex gap-1.5 p-0.5 bg-gray-100 rounded-xl">
-                {(["today", "tomorrow"] as const).map((day) => (
-                    <button
-                        key={day}
-                        type="button"
-                        onClick={() => handleDayChange(day)}
-                        className={cn(
-                            "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                            activeDay === day
-                                ? "bg-white text-black shadow-sm"
-                                : "text-gray-400 hover:text-black"
-                        )}
-                    >
-                        {day}
-                    </button>
-                ))}
+            <div className="flex gap-1.5 p-0.5 bg-gray-100 rounded-xl relative">
+                {(["today", "tomorrow"] as const).map((day) => {
+                    const isDisabled = day === "today" && !isStoreOpen;
+                    return (
+                        <button
+                            key={day}
+                            type="button"
+                            disabled={isDisabled}
+                            onClick={() => handleDayChange(day)}
+                            className={cn(
+                                "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                                activeDay === day
+                                    ? "bg-white text-black shadow-sm"
+                                    : "text-gray-400 hover:text-black",
+                                isDisabled && "opacity-40 cursor-not-allowed hover:text-gray-400"
+                            )}
+                        >
+                            {day}
+                        </button>
+                    );
+                })}
             </div>
+
+            {!isStoreOpen && (
+                <p className="text-[10px] text-amber-700 font-semibold bg-amber-50 rounded-lg px-2.5 py-1.5 border border-amber-100">
+                    Store is closed. Only tomorrow's slots are available.
+                </p>
+            )}
 
             {/* Slots grid — 2 columns, compact */}
             <div className="grid grid-cols-2 gap-1.5">

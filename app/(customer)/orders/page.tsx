@@ -61,13 +61,13 @@ export default function OrdersPage() {
     }, [user, isLoading]);
 
     const getStatusColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case "pending": return "bg-amber-50 text-amber-600 border-amber-100";
-            case "confirmed": return "bg-blue-50 text-blue-600 border-blue-100";
-            case "preparing": return "bg-indigo-50 text-indigo-600 border-indigo-100";
-            case "ready": return "bg-green-50 text-green-600 border-green-100";
-            case "completed": return "bg-slate-50 text-slate-500 border-slate-200";
-            case "cancelled": return "bg-red-50 text-red-600 border-red-100";
+        switch (status) {
+            case "Pending": return "bg-amber-50 text-amber-600 border-amber-200";
+            case "Confirmed": return "bg-blue-50 text-blue-600 border-blue-200";
+            case "Preparing": return "bg-purple-50 text-purple-600 border-purple-200";
+            case "Out For Delivery": return "bg-indigo-50 text-indigo-600 border-indigo-200";
+            case "Delivered": return "bg-green-50 text-green-600 border-green-200";
+            case "Cancelled": return "bg-red-50 text-red-600 border-red-200";
             default: return "bg-gray-50 text-gray-500 border-gray-100";
         }
     };

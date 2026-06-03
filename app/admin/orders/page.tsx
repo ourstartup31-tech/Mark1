@@ -2,10 +2,8 @@
 
 import React from "react";
 import { Table } from "@/components/ui/Table";
-import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/context/AdminContext";
-import { Modal } from "@/components/ui/Modal";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
     ArrowRight,
     Eye,
@@ -13,70 +11,116 @@ import {
     CheckCircle,
     Clock,
     XCircle,
-    ShoppingBag
+    ShoppingBag,
+    Package,
+    Truck,
+    Filter
 } from "lucide-react";
 
 
 
 export default function OrdersPage() {
-    const { orders, searchQuery, setSearchQuery, updateOrderStatus, isLoading } = useAdmin();
-    const [selectedOrder, setSelectedOrder] = React.useState<any>(null);
+    const { orders, searchQuery, setSearchQuery, isLoading } = useAdmin();
+    const [statusFilter, setStatusFilter] = React.useState<string>("All");
+    const [dateFilter, setDateFilter] = React.useState<string>("All");
+    const [customStart, setCustomStart] = React.useState<string>("");
+    const [customEnd, setCustomEnd] = React.useState<string>("");
 
-    const filteredOrders = orders.filter(o =>
-        o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        o.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        o.date.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredOrders = React.useMemo(() => {
+        let result = orders;
+
+        // Status Filter
+        if (statusFilter !== "All") {
+            result = result.filter(o => o.status === statusFilter);
+        }
+
+        // Date Filter
+        const now = new Date();
+        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        if (dateFilter === "Today") {
+            result = result.filter(o => o.created_at >= startOfToday);
+        } else if (dateFilter === "Last 7 Days") {
+            const sevenDaysAgo = new Date(startOfToday.getTime() - 7 * 24 * 60 * 60 * 1000);
+            result = result.filter(o => o.created_at >= sevenDaysAgo);
+        } else if (dateFilter === "Custom" && customStart && customEnd) {
+            const start = new Date(customStart);
+            const end = new Date(customEnd);
+            end.setHours(23, 59, 59, 999);
+            result = result.filter(o => o.created_at >= start && o.created_at <= end);
+        }
+
+        // Search Filter
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            result = result.filter(o => 
+                o.id.toLowerCase().includes(q) ||
+                o.customer.toLowerCase().includes(q) ||
+                o.phone.toLowerCase().includes(q)
+            );
+        }
+
+        // Sort by newest first
+        result = [...result].sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+
+        return result;
+    }, [orders, statusFilter, dateFilter, customStart, customEnd, searchQuery]);
 
     const stats = [
-        { label: "New", count: orders.filter(o => o.status === "Pending").length, color: "text-amber-600" },
-        { label: "Ready", count: orders.filter(o => o.status === "Pickup").length, color: "text-blue-600" },
-        { label: "Completed", count: orders.filter(o => o.status === "Completed").length, color: "text-green-600" },
+        { label: "Pending", count: orders.filter(o => o.status === "Pending").length, color: "text-amber-600" },
+        { label: "Confirmed", count: orders.filter(o => o.status === "Confirmed").length, color: "text-blue-600" },
+        { label: "Delivered", count: orders.filter(o => o.status === "Delivered").length, color: "text-green-600" },
         { label: "Cancelled", count: orders.filter(o => o.status === "Cancelled").length, color: "text-red-600" },
     ];
 
     const columns = [
         {
             header: "Order ID",
-            accessor: (item: any) => <span className="font-bold text-black">{item.id}</span>
+            accessor: (item: any) => <span className="font-bold text-black text-xs">{item.id.slice(0, 8).toUpperCase()}</span>
         },
-        { header: "Customer", accessor: (item: any) => <span>{item.customer}</span> },
-        { header: "Pickup Date", accessor: (item: any) => <span>{item.date}</span> },
-        { header: "Pickup Time", accessor: (item: any) => <span>{item.time}</span> },
+        { header: "Customer Name", accessor: (item: any) => <span>{item.customer}</span> },
+        { header: "Phone", accessor: (item: any) => <span>{item.phone}</span> },
+        { header: "Item Count", accessor: (item: any) => <span>{item.item_count} items</span> },
         {
-            header: "Payment",
-            accessor: (item: any) => (
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                    {item.method}
-                </span>
-            )
-        },
-        {
-            header: "Total",
+            header: "Amount",
             accessor: (item: any) => <span className="font-bold">{item.total}</span>
+        },
+        { 
+            header: "Date/Time", 
+            accessor: (item: any) => (
+                <div className="flex flex-col">
+                    <span>{item.date}</span>
+                    <span className="text-[10px] text-gray-400">{item.time}</span>
+                </div>
+            ) 
         },
         {
             header: "Status",
-            accessor: (item: any) => (
-                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${item.status === "Completed" ? "bg-green-50 text-green-600" :
-                    item.status === "Pending" ? "bg-amber-50 text-amber-600" :
-                        item.status === "Cancelled" ? "bg-red-50 text-red-600" :
-                            "bg-blue-50 text-blue-600"
-                    }`}>
-                    {item.status}
-                </span>
-            )
+            accessor: (item: any) => {
+                const colors: Record<string, string> = {
+                    "Pending": "bg-amber-50 text-amber-600",
+                    "Confirmed": "bg-blue-50 text-blue-600",
+                    "Preparing": "bg-purple-50 text-purple-600",
+                    "Out For Delivery": "bg-indigo-50 text-indigo-600",
+                    "Delivered": "bg-green-50 text-green-600",
+                    "Cancelled": "bg-red-50 text-red-600",
+                };
+                return (
+                    <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${colors[item.status] || "bg-gray-50 text-gray-600"}`}>
+                        {item.status}
+                    </span>
+                );
+            }
         },
         {
             header: "Actions",
             className: "text-right",
             accessor: (item: any) => (
-                <button
-                    onClick={() => setSelectedOrder(item)}
-                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-all"
+                <Link
+                    href={`/admin/orders/${item.id}`}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-all inline-block"
                 >
                     <Eye size={18} />
-                </button>
+                </Link>
             )
         },
     ];
@@ -116,134 +160,65 @@ export default function OrdersPage() {
 
             {/* List */}
             <div className="space-y-6">
-                <div className="bg-white p-4 rounded-[2rem] border border-gray-100 flex items-center gap-4">
-                    <div className="relative flex-1">
+                <div className="bg-white p-4 rounded-[2rem] border border-gray-100 flex flex-col md:flex-row items-center gap-4">
+                    <div className="relative flex-1 w-full">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                         <input
                             type="text"
-                            placeholder="Search by Order ID, Customer or Date..."
+                            placeholder="Search by Order ID, Customer or Phone..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full bg-gray-50 border border-gray-100 rounded-xl py-3 pl-12 pr-6 text-sm font-medium outline-none focus:border-black transition-all"
                         />
                     </div>
+                    <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-2">Status:</span>
+                            <select
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
+                                className="bg-gray-50 border border-gray-100 rounded-lg py-2.5 px-4 text-sm font-medium outline-none focus:border-black"
+                            >
+                                <option value="All">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Preparing">Preparing</option>
+                                <option value="Out For Delivery">Out For Delivery</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-2">Date:</span>
+                            <select
+                                value={dateFilter}
+                                onChange={(e) => setDateFilter(e.target.value)}
+                                className="bg-gray-50 border border-gray-100 rounded-lg py-2.5 px-4 text-sm font-medium outline-none focus:border-black"
+                            >
+                                <option value="All">All Time</option>
+                                <option value="Today">Today</option>
+                                <option value="Last 7 Days">Last 7 Days</option>
+                                <option value="Custom">Custom Range</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+                
+                {dateFilter === "Custom" && (
+                    <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 w-fit">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-gray-400">From</span>
+                            <input type="date" value={customStart} onChange={e => setCustomStart(e.target.value)} className="bg-gray-50 border border-gray-100 rounded-lg py-1.5 px-3 text-sm" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-gray-400">To</span>
+                            <input type="date" value={customEnd} onChange={e => setCustomEnd(e.target.value)} className="bg-gray-50 border border-gray-100 rounded-lg py-1.5 px-3 text-sm" />
+                        </div>
+                    </div>
+                )}
+
                 <Table columns={columns} data={filteredOrders} />
             </div>
-
-
-            {/* Order Detail Modal */}
-            <Modal
-                isOpen={!!selectedOrder}
-                onClose={() => setSelectedOrder(null)}
-                title={`Order Details ${selectedOrder?.id}`}
-            >
-                <div className="space-y-8">
-                    <div className="grid grid-cols-2 gap-8">
-                        <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Customer</p>
-                            <p className="text-sm font-bold text-black">{selectedOrder?.customer}</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Amount</p>
-                            <p className="text-sm font-bold text-black">{selectedOrder?.total}</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Order Placed</p>
-                            <p className="text-sm font-bold text-black">{selectedOrder?.date} at {selectedOrder?.time}</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Pickup Schedule</p>
-                            <p className="text-sm font-bold text-black capitalize">
-                                {selectedOrder?.pickup_day && selectedOrder?.pickup_slot
-                                    ? `${selectedOrder.pickup_day}, ${selectedOrder.pickup_slot}`
-                                    : "Not specified"}
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Payment Method</p>
-                            <p className="text-sm font-bold text-black">{selectedOrder?.method}</p>
-                        </div>
-                    </div>
-
-                    <div className="pt-6 border-t border-gray-100">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Items Ordered</p>
-                        <div className="space-y-3">
-                            {selectedOrder?.items?.map((item: any, idx: number) => (
-                                <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center font-bold text-lg shadow-sm border border-gray-100">
-                                            {item.products?.emoji || "📦"}
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-black">{item.products?.name}</p>
-                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Qty: {item.quantity}</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-sm font-bold text-black">₹{item.price}</p>
-                                </div>
-                            ))}
-                            {(!selectedOrder?.items || selectedOrder.items.length === 0) && (
-                                <p className="text-center py-4 text-gray-400 text-xs italic">No item details available.</p>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="pt-6 border-t border-gray-100">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Update Order Status</p>
-                        <div className="grid grid-cols-2 gap-4">
-                            <button
-                                onClick={() => {
-                                    updateOrderStatus(selectedOrder.id, "Pending");
-                                    setSelectedOrder(null);
-                                }}
-                                className={cn(
-                                    "flex items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all font-bold text-xs",
-                                    selectedOrder?.status === "Pending" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-white border-gray-50 text-gray-400 hover:border-amber-100 hover:text-amber-500"
-                                )}
-                            >
-                                <Clock size={16} /> Pending
-                            </button>
-                            <button
-                                onClick={() => {
-                                    updateOrderStatus(selectedOrder.id, "Pickup");
-                                    setSelectedOrder(null);
-                                }}
-                                className={cn(
-                                    "flex items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all font-bold text-xs",
-                                    selectedOrder?.status === "Pickup" ? "bg-blue-50 border-blue-200 text-blue-600" : "bg-white border-gray-50 text-gray-400 hover:border-blue-100 hover:text-blue-500"
-                                )}
-                            >
-                                <ShoppingBag size={16} /> Ready
-                            </button>
-                            <button
-                                onClick={() => {
-                                    updateOrderStatus(selectedOrder.id, "Completed");
-                                    setSelectedOrder(null);
-                                }}
-                                className={cn(
-                                    "flex items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all font-bold text-xs",
-                                    selectedOrder?.status === "Completed" ? "bg-green-50 border-green-200 text-green-600" : "bg-white border-gray-50 text-gray-400 hover:border-green-100 hover:text-green-500"
-                                )}
-                            >
-                                <CheckCircle size={16} /> Complete
-                            </button>
-                            <button
-                                onClick={() => {
-                                    updateOrderStatus(selectedOrder.id, "Cancelled");
-                                    setSelectedOrder(null);
-                                }}
-                                className={cn(
-                                    "flex items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all font-bold text-xs",
-                                    selectedOrder?.status === "Cancelled" ? "bg-red-50 border-red-200 text-red-600" : "bg-white border-gray-50 text-gray-400 hover:border-red-100 hover:text-red-500"
-                                )}
-                            >
-                                <XCircle size={16} /> Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
         </div>
     );
 }

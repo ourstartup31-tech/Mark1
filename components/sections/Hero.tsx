@@ -5,26 +5,11 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { cn } from "@/lib/utils";
 
 
-export function Hero() {
-    const [isOpen, setIsOpen] = useState(false);
+import { useStore } from "@/context/StoreContext";
 
-    useEffect(() => {
-        const fetchStatus = async () => {
-            try {
-                const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-                const res = await fetch(`${baseUrl}/api/store-status?t=${Date.now()}`, { cache: 'no-store' });
-                if (res.ok) {
-                    const data = await res.json();
-                    setIsOpen(data.isActive);
-                }
-            } catch (err) {
-                console.error("Failed to fetch store status", err);
-            }
-        };
-        fetchStatus();
-        const interval = setInterval(fetchStatus, 30000); // Check every 30 seconds
-        return () => clearInterval(interval);
-    }, []);
+export function Hero() {
+    const { isStoreOpen: isOpen } = useStore();
+
 
     return (
         <section
@@ -100,6 +85,12 @@ export function Hero() {
                                 <span className="text-white font-black text-base xs:text-lg md:text-3xl leading-[0.85] tracking-tight uppercase italic drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
                                     {isOpen ? "NOW" : "CLOSED"} <br /> {isOpen ? "OPEN" : "NOW"}
                                 </span>
+                                
+                                {!isOpen && (
+                                    <span className="mt-1 text-[10px] md:text-xs font-bold text-white bg-black/40 px-2 py-0.5 rounded-md">
+                                        Opens Tomorrow 10AM
+                                    </span>
+                                )}
 
                                 <div className="mt-2 flex items-center gap-1.5 bg-black/30 px-2 py-0.5 rounded-full border border-black/10">
                                     <div className={cn(

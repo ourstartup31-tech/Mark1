@@ -1,9 +1,10 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, MapPin, Clock, CreditCard, ShoppingBag, Store, BadgeCheck, Tag, Package, Loader2 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const STORE_ADDRESS = "SuperMarket Store, Main Market, City Centre";
 
@@ -21,6 +22,20 @@ function OrderConfirmationContent() {
         day === "today"
             ? now.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })
             : new Date(now.setDate(now.getDate() + 1)).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
+
+    const { apiFetch } = useAuth();
+    const [orderData, setOrderData] = useState<any>(null);
+
+    useEffect(() => {
+        if (orderId && orderId !== "SM000000") {
+            apiFetch(`/api/orders/${orderId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.error) setOrderData(data);
+                })
+                .catch(err => console.error("Failed to fetch order", err));
+        }
+    }, [orderId, apiFetch]);
 
     return (
         <div className="min-h-screen bg-white">
@@ -101,6 +116,31 @@ function OrderConfirmationContent() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Order Summary */}
+                        {orderData && orderData.order_items && orderData.order_items.length > 0 && (
+                            <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-xl shadow-gray-200/20">
+                                <div className="px-8 py-6 bg-gray-50 border-b border-gray-50">
+                                    <h2 className="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Items Ordered</h2>
+                                </div>
+                                <div className="divide-y divide-gray-50">
+                                    {orderData.order_items.map((item: any) => (
+                                        <div key={item.id} className="px-8 py-4 flex items-center justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0 text-xl border border-gray-100">
+                                                    {item.products?.emoji || "📦"}
+                                                </div>
+                                                <div>
+                                                    <p className="font-bold text-sm text-black tracking-tight">{item.products?.name || "Product"}</p>
+                                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Qty: {item.quantity}</p>
+                                                </div>
+                                            </div>
+                                            <p className="font-bold text-sm text-black">₹{(Number(item.price) * item.quantity).toFixed(0)}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row gap-4">

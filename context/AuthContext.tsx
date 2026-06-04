@@ -12,7 +12,8 @@ type UserRole = "admin" | "customer" | "superadmin" | null;
 interface User {
     id: string;
     name: string | null;
-    phone: string;
+    phone?: string | null;
+    email?: string | null;
     role: UserRole;
     store_id?: string | null;
 }
@@ -20,8 +21,9 @@ interface User {
 interface AuthContextType {
     user: User | null;
     role: UserRole;
-    sendOtp: (phone: string) => Promise<{ success: boolean; otp?: string; error?: string }>;
-    verifyOtp: (phone: string, otp: string) => Promise<{ success: boolean; error?: string }>;
+    sendOtp: (identifier: string) => Promise<{ success: boolean; otp?: string; error?: string }>;
+    verifyOtp: (identifier: string, otp: string) => Promise<{ success: boolean; error?: string }>;
+    loginWithGoogle: (email: string, name: string) => Promise<{ success: boolean; error?: string }>;
     logout: () => void;
     isLoading: boolean;
     apiFetch: (url: string, options?: RequestInit) => Promise<Response>;
@@ -151,13 +153,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return true;
     };
 
-    const sendOtp = async (phone: string) => {
+    const sendOtp = async (identifier: string) => {
         setIsLoading(true);
         try {
+            const isEmail = identifier.includes("@");
+            const body = isEmail ? { email: identifier } : { phone: identifier };
+
             const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ phone }),
+                body: JSON.stringify(body),
                 credentials: "include"
             });
             const data = await res.json();
@@ -170,13 +175,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const verifyOtp = async (phone: string, otp: string) => {
+    const verifyOtp = async (identifier: string, otp: string) => {
         setIsLoading(true);
         try {
+            const isEmail = identifier.includes("@");
+            const body = isEmail ? { email: identifier, otp } : { phone: identifier, otp };
+
             const res = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ phone, otp }),
+                body: JSON.stringify(body),
                 credentials: "include"
             });
             const data = await res.json();
@@ -211,8 +219,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const loginWithGoogle = async (email: string, name: string) => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/auth/google-dummy`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, name }),
+                credentials: "include"
+            });
+            const data = await res.json();
+            
+            if (!res.ok) {
+                setIsLoading(false);
+                return { success: false, error: data.error };
+            }
+
+            localStorage.setItem("supermarket_token", data.token);
+            localStorage.setItem("supermarket_user", JSON.stringify(data.user));
+
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 7);
+            const isSecure = window.location.protocol === "https:";
+            const secureFlag = isSecure ? "; Secure" : "";
+            document.cookie = `supermarket_token=${data.token}; path=/; expires=${expires.toUTCString()}; samesite=lax${secureFlag}`;
+
+            setToken(data.token);
+            setUser(data.user);
+            setRole(data.user.role);
+            setIsLoading(false);
+            return { success: true };
+        } catch (error) {
+            setIsLoading(false);
+            return { success: false, error: "Google login failed" };
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, role, sendOtp, verifyOtp, logout, isLoading, apiFetch, requireAuth }}>
+        <AuthContext.Provider value={{ user, role, sendOtp, verifyOtp, loginWithGoogle, logout, isLoading, apiFetch, requireAuth }}>
             {children}
         </AuthContext.Provider>
     );

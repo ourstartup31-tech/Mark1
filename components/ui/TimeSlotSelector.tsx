@@ -43,7 +43,30 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
         }
     }, [isStoreOpen, activeDay, value, onChange]);
 
-    const slots = activeDay === "today" ? TODAY_SLOTS : TOMORROW_SLOTS;
+    const currentHour = new Date().getHours();
+
+    const parseSlotHour = (slot: string) => {
+        const timeStr = slot.split("–")[0].trim();
+        const [time, period] = timeStr.split(" ");
+        let hour = parseInt(time.split(":")[0], 10);
+        if (period === "PM" && hour !== 12) hour += 12;
+        if (period === "AM" && hour === 12) hour = 0;
+        return hour;
+    };
+
+    const availableTodaySlots = TODAY_SLOTS.filter(slot => parseSlotHour(slot) >= currentHour);
+    
+    const slots = activeDay === "today" ? availableTodaySlots : TOMORROW_SLOTS;
+
+    // Auto-switch to tomorrow if no slots are available today
+    React.useEffect(() => {
+        if (activeDay === "today" && availableTodaySlots.length === 0) {
+            setActiveDay("tomorrow");
+            if (value?.day === "today") {
+                onChange({ day: "tomorrow", slot: "" });
+            }
+        }
+    }, [activeDay, availableTodaySlots.length, value, onChange]);
 
     const handleDayChange = (day: "today" | "tomorrow") => {
         setActiveDay(day);

@@ -6,19 +6,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, CheckCircle2, Mail, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 function LoginContent() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl");
-    const [step, setStep] = useState<"phone" | "otp">("phone");
-    const [phone, setPhone] = useState("");
+    const [step, setStep] = useState<"input" | "otp">("input");
+    const [loginMethod, setLoginMethod] = useState<"phone" | "email">("phone");
+    const [identifier, setIdentifier] = useState("");
     const [otp, setOtp] = useState("");
     const [receivedOtp, setReceivedOtp] = useState(""); // For demo testing
-    const [errors, setErrors] = useState<{ phone?: string; otp?: string }>({});
+    const [errors, setErrors] = useState<{ identifier?: string; otp?: string }>({});
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(0);
-    const { user, role, sendOtp, verifyOtp } = useAuth();
+    const { user, role, sendOtp, verifyOtp, loginWithGoogle } = useAuth();
+    const { showToast } = useToast();
     const router = useRouter();
 
     useEffect(() => {
@@ -49,14 +52,19 @@ function LoginContent() {
 
     const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();
-        const trimmedPhone = phone.trim();
-        if (!trimmedPhone || trimmedPhone.length < 10) {
-            setErrors({ phone: "Enter a valid 10-digit mobile number" });
+        const trimmedIdentifier = identifier.trim();
+        
+        if (loginMethod === "phone" && (!trimmedIdentifier || trimmedIdentifier.length < 10)) {
+            setErrors({ identifier: "Enter a valid 10-digit mobile number" });
+            return;
+        }
+        if (loginMethod === "email" && (!trimmedIdentifier || !trimmedIdentifier.includes("@"))) {
+            setErrors({ identifier: "Enter a valid email address" });
             return;
         }
 
         setLoading(true);
-        const result = await sendOtp(trimmedPhone);
+        const result = await sendOtp(trimmedIdentifier);
         setLoading(false);
 
         if (result.success) {
@@ -68,7 +76,7 @@ function LoginContent() {
             // Clear success message after 5 seconds
             setTimeout(() => setSuccessMessage(null), 5000);
         } else {
-            setErrors({ phone: result.error || "Failed to send OTP" });
+            setErrors({ identifier: result.error || "Failed to send OTP" });
         }
     };
 
@@ -81,19 +89,32 @@ function LoginContent() {
         }
 
         setLoading(true);
-        const trimmedPhone = phone.trim();
-        console.log("LoginPage: Attempting verification for", trimmedPhone, "with OTP", otp);
-        const result = await verifyOtp(trimmedPhone, otp);
+        const trimmedIdentifier = identifier.trim();
+        console.log("LoginPage: Attempting verification for", trimmedIdentifier, "with OTP", otp);
+        const result = await verifyOtp(trimmedIdentifier, otp);
         setLoading(false);
 
         if (result.success) {
             console.log("LoginPage: verifyOtp successful. Waiting for useEffect to handle redirect...");
-            // We've set loading to false and user is set in context, 
-            // the useEffect above will now handle the redirection with the proper delay.
-            // This prevents duplicate and race-condition redirects.
             setSuccessMessage("Login successful! Redirecting...");
         } else {
             setErrors({ otp: result.error || "Invalid OTP" });
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        // Dummy Google Login using window.prompt
+        const email = window.prompt("Enter your Google email for demo login:");
+        if (!email || !email.includes("@")) return;
+
+        setLoading(true);
+        const result = await loginWithGoogle(email, email.split("@")[0]);
+        setLoading(false);
+
+        if (result.success) {
+            setSuccessMessage("Google Login successful! Redirecting...");
+        } else {
+            showToast(result.error || "Google login failed", "error");
         }
     };
 
@@ -164,35 +185,37 @@ function LoginContent() {
                         )}
 
                         {/* Form */}
-                        {step === "phone" ? (
+                        {step === "input" ? (
                             <form onSubmit={handleSendOtp} className="space-y-6">
                                 <div>
-                                    <label className="block text-[13px] font-bold text-black mb-2">Mobile Number</label>
+                                    <label className="block text-[13px] font-bold text-black mb-2">
+                                        {loginMethod === "phone" ? "Mobile Number" : "Email Address"}
+                                    </label>
                                     <Input
-                                        type="tel"
-                                        name="phone"
-                                        id="phone"
-                                        placeholder="98765 43210"
-                                        autoComplete="tel"
-                                        maxLength={10}
-                                        value={phone}
+                                        type={loginMethod === "phone" ? "tel" : "email"}
+                                        name="identifier"
+                                        id="identifier"
+                                        placeholder={loginMethod === "phone" ? "98765 43210" : "you@example.com"}
+                                        autoComplete={loginMethod === "phone" ? "tel" : "email"}
+                                        maxLength={loginMethod === "phone" ? 10 : undefined}
+                                        value={identifier}
                                         onChange={(e) => {
-                                            setPhone(e.target.value.replace(/\D/g, ""));
-                                            if (errors.phone) setErrors({});
+                                            setIdentifier(loginMethod === "phone" ? e.target.value.replace(/\D/g, "") : e.target.value);
+                                            if (errors.identifier) setErrors({});
                                         }}
-                                        error={errors.phone}
+                                        error={errors.identifier}
                                         className="h-14 font-medium"
-                                        leftElement={
+                                        leftElement={loginMethod === "phone" ? (
                                             <div className="flex items-center gap-3 border-r border-gray-200 pr-3 h-6">
                                                 <span className="text-gray-500 font-medium text-[15px]">+91</span>
                                             </div>
-                                        }
+                                        ) : undefined}
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
-                                    disabled={loading || !phone}
+                                    disabled={loading || !identifier}
                                     className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all shadow-sm mt-6"
                                 >
                                     {loading ? <Loader2 size={18} className="animate-spin" /> : "Request OTP"}
@@ -207,7 +230,7 @@ function LoginContent() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <button 
                                         type="button" 
-                                        onClick={() => window.open("https://accounts.google.com", "_blank")}
+                                        onClick={handleGoogleLogin}
                                         className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
                                     >
                                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-[18px] h-[18px]" />
@@ -215,11 +238,18 @@ function LoginContent() {
                                     </button>
                                     <button 
                                         type="button" 
-                                        onClick={() => window.open("https://mail.google.com", "_blank")}
+                                        onClick={() => {
+                                            setLoginMethod(loginMethod === "phone" ? "email" : "phone");
+                                            setIdentifier("");
+                                            setErrors({});
+                                        }}
                                         className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
                                     >
-                                        <Mail size={18} />
-                                        Email
+                                        {loginMethod === "phone" ? (
+                                            <><Mail size={18} /> Email</>
+                                        ) : (
+                                            "Use Phone Number"
+                                        )}
                                     </button>
                                 </div>
                             </form>
@@ -268,10 +298,13 @@ function LoginContent() {
 
                                     <button
                                         type="button"
-                                        onClick={() => setStep("phone")}
+                                        onClick={() => {
+                                            setStep("input");
+                                            setOtp("");
+                                        }}
                                         className="w-full text-center text-xs font-semibold text-[#D60000] hover:underline"
                                     >
-                                        Change Phone Number
+                                        Change {loginMethod === "phone" ? "Phone Number" : "Email Address"}
                                     </button>
                                 </div>
                             </form>

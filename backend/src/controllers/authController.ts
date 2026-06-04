@@ -8,26 +8,30 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret_for_dev_only";
 
 // Schema for OTP verification
 const verifyOtpSchema = z.object({
-  phone: z.string().min(10, "Phone number is required"),
+  phone: z.string().optional(),
+  email: z.string().email().optional(),
   otp: z.string().length(6, "OTP must be 6 digits"),
+}).refine((data) => data.phone || data.email, {
+  message: "Either phone or email is required",
 });
 
 // Controllers
 export const sendOtp = async (req: Request, res: Response) => {
   try {
-    const { phone } = req.body;
-    if (!phone) return res.status(400).json({ error: "Phone number required" });
+    const { phone, email } = req.body;
+    if (!phone && !email) return res.status(400).json({ error: "Phone number or email required" });
 
     // Generate 6-digit OTP (Random, not fixed)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 15 * 60000); // 15 minutes for better reliability on Render
 
     await prisma.otp_codes.create({
-      data: { phone, otp, expires_at: expiresAt }
+      data: { phone: phone || null, email: email || null, otp, expires_at: expiresAt }
     });
 
-    // In production, the OTP should ONLY be sent via SMS. 
+    // In production, the OTP should ONLY be sent via SMS/Email. 
     // Including it here for dev/testing ease as in previous logic.
+    console.log(`[AUTH] Sent OTP ${otp} to ${phone || email}`);
     res.json({ message: "OTP sent successfully", otp }); 
   } catch (error: any) {
     res.status(500).json({ error: "Failed to send OTP", details: error.message });
@@ -37,20 +41,19 @@ export const sendOtp = async (req: Request, res: Response) => {
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const body = verifyOtpSchema.parse(req.body);
-    const { phone, otp } = body;
+    const { phone, email, otp } = body;
+    
+    const identifier = phone || email;
 
-    console.log(`[AUTH] Verifying OTP for ${phone}: ${otp}`);
+    console.log(`[AUTH] Verifying OTP for ${identifier}: ${otp}`);
 
     const otpRecord = await prisma.otp_codes.findFirst({
-      where: {
-        phone,
-        otp,
-      },
+      where: phone ? { phone, otp } : { email, otp },
       orderBy: { created_at: "desc" },
     });
 
     if (!otpRecord) {
-      console.log(`[AUTH] OTP record not found in DB for ${phone} and OTP ${otp}`);
+      console.log(`[AUTH] OTP record not found in DB for ${identifier} and OTP ${otp}`);
       return res.status(400).json({ error: "Invalid OTP" });
     }
 
@@ -60,31 +63,37 @@ export const verifyOtp = async (req: Request, res: Response) => {
     // Add 1 minute grace period for safety
     const isExpired = expiry.getTime() < now.getTime() - 60000;
 
-    console.log(`[AUTH] DB Expiry: ${expiry.toISOString()}, Current Server Time: ${now.toISOString()}, IsExpired: ${isExpired}`);
-
     if (isExpired) {
       return res.status(400).json({ error: "OTP has expired. Please request a new one." });
     }
 
     // Check if user exists, otherwise auto-register
-    let user = await prisma.users.findUnique({ where: { phone } });
+    let user = await prisma.users.findUnique({ 
+        where: phone ? { phone } : { email } 
+    });
+    
     if (!user) {
       // Auto-provision Superadmin if phone matches env var
       const superadminPhone = process.env.SUPERADMIN_PHONE;
-      const role = (superadminPhone && phone === superadminPhone) ? "superadmin" : "customer";
+      const role = (phone && superadminPhone && phone === superadminPhone) ? "superadmin" : "customer";
       
-      console.log(`[AUTH] New user created: ${phone} with role: ${role}`);
+      console.log(`[AUTH] New user created: ${identifier} with role: ${role}`);
       user = await prisma.users.create({
-        data: { phone, role },
+        data: { 
+            phone: phone || null, 
+            email: email || null, 
+            role 
+        },
       });
     } else {
-      console.log(`[AUTH] Existing user found: ${user.phone} with role: ${user.role}`);
+      console.log(`[AUTH] Existing user found: ${user.phone || user.email} with role: ${user.role}`);
     }
 
-    await prisma.otp_codes.deleteMany({ where: { phone } });
+    if (phone) await prisma.otp_codes.deleteMany({ where: { phone } });
+    if (email) await prisma.otp_codes.deleteMany({ where: { email } });
 
     const token = jwt.sign(
-      { userId: user.id, phone: user.phone, role: user.role },
+      { userId: user.id, phone: user.phone, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -120,3 +129,40 @@ export const logout = (req: Request, res: Response) => {
   });
   res.json({ message: "Logged out successfully" });
 };
+
+export const googleDummyAuth = async (req: Request, res: Response) => {
+  try {
+    const { email, name } = req.body;
+    if (!email) return res.status(400).json({ error: "Email required for Google auth" });
+
+    // Mock Google verification
+    console.log(`[AUTH] Mock Google Login for ${email}`);
+
+    let user = await prisma.users.findUnique({ where: { email } });
+    if (!user) {
+      user = await prisma.users.create({
+        data: { email, name, role: "customer" },
+      });
+      console.log(`[AUTH] New Google user created: ${email}`);
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, phone: user.phone, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("supermarket_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.json({ token, user });
+  } catch (error: any) {
+    res.status(500).json({ error: "Google auth failed", details: error.message });
+  }
+};
+

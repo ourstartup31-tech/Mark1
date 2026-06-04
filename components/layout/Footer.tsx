@@ -30,24 +30,29 @@ export function Footer() {
                     {[
                         {
                             title: "About Store",
-                            links: ["Our Story", "Quality Promise", "Store Hours", "Careers"],
+                            links: [
+                                { label: "Our Story", href: "/about" },
+                                { label: "Quality Promise", href: "/about#quality" },
+                                { label: "Store Hours", href: "/contact" },
+                                { label: "Careers", href: "/about#careers" }
+                            ],
                         },
                         {
                             title: "Pickup Policy",
                             links: [
-                                "Pickup Hours",
-                                "How It Works",
-                                "Return Policy",
-                                "Track Order",
+                                { label: "Pickup Hours", href: "/contact" },
+                                { label: "How It Works", href: "/#how-it-works" },
+                                { label: "Return Policy", href: "/refund" },
+                                { label: "Track Order", href: "/orders" },
                             ],
                         },
                         {
                             title: "Legal",
                             links: [
-                                "Privacy Policy",
-                                "Terms of Service",
-                                "Cookie Policy",
-                                "Refund Policy",
+                                { label: "Privacy Policy", href: "/privacy" },
+                                { label: "Terms of Service", href: "/terms" },
+                                { label: "Cookie Policy", href: "/privacy#cookies" },
+                                { label: "Refund Policy", href: "/refund" },
                             ],
                         },
                     ].map((col) => (
@@ -57,12 +62,12 @@ export function Footer() {
                             </p>
                             <ul className="space-y-3">
                                 {col.links.map((l) => (
-                                    <li key={l}>
+                                    <li key={l.label}>
                                         <Link
-                                            href="#"
+                                            href={l.href}
                                             className="text-gray-500 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors duration-300"
                                         >
-                                            {l}
+                                            {l.label}
                                         </Link>
                                     </li>
                                 ))}

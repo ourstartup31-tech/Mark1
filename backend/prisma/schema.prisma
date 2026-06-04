@@ -71,6 +71,7 @@ model products {
   name           String
   description    String?
   price          Decimal       @db.Decimal(10, 2)
+  unit           String?       @default("piece")
   stock_quantity Int?          @default(0)
   image_url      String?
   is_available   Boolean?      @default(true)

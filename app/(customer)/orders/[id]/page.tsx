@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export default function CustomerOrderDetailsPage() {
     const params = useParams();
     const router = useRouter();
-    const { token, apiFetch, requireAuth } = useAuth();
+    const { user, apiFetch, requireAuth } = useAuth();
     
     const [order, setOrder] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,10 +38,10 @@ export default function CustomerOrderDetailsPage() {
 
     useEffect(() => {
         if (!requireAuth()) return;
-        if (token && orderId) {
+        if (user && orderId) {
             fetchOrder();
         }
-    }, [token, orderId]);
+    }, [user, orderId]);
 
     if (isLoading) {
         return (

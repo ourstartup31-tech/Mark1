@@ -109,9 +109,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                     name: p.name,
                     category: p.categories?.name || "Uncategorized",
                     price: Number(p.price),
-                    stock: p.stock_quantity || 0,
-                    unit: p.description?.replace("Unit: ", "") || "per unit",
-                    inStock: p.is_available ?? true,
+                    stock: p.stock_quantity ?? 0,
+                    unit: p.unit || "piece",
                     image: p.image_url,
                     category_id: p.category_id
                 }));
@@ -194,9 +193,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 price: p.price,
                 stock_quantity: p.stock,
                 category_id: categoryObj?.id,
-                is_available: p.inStock,
+                is_available: true,
                 image_url: p.image,
-                description: p.unit ? `Unit: ${p.unit}` : null
+                unit: p.unit || "piece"
             };
             const res = await apiFetch("/api/products", {
                 method: "POST",
@@ -221,9 +220,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
                 price: p.price,
                 stock_quantity: p.stock,
                 category_id: categoryObj?.id,
-                is_available: p.inStock,
+                is_available: true,
                 image_url: p.image,
-                description: p.unit ? `Unit: ${p.unit}` : null
+                unit: p.unit || "piece"
             };
             const res = await apiFetch(`/api/products/${p.id}`, {
                 method: "PUT",

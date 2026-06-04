@@ -52,9 +52,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                 name: p.name,
                 category: p.categories?.name || "Uncategorized",
                 price: Number(p.price),
-                unit: p.unit || "per unit",
+                unit: p.unit || "unit",
                 emoji: "📦", // Default emoji if not in DB
-                inStock: p.is_available ?? true,
+                stock: p.stock_quantity ?? 0,
                 image: p.image_url,
                 badge: p.stock_quantity <= 5 ? "Low Stock" : undefined,
                 category_id: p.category_id

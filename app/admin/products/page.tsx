@@ -76,8 +76,8 @@ export default function ProductsPage() {
         {
             header: "Stock",
             accessor: (item: any) => (
-                <span className={`font-bold ${item.inStock ? "text-green-500" : "text-gray-400"}`}>
-                    {item.inStock ? "In Stock" : "Out of Stock"}
+                <span className={`font-bold ${item.stock > 0 ? "text-green-500" : "text-gray-400"}`}>
+                    {item.stock > 0 ? `${item.stock} in Stock` : "Out of Stock"}
                 </span>
             )
         },

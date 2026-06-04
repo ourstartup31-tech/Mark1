@@ -16,13 +16,26 @@ const navLinks = [
 ];
 
 export function Navbar() {
-    const { totalItems, searchQuery, setSearchQuery } = useCart();
+    const { totalItems } = useCart();
     const router = useRouter();
     const { role, logout } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [prevCount, setPrevCount] = useState(0);
     const [badgeKey, setBadgeKey] = useState(0);
+    const [localSearch, setLocalSearch] = useState("");
+
+    const handleSearch = () => {
+        if (localSearch.trim()) {
+            router.push(`/search?q=${encodeURIComponent(localSearch.trim())}`);
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
 
     useEffect(() => {
         const fn = () => setScrolled(window.scrollY > 16);
@@ -76,11 +89,14 @@ export function Navbar() {
                         {/* Persistent Search Bar */}
                         <div className="hidden md:block relative group w-64 lg:w-72">
                             <div className="flex items-center gap-2 bg-gray-50/50 border border-gray-100 rounded-xl px-3 py-2 transition-all group-focus-within:bg-white group-focus-within:border-[#D60000]/20 group-focus-within:shadow-sm">
-                                <Search size={15} className="text-gray-400 flex-shrink-0" />
+                                <button onClick={handleSearch} className="focus:outline-none flex items-center justify-center">
+                                    <Search size={15} className="text-gray-400 flex-shrink-0 hover:text-[#D60000] transition-colors" />
+                                </button>
                                 <input
                                     placeholder="Search..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={localSearch}
+                                    onChange={(e) => setLocalSearch(e.target.value)}
+                                    onKeyDown={handleKeyDown}
                                     className="flex-1 text-xs font-medium outline-none bg-transparent text-black placeholder:text-gray-400"
                                 />
                             </div>
@@ -170,6 +186,25 @@ export function Navbar() {
                         </div>
 
                         <nav className="flex-1 px-4 py-2 space-y-1">
+                            <div className="px-4 py-3 mb-2">
+                                <div className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2">
+                                    <button onClick={() => { handleSearch(); setMobileOpen(false); }} className="focus:outline-none flex items-center justify-center">
+                                        <Search size={15} className="text-gray-400 flex-shrink-0 hover:text-[#D60000] transition-colors" />
+                                    </button>
+                                    <input
+                                        placeholder="Search products..."
+                                        value={localSearch}
+                                        onChange={(e) => setLocalSearch(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                handleSearch();
+                                                setMobileOpen(false);
+                                            }
+                                        }}
+                                        className="flex-1 text-xs font-medium outline-none bg-transparent text-black placeholder:text-gray-400"
+                                    />
+                                </div>
+                            </div>
                             {navLinks.map((l) => (
                                 <Link
                                     key={l.href}

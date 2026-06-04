@@ -61,6 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
             {/* Badges */}
             <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+                {product.stock === 0 && <Badge variant="default" className="shadow-sm bg-red-600 text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">Out of stock</Badge>}
                 {product.badge && <Badge variant="default" className="shadow-sm bg-black text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">{product.badge}</Badge>}
                 {discount > 0 && <Badge variant="secondary" className="bg-green-50 text-green-700 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">{discount}% off</Badge>}
             </div>
@@ -82,7 +83,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <h3 className="font-bold text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
                     {product.name}
                 </h3>
-                <p className="text-[10px] sm:text-xs text-slate-400 font-medium mb-4">{product.unit}</p>
+                <p className="text-[10px] sm:text-xs text-slate-400 font-medium mb-4">per {product.unit}</p>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-5">
@@ -93,7 +94,14 @@ export function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 {/* Add to Cart / Qty */}
-                {quantity === 0 ? (
+                {product.stock === 0 ? (
+                    <button
+                        disabled
+                        className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-bold text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 bg-slate-100 text-slate-400 cursor-not-allowed"
+                    >
+                        Out of stock
+                    </button>
+                ) : quantity === 0 ? (
                     <button
                         onClick={handleAdd}
                         className={cn(
@@ -125,7 +133,13 @@ export function ProductCard({ product }: ProductCardProps) {
                         </button>
                         <button
                             onClick={() => increment(product.id)}
-                            className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg bg-black text-white hover:bg-slate-900 transition-all shadow-md shadow-black/10"
+                            disabled={quantity >= product.stock}
+                            className={cn(
+                                "w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg transition-all shadow-md shadow-black/10",
+                                quantity >= product.stock 
+                                    ? "bg-slate-300 text-slate-500 cursor-not-allowed" 
+                                    : "bg-black text-white hover:bg-slate-900"
+                            )}
                         >
                             <Plus size={14} />
                         </button>

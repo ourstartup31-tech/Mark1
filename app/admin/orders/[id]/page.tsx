@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export default function OrderDetailsPage() {
     const params = useParams();
     const router = useRouter();
-    const { token } = useAuth();
+    const { user, apiFetch } = useAuth();
     
     const [order, setOrder] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -23,11 +23,7 @@ export default function OrderDetailsPage() {
     const fetchOrder = async () => {
         try {
             setIsLoading(true);
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders/${orderId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await apiFetch(`/api/admin/orders/${orderId}`);
             if (!res.ok) throw new Error("Failed to fetch order details");
             const data = await res.json();
             setOrder(data);
@@ -39,10 +35,10 @@ export default function OrderDetailsPage() {
     };
 
     useEffect(() => {
-        if (token && orderId) {
+        if (user && orderId) {
             fetchOrder();
         }
-    }, [token, orderId]);
+    }, [user, orderId]);
 
     const updateStatus = async (newStatus: string) => {
         if (newStatus === "Cancelled" && !showCancelPrompt) {
@@ -57,11 +53,10 @@ export default function OrderDetailsPage() {
 
         try {
             setIsUpdating(true);
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders/status`, {
+            const res = await apiFetch(`/api/admin/orders/status`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ 
                     id: orderId, 

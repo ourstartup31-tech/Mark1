@@ -22,8 +22,7 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
         category: initialData?.category || defaultCategory || (categories[0]?.name || ""),
         price: initialData?.price || "",
         stock: initialData?.stock || "",
-        unit: initialData?.unit || "per kg",
-        inStock: initialData?.inStock ?? true,
+        unit: initialData?.unit || "kg",
         image: initialData?.image || ""
     });
 
@@ -93,8 +92,8 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
                         required
                     />
                     <Input
-                        label="Unit (e.g. per kg)"
-                        placeholder="per kg"
+                        label="Unit (e.g. kg, piece, litre)"
+                        placeholder="kg"
                         value={formData.unit}
                         onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}
                         required
@@ -137,11 +136,6 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
                     )}
                 </div>
 
-                <Toggle
-                    label="Product is in stock"
-                    enabled={formData.inStock}
-                    onChange={(enabled) => setFormData(prev => ({ ...prev, inStock: enabled }))}
-                />
             </div>
 
             <div className="flex gap-4 pt-4">

@@ -104,7 +104,7 @@ export default function CartPage() {
                         <p className="text-gray-400 text-sm mt-2">Browse our products and add items to your cart.</p>
                     </div>
                     <Link
-                        href="/"
+                        href="/#categories"
                         className="mt-2 bg-black text-white font-bold px-8 py-3.5 rounded-xl hover:bg-[#D60000] active:scale-95 transition-all text-sm"
                     >
                         Browse Products

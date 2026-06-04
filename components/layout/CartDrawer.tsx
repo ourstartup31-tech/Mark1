@@ -121,7 +121,10 @@ export function CartDrawer() {
                             <p className="text-gray-400 text-xs font-medium mt-1 max-w-[180px] mx-auto">Looks like you haven't added anything yet.</p>
                         </div>
                         <button
-                            onClick={closeCart}
+                            onClick={() => {
+                                closeCart();
+                                router.push("/#categories");
+                            }}
                             className="mt-2 w-full bg-black text-white font-bold px-6 py-3 rounded-xl hover:bg-gray-900 active:scale-95 transition-all text-sm"
                         >
                             Browse Products

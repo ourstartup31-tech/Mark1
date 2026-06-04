@@ -87,20 +87,13 @@ export function Hero() {
                                 </span>
                                 
                                 {!isOpen && (
-                                    <span className="mt-1 text-[10px] md:text-xs font-bold text-white bg-black/40 px-2 py-0.5 rounded-md">
-                                        Opens Tomorrow 10AM
-                                    </span>
+                                    <div className="mt-2 flex items-center gap-1.5 bg-black/30 px-2 py-0.5 rounded-full border border-black/10">
+                                        <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full shadow-inner bg-white/50"></div>
+                                        <span className="text-[7.5px] lg:text-[9px] text-white font-black tracking-widest uppercase">
+                                            Opens Tomorrow 10AM
+                                        </span>
+                                    </div>
                                 )}
-
-                                <div className="mt-2 flex items-center gap-1.5 bg-black/30 px-2 py-0.5 rounded-full border border-black/10">
-                                    <div className={cn(
-                                        "w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full shadow-inner",
-                                        isOpen ? "bg-[#5DFFAD] animate-pulse" : "bg-white/50"
-                                    )}></div>
-                                    <span className="text-[7.5px] lg:text-[9px] text-white font-black tracking-widest uppercase">
-                                        Store Status
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </AnimatedSection>

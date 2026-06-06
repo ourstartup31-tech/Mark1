@@ -81,13 +81,13 @@ export default function StoresManagement() {
                 <div className="flex items-center bg-slate-100 p-1 rounded-lg">
                     <button 
                         onClick={() => setActiveTab("stores")}
-                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "stores" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "stores" ? "bg-white text-slate-900 " : "text-slate-500 hover:text-slate-700"}`}
                     >
                         Stores
                     </button>
                     <button 
                         onClick={() => setActiveTab("admins")}
-                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "admins" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "admins" ? "bg-white text-slate-900 " : "text-slate-500 hover:text-slate-700"}`}
                     >
                         Administrators
                     </button>
@@ -99,7 +99,7 @@ export default function StoresManagement() {
                 <div className="animate-in fade-in duration-300 space-y-6">
                     <div className="flex items-center justify-between">
                          {/* Filter bar */}
-                        <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex-1 mr-4">
+                        <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded-xl  flex-1 mr-4">
                             <div className="relative flex-1 max-w-sm">
                                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input
@@ -112,7 +112,7 @@ export default function StoresManagement() {
                         </div>
                         <button 
                             onClick={() => setIsStoreModalOpen(true)}
-                            className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 h-full"
+                            className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-indigo-700 transition-all   h-full"
                         >
                             <Plus size={14} />
                             Add New Store
@@ -120,7 +120,7 @@ export default function StoresManagement() {
                     </div>
 
                     {/* Table */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-white border border-slate-200 rounded-2xl  overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-xs border-collapse">
                                 <thead>
@@ -173,7 +173,7 @@ export default function StoresManagement() {
             {activeTab === "admins" && (
                  <div className="animate-in fade-in duration-300 space-y-6">
                     <div className="flex items-center justify-between">
-                         <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex-1 mr-4">
+                         <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded-xl  flex-1 mr-4">
                             <div className="relative flex-1 max-w-sm">
                                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input
@@ -186,14 +186,14 @@ export default function StoresManagement() {
                         </div>
                         <button 
                             onClick={() => setIsAdminModalOpen(true)}
-                            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-100 h-full"
+                            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-slate-800 transition-all   h-full"
                         >
                             <Plus size={14} className="text-indigo-400" />
                             Add Store Admin
                         </button>
                     </div>
 
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-white border border-slate-200 rounded-2xl  overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-xs border-collapse">
                                 <thead>
@@ -239,7 +239,7 @@ export default function StoresManagement() {
             {/* Store Modal */}
             {isStoreModalOpen && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
+                    <div className="bg-white rounded-2xl  w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                             <div>
                                 <h3 className="font-medium text-slate-900 uppercase tracking-widest text-sm">Create New Store</h3>
@@ -314,7 +314,7 @@ export default function StoresManagement() {
 
                             <button
                                 type="submit"
-                                className="w-full h-11 bg-slate-900 text-white rounded font-medium text-[10px] uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 mt-2"
+                                className="w-full h-11 bg-slate-900 text-white rounded font-medium text-[10px] uppercase tracking-[0.2em] hover:bg-slate-800 transition-all   mt-2"
                             >
                                 Setup Store & Assign Admin
                             </button>
@@ -326,7 +326,7 @@ export default function StoresManagement() {
             {/* Admin Modal */}
             {isAdminModalOpen && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                    <div className="bg-white rounded-2xl  w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                             <h3 className="font-medium text-slate-900 uppercase tracking-widest text-sm">Create New Admin</h3>
                             <button onClick={() => setIsAdminModalOpen(false)} className="text-slate-400 hover:text-slate-600">

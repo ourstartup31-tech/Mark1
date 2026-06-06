@@ -116,7 +116,7 @@ export default function ProductDetailPage() {
                     <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12">
                         {/* Left: Product Image */}
                         <div className="md:col-span-2">
-                            <AnimatedSection className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm relative group bg-gray-50 w-full max-w-sm mx-auto">
+                            <AnimatedSection className="rounded-2xl overflow-hidden border border-gray-100  relative group bg-gray-50 w-full max-w-sm mx-auto">
                                 {/* Badges */}
                                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
                                     {product.stock === 0 && <Badge className="bg-red-600 text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">Out of stock</Badge>}
@@ -176,8 +176,8 @@ export default function ProductDetailPage() {
                                         className={cn(
                                             "w-full md:w-auto min-w-[200px] flex items-center justify-center gap-3 py-4 rounded-xl font-medium text-sm uppercase tracking-widest transition-all duration-300",
                                             justAdded
-                                                ? "bg-green-500 text-white scale-95 shadow-xl shadow-green-500/30"
-                                                : "bg-[#D60000] text-white hover:bg-black active:scale-95 shadow-xl shadow-[#D60000]/20"
+                                                ? "bg-green-500 text-white scale-95  "
+                                                : "bg-[#D60000] text-white hover:bg-black active:scale-95  "
                                         )}
                                     >
                                         {justAdded ? (
@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
                                         </button>
                                         <button
                                             onClick={openCart}
-                                            className="flex-1 flex items-center justify-center h-14 rounded-xl bg-black text-white font-medium text-sm uppercase tracking-widest hover:bg-gray-900 transition-all shadow-xl shadow-black/20"
+                                            className="flex-1 flex items-center justify-center h-14 rounded-xl bg-black text-white font-medium text-sm uppercase tracking-widest hover:bg-gray-900 transition-all  "
                                         >
                                             {quantity} in Cart
                                         </button>
@@ -207,7 +207,7 @@ export default function ProductDetailPage() {
                                                 "w-14 h-14 flex items-center justify-center rounded-xl transition-all",
                                                 quantity >= product.stock 
                                                     ? "bg-gray-100 text-gray-400 cursor-not-allowed" 
-                                                    : "bg-black text-white hover:bg-gray-900 shadow-xl shadow-black/20"
+                                                    : "bg-black text-white hover:bg-gray-900  "
                                             )}
                                         >
                                             <Plus size={20} />
@@ -224,7 +224,7 @@ export default function ProductDetailPage() {
                             {/* Perks */}
                             <div className="grid grid-cols-2 gap-4 mt-auto">
                                 <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-green-600">
+                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center  text-green-600">
                                         <ShieldCheck size={20} />
                                     </div>
                                     <div>
@@ -233,7 +233,7 @@ export default function ProductDetailPage() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-blue-600">
+                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center  text-blue-600">
                                         <Truck size={20} />
                                     </div>
                                     <div>

@@ -56,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
         : 0;
 
     return (
-        <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 hover:border-gray-200 transition-all duration-300">
+        <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden   hover:-translate-y-1 hover:border-gray-200 transition-all duration-300">
             {/* Minimal line on top on hover */}
             <div className="absolute top-0 inset-x-0 h-0.5 bg-[#D60000] scale-x-0 group-hover:scale-x-100 transition-transform origin-left z-20" />
 
@@ -110,8 +110,8 @@ export function ProductCard({ product }: ProductCardProps) {
                         className={cn(
                             "w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-medium text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300",
                             justAdded
-                                ? "bg-green-500 text-white scale-95 shadow-lg shadow-green-500/20"
-                                : "bg-white border-2 border-slate-50 text-black hover:bg-black hover:text-white hover:border-black active:scale-95 shadow-sm"
+                                ? "bg-green-500 text-white scale-95  "
+                                : "bg-white border-2 border-slate-50 text-black hover:bg-black hover:text-white hover:border-black active:scale-95 "
                         )}
                     >
                         {justAdded ? (
@@ -130,7 +130,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         </button>
                         <button
                             onClick={openCart}
-                            className="flex-1 flex items-center justify-center h-10 sm:h-11 rounded-lg bg-black text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-slate-900 transition-all shadow-md shadow-black/10"
+                            className="flex-1 flex items-center justify-center h-10 sm:h-11 rounded-lg bg-black text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-slate-900 transition-all  "
                         >
                             {quantity} in Cart
                         </button>
@@ -138,7 +138,7 @@ export function ProductCard({ product }: ProductCardProps) {
                             onClick={() => increment(product.id)}
                             disabled={quantity >= product.stock}
                             className={cn(
-                                "w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg transition-all shadow-md shadow-black/10",
+                                "w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg transition-all  ",
                                 quantity >= product.stock 
                                     ? "bg-slate-300 text-slate-500 cursor-not-allowed" 
                                     : "bg-black text-white hover:bg-slate-900"

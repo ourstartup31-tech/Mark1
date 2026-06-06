@@ -51,7 +51,7 @@ export default function StoreSettingsPage() {
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
                 <div className="xl:col-span-2 space-y-8">
-                    <form onSubmit={handleUpdateInfo} className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                    <form onSubmit={handleUpdateInfo} className="bg-white p-10 rounded-[2.5rem] border border-gray-100  space-y-8">
                         <div className="flex items-center gap-4 mb-2">
                             <div className="p-3 bg-red-50 rounded-2xl text-[#D60000]">
                                 <Store size={24} />
@@ -66,12 +66,12 @@ export default function StoreSettingsPage() {
                             <Input label="Store Address" name="address" defaultValue={storeSettings.address} />
                         </div>
 
-                        <Button type="submit" className="bg-[#D60000] hover:bg-black text-white px-10 py-6 rounded-2xl transition-all shadow-xl shadow-red-600/10">
+                        <Button type="submit" className="bg-[#D60000] hover:bg-black text-white px-10 py-6 rounded-2xl transition-all  ">
                             Update Store Info
                         </Button>
                     </form>
 
-                    <section className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                    <section className="bg-white p-10 rounded-[2.5rem] border border-gray-100  space-y-8">
                         <div className="flex items-center gap-4 mb-2">
                             <div className="p-3 bg-red-50 rounded-2xl text-[#D60000]">
                                 <Clock size={24} />

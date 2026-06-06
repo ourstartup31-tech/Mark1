@@ -12,7 +12,7 @@ export function FeatureCard({ icon, title, description, className }: FeatureCard
     return (
         <div
             className={cn(
-                "group bg-white rounded-2xl border border-gray-100 p-8 hover:border-black hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-1 transition-all duration-300",
+                "group bg-white rounded-2xl border border-gray-100 p-8 hover:border-black   hover:-translate-y-1 transition-all duration-300",
                 className
             )}
         >

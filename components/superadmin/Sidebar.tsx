@@ -71,7 +71,7 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
                             className={`
                 flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-200 group
                 ${isActive
-                                    ? "text-white bg-indigo-600 shadow-sm"
+                                    ? "text-white bg-indigo-600 "
                                     : "text-slate-400 hover:text-white hover:bg-white/5"
                                 }
                 ${collapsed ? "justify-center" : ""}

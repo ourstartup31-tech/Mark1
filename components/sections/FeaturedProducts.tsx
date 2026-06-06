@@ -53,7 +53,7 @@ export function FeaturedProducts() {
                 </AnimatedSection>
 
                 {/* Blinkit Style Layout */}
-                <div className="flex bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden h-[600px] md:h-[700px]">
+                <div className="flex bg-white border border-gray-200 rounded-xl  overflow-hidden h-[600px] md:h-[700px]">
                     {/* Left Sidebar - Categories */}
                     <div className="w-24 sm:w-32 flex-shrink-0 border-r border-gray-200 overflow-y-auto bg-gray-50 scrollbar-hide">
                         {displayTabs.map((tab: string) => {
@@ -66,7 +66,7 @@ export function FeaturedProducts() {
                                     className={cn(
                                         "w-full flex flex-col items-center justify-center p-3 sm:p-4 text-center border-b border-gray-200 transition-all",
                                         isActive 
-                                            ? "bg-white border-l-4 border-l-[#D60000] text-[#D60000] shadow-[inset_0_0_10px_rgba(0,0,0,0.02)]" 
+                                            ? "bg-white border-l-4 border-l-[#D60000] text-[#D60000] " 
                                             : "bg-gray-50 text-gray-500 hover:bg-gray-100 border-l-4 border-l-transparent"
                                     )}
                                 >

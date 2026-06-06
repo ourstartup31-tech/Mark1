@@ -48,7 +48,7 @@ export function RoleShowcase() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {roles.map((role, i) => (
                         <AnimatedSection key={role.title} delay={i * 80}>
-                            <div className="group bg-white rounded-[2rem] border border-gray-100 p-10 hover:border-black hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-1 transition-all duration-500">
+                            <div className="group bg-white rounded-[2rem] border border-gray-100 p-10 hover:border-black   hover:-translate-y-1 transition-all duration-500">
                                 <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
                                     {role.emoji}
                                 </div>

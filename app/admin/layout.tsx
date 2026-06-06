@@ -64,7 +64,7 @@ export default function AdminLayout({
                 <div className="lg:hidden px-10 py-4 bg-white border-b border-gray-100 flex items-center justify-between">
                     <button
                         onClick={() => setIsSidebarOpen(true)}
-                        className="p-3 bg-black text-white rounded-xl shadow-lg shadow-black/20"
+                        className="p-3 bg-black text-white rounded-xl  "
                     >
                         <Menu size={20} />
                     </button>

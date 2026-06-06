@@ -47,7 +47,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
 
             {/* Modal Content */}
             <div className={cn(
-                "relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300 max-h-[90vh] overflow-y-auto",
+                "relative bg-white w-full max-w-lg rounded-[2.5rem]  overflow-hidden animate-in zoom-in-95 fade-in duration-300 max-h-[90vh] overflow-y-auto",
                 className
             )}>
                 {/* Header */}

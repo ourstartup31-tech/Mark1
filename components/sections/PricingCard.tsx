@@ -32,8 +32,8 @@ export function PricingCard({
             className={cn(
                 "relative flex flex-col rounded-[2rem] border p-10 transition-all duration-500",
                 highlighted
-                    ? "border-black bg-black text-white shadow-2xl shadow-black/20 scale-[1.02] z-10"
-                    : "border-gray-100 bg-white text-black hover:border-gray-200 hover:shadow-xl hover:shadow-gray-200/50",
+                    ? "border-black bg-black text-white   scale-[1.02] z-10"
+                    : "border-gray-100 bg-white text-black hover:border-gray-200  ",
                 className
             )}
         >

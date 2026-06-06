@@ -50,7 +50,7 @@ export function Hero() {
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mt-10">
                             <a
                                 href="#categories"
-                                className="w-full sm:w-auto bg-[#D60000] text-white text-[11px] uppercase tracking-widest px-8 py-4 rounded font-medium hover:bg-[#B50000] transition-all shadow-lg shadow-red-600/20 active:scale-95 text-center"
+                                className="w-full sm:w-auto bg-[#D60000] text-white text-[11px] uppercase tracking-widest px-8 py-4 rounded font-medium hover:bg-[#B50000] transition-all   active:scale-95 text-center"
                             >
                                 Start Shopping
                             </a>
@@ -67,8 +67,8 @@ export function Hero() {
                         <div className={cn(
                             "group relative flex items-center justify-center p-3 xs:p-5 md:p-8 transition-all duration-500 hover:scale-105 rotate-[-12deg] lg:rotate-[-8deg] origin-center",
                             isOpen
-                                ? "bg-[#27AE60] shadow-[5px_5px_0_#000000] lg:shadow-[8px_8px_0_#000000]"
-                                : "bg-rose-500 shadow-[5px_5px_0_#000000] lg:shadow-[8px_8px_0_#000000]"
+                                ? "bg-[#27AE60]  "
+                                : "bg-rose-500  "
                         )}
                             style={{
                                 borderRadius: '45% 55% 50% 50% / 50% 50% 45% 55%',
@@ -82,13 +82,13 @@ export function Hero() {
                             )}></div>
 
                             <div className="relative flex flex-col items-center text-center">
-                                <span className="text-white font-black text-base xs:text-lg md:text-3xl leading-[0.85] tracking-tight uppercase italic drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                                <span className="text-white font-black text-base xs:text-lg md:text-3xl leading-[0.85] tracking-tight uppercase italic ">
                                     {isOpen ? "NOW" : "CLOSED"} <br /> {isOpen ? "OPEN" : "NOW"}
                                 </span>
                                 
                                 {!isOpen && (
                                     <div className="mt-2 flex items-center gap-1.5 bg-black/30 px-2 py-0.5 rounded-full border border-black/10">
-                                        <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full shadow-inner bg-white/50"></div>
+                                        <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full  bg-white/50"></div>
                                         <span className="text-[7.5px] lg:text-[9px] text-white font-black tracking-widest uppercase">
                                             Opens Tomorrow 10AM
                                         </span>

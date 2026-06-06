@@ -43,7 +43,7 @@ export default function ShopPage() {
                         </div>
                         <button 
                             onClick={() => setIsMobileFilterOpen(true)}
-                            className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium shadow-sm"
+                            className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium "
                         >
                             <Filter size={16} />
                             Filters

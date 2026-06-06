@@ -151,7 +151,7 @@ export default function OrdersPage() {
             {/* Stats Header */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {stats.map((stat, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-between">
+                    <div key={idx} className="bg-white p-6 rounded-[2rem] border border-gray-100  flex items-center justify-between">
                         <span className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">{stat.label}</span>
                         <span className={`text-xl font-medium ${stat.color}`}>{stat.count}</span>
                     </div>

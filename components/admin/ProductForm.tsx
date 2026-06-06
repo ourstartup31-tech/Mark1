@@ -128,7 +128,7 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
                             onClick={() => fileInputRef.current?.click()}
                             className="border-2 border-dashed border-gray-100 rounded-2xl p-8 flex flex-col items-center justify-center gap-3 bg-gray-50/30 hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer group"
                         >
-                            <div className="p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform">
+                            <div className="p-3 bg-white rounded-xl  group-hover:scale-110 transition-transform">
                                 <Upload size={20} className="text-gray-400" />
                             </div>
                             <p className="text-xs font-medium text-gray-400">Click to upload or drag and drop</p>

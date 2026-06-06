@@ -112,7 +112,7 @@ export default function OrdersPage() {
                     </div>
                 ) : orders.length === 0 ? (
                     <div className="text-center py-20 bg-gray-50 rounded-[2.5rem] border border-gray-100 border-dashed">
-                        <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center border border-gray-100 mx-auto mb-6 shadow-sm">
+                        <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center border border-gray-100 mx-auto mb-6 ">
                             <ShoppingBag size={32} className="text-gray-200" />
                         </div>
                         <h2 className="font-medium text-xl text-black">No orders yet</h2>
@@ -127,7 +127,7 @@ export default function OrdersPage() {
                             <Link 
                                 href={`/orders/${order.id}`}
                                 key={order.id}
-                                className="block group bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-[#D60000]/20 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-500"
+                                className="block group bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-[#D60000]/20   transition-all duration-500"
                             >
                                 <div className="px-8 py-6 flex flex-wrap items-center justify-between gap-4 border-b border-gray-50">
                                     <div className="flex items-center gap-4">

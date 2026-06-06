@@ -88,7 +88,7 @@ export function CartDrawer() {
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 bottom-0 z-50 w-full sm:max-w-sm bg-white shadow-2xl flex flex-col animate-slide-in-r sm:rounded-l-3xl overflow-hidden">
+            <div className="fixed top-0 right-0 bottom-0 z-50 w-full sm:max-w-sm bg-white  flex flex-col animate-slide-in-r sm:rounded-l-3xl overflow-hidden">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 flex-shrink-0">
@@ -140,7 +140,7 @@ export function CartDrawer() {
                                 {items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="group flex items-center gap-2.5 bg-white border border-slate-100 rounded-xl p-2.5 hover:border-black hover:shadow-md transition-all duration-200"
+                                        className="group flex items-center gap-2.5 bg-white border border-slate-100 rounded-xl p-2.5 hover:border-black  transition-all duration-200"
                                     >
                                         <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100 flex-shrink-0">
                                             <span className="text-lg">{item.products.emoji || "📦"}</span>
@@ -205,7 +205,7 @@ export function CartDrawer() {
                                             className={cn(
                                                 "group flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all duration-200",
                                                 paymentMethod === method.id
-                                                    ? "border-black bg-black text-white shadow-lg shadow-black/10"
+                                                    ? "border-black bg-black text-white  "
                                                     : "border-slate-100 bg-white hover:border-slate-300"
                                             )}
                                         >
@@ -253,7 +253,7 @@ export function CartDrawer() {
                             <button
                                 onClick={handleCheckout}
                                 disabled={!canCheckout}
-                                className="w-full py-3.5 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-red-600/15 text-xs uppercase tracking-widest"
+                                className="w-full py-3.5 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-200   text-xs uppercase tracking-widest"
                             >
                                 Secure Checkout
                             </button>

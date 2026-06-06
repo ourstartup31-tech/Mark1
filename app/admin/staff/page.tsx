@@ -120,7 +120,7 @@ export default function StaffPage() {
                 </div>
                 <Button
                     onClick={handleAdd}
-                    className="bg-[#D60000] hover:bg-black text-white px-8 py-6 rounded-2xl flex items-center gap-3 transition-all shadow-xl shadow-red-600/10"
+                    className="bg-[#D60000] hover:bg-black text-white px-8 py-6 rounded-2xl flex items-center gap-3 transition-all  "
                 >
                     <Plus size={20} />
                     Add Staff Member

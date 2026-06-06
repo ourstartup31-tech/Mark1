@@ -23,7 +23,7 @@ export default function SubscriptionsPage() {
             </div>
 
             {/* Filter bar */}
-            <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded shadow-sm">
+            <div className="flex items-center gap-4 bg-white border border-slate-200 p-4 rounded ">
                 <div className="relative flex-1 max-w-sm">
                     <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
@@ -36,7 +36,7 @@ export default function SubscriptionsPage() {
             </div>
 
             {/* Subscription Table */}
-            <div className="bg-white border border-slate-200 rounded shadow-sm overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded  overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs border-collapse">
                         <thead>

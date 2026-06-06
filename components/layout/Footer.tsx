@@ -34,14 +34,12 @@ export function Footer() {
                                 links: [
                                     { label: "Our Story", href: "/about" },
                                     { label: "Quality Promise", href: "/about#quality" },
-                                    { label: "Store Hours", href: "/contact" },
                                     { label: "Careers", href: "/about#careers" }
                                 ],
                             },
                             {
                                 title: "Pickup Policy",
                                 links: [
-                                    { label: "Pickup Hours", href: "/contact" },
                                     { label: "How It Works", href: "/#how-it-works" },
                                     { label: "Return Policy", href: "/refund" },
                                     { label: "Track Order", href: "/orders" },

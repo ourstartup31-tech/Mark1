@@ -49,7 +49,7 @@ export default function DashboardPage() {
                     <h1 className="text-4xl font-medium text-black tracking-tight">Dashboard Overview</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Welcome back! Here's what's happening today.</p>
                 </div>
-                <div className="flex items-center gap-3 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-3 bg-white p-2 rounded-2xl border border-gray-100 ">
                     <div className="px-4 py-2 bg-gray-50 rounded-xl flex items-center gap-3 text-xs font-medium text-gray-500 uppercase tracking-widest">
                         <Calendar size={14} className="text-[#D60000]" />
                         March 1, 2026

@@ -96,7 +96,7 @@ export default function CartPage() {
             {/* Empty State */}
             {items.length === 0 && (
                 <div className="flex flex-col items-center justify-center min-h-[70vh] gap-5 px-6">
-                    <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center border border-gray-100 shadow-sm">
+                    <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center border border-gray-100 ">
                         <ShoppingCart size={40} className="text-gray-200" />
                     </div>
                     <div className="text-center">
@@ -120,7 +120,7 @@ export default function CartPage() {
                     <div className="space-y-4">
 
                         {/* Items Card */}
-                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div className="bg-white rounded-2xl border border-gray-100  overflow-hidden">
                             <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                                 <h2 className="font-medium text-sm text-black uppercase tracking-widest">
                                     Items ({totalItems})
@@ -176,7 +176,7 @@ export default function CartPage() {
                         </div>
 
                         {/* Pickup Schedule Card */}
-                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <div className="bg-white rounded-2xl border border-gray-100  p-5">
                             <h3 className="font-medium text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <CalendarClock size={14} className="text-[#D60000]" />
                                 Pickup Schedule
@@ -185,7 +185,7 @@ export default function CartPage() {
                         </div>
 
                         {/* Payment Method Card */}
-                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <div className="bg-white rounded-2xl border border-gray-100  p-5">
                             <h3 className="font-medium text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <CreditCard size={14} className="text-[#D60000]" />
                                 Payment Method
@@ -202,7 +202,7 @@ export default function CartPage() {
                                         className={cn(
                                             "flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 text-left",
                                             paymentMethod === method.id
-                                                ? "border-black bg-black text-white shadow-lg"
+                                                ? "border-black bg-black text-white "
                                                 : "border-gray-100 bg-white hover:border-gray-300"
                                         )}
                                     >
@@ -226,7 +226,7 @@ export default function CartPage() {
 
                     {/* RIGHT: Order Summary */}
                     <div className="lg:sticky lg:top-20 self-start">
-                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div className="bg-white rounded-2xl border border-gray-100  overflow-hidden">
                             <div className="px-5 py-4 border-b border-gray-50">
                                 <h2 className="font-medium text-sm text-black uppercase tracking-widest">Order Summary</h2>
                             </div>
@@ -266,7 +266,7 @@ export default function CartPage() {
                                 <button
                                     onClick={handleCheckout}
                                     disabled={!canCheckout}
-                                    className="w-full py-4 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 text-xs uppercase tracking-widest shadow-lg shadow-red-600/15"
+                                    className="w-full py-4 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 text-xs uppercase tracking-widest  "
                                 >
                                     Place Order
                                 </button>

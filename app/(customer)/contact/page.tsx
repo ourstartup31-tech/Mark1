@@ -11,7 +11,7 @@ export default function ContactPage() {
       <Navbar />
       <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 pt-32 pb-24 w-full">
         <h1 className="text-4xl font-medium text-black mb-8">Contact Us</h1>
-        <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm max-w-2xl">
+        <div className="bg-white rounded-2xl p-8 border border-gray-100  max-w-2xl">
           <p className="text-gray-600 mb-8 text-lg">
             We'd love to hear from you. Whether you have a question about an order, 
             need help with the platform, or just want to share feedback, our team is ready to assist.

@@ -145,7 +145,7 @@ export default function OrderDetailsPage() {
                 {/* Left Column: Customer & Items */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Customer & Delivery Card */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Customer & Pickup Info</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-4">
@@ -190,13 +190,13 @@ export default function OrderDetailsPage() {
                     </div>
 
                     {/* Order Items Table */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Line Items</h2>
                         <div className="space-y-4">
                             {order.order_items?.map((item: any) => (
                                 <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-medium text-2xl shadow-sm border border-gray-100">
+                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-medium text-2xl  border border-gray-100">
                                             {item.products?.emoji || "📦"}
                                         </div>
                                         <div>
@@ -214,7 +214,7 @@ export default function OrderDetailsPage() {
                 {/* Right Column: Summary & Actions */}
                 <div className="space-y-6">
                     {/* Payment Summary */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
                         <div className="space-y-4 mb-6">
                             <div className="flex items-center justify-between">
@@ -232,7 +232,7 @@ export default function OrderDetailsPage() {
                         </div>
 
                         <div className="p-4 bg-gray-50 rounded-2xl flex items-center gap-3">
-                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 shadow-sm">
+                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 ">
                                 <CreditCard size={18} />
                             </div>
                             <div>
@@ -243,7 +243,7 @@ export default function OrderDetailsPage() {
                     </div>
 
                     {/* Status Update Card */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Manage Status</h2>
                         
                         <div className="grid grid-cols-2 gap-3 mb-6">

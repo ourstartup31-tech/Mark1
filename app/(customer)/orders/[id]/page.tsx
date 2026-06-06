@@ -192,7 +192,7 @@ export default function CustomerOrderDetailsPage() {
                         <div className="space-y-4">
                             <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest pl-2">Items Ordered</h2>
                             {order.order_items?.map((item: any) => (
-                                <div key={item.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-shadow">
+                                <div key={item.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl  transition-shadow">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center font-medium text-2xl border border-gray-100">
                                             {item.products?.emoji || "📦"}
@@ -212,7 +212,7 @@ export default function CustomerOrderDetailsPage() {
                     <div className="space-y-6">
                         
                         {/* Pickup Info Card */}
-                        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                             <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-6">Pickup Details</h2>
                             
                             <div className="space-y-6">
@@ -246,7 +246,7 @@ export default function CustomerOrderDetailsPage() {
                         </div>
 
                         {/* Payment Summary */}
-                        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 ">
                             <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
                             <div className="space-y-4 mb-6">
                                 <div className="flex items-center justify-between">
@@ -264,7 +264,7 @@ export default function CustomerOrderDetailsPage() {
                             </div>
 
                             <div className="p-4 bg-gray-50 rounded-2xl flex items-center gap-3 border border-gray-100">
-                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 shadow-sm border border-gray-100">
+                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400  border border-gray-100">
                                     <CreditCard size={18} />
                                 </div>
                                 <div>

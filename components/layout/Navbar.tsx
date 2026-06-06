@@ -59,7 +59,7 @@ export function Navbar() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 h-12">
                     {/* Logo - Mobile-first sizing */}
                     <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#D60000]/5 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#D60000]/10 shadow-sm group-hover:scale-105 transition-transform">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#D60000]/5 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#D60000]/10  group-hover:scale-105 transition-transform">
                             <Store size={18} className="text-[#D60000]" />
                         </div>
                         <div className="hidden xs:block">
@@ -88,7 +88,7 @@ export function Navbar() {
                     <div className="flex items-center gap-1 sm:gap-3">
                         {/* Persistent Search Bar */}
                         <div className="hidden md:block relative group w-48 lg:w-56 xl:w-72">
-                            <div className="flex items-center gap-2 bg-gray-50/50 border border-gray-100 rounded-xl px-3 py-2 transition-all group-focus-within:bg-white group-focus-within:border-[#D60000]/20 group-focus-within:shadow-sm">
+                            <div className="flex items-center gap-2 bg-gray-50/50 border border-gray-100 rounded-xl px-3 py-2 transition-all group-focus-within:bg-white group-focus-within:border-[#D60000]/20 ">
                                 <button onClick={handleSearch} className="focus:outline-none flex items-center justify-center">
                                     <Search size={15} className="text-gray-400 flex-shrink-0 hover:text-[#D60000] transition-colors" />
                                 </button>
@@ -136,7 +136,7 @@ export function Navbar() {
                                 </Link>
                                 <button
                                     onClick={logout}
-                                    className="inline-flex items-center gap-1.5 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-black active:scale-95 transition-all shadow-sm"
+                                    className="inline-flex items-center gap-1.5 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-black active:scale-95 transition-all "
                                 >
                                     Logout
                                 </button>
@@ -144,7 +144,7 @@ export function Navbar() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="hidden lg:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
+                                className="hidden lg:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all "
                             >
                                 Login
                             </Link>
@@ -169,11 +169,11 @@ export function Navbar() {
                         className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
                         onClick={() => setMobileOpen(false)}
                     />
-                    <div className="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white shadow-2xl flex flex-col">
+                    <div className="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white  flex flex-col">
                         {/* Drawer header — white */}
                         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 mb-2">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center shadow-sm">
+                                <div className="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center ">
                                     <Store size={16} className="text-[#D60000]" />
                                 </div>
                                 <span className="font-medium text-base text-black uppercase tracking-tight">
@@ -220,7 +220,7 @@ export function Navbar() {
                         <div className="px-6 pb-8 space-y-3">
                             <button
                                 onClick={() => { setMobileOpen(false); router.push("/cart"); }}
-                                className="w-full flex items-center justify-center gap-2 bg-black text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-gray-900 active:scale-95 transition-all shadow-md shadow-black/5"
+                                className="w-full flex items-center justify-center gap-2 bg-black text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-gray-900 active:scale-95 transition-all  "
                             >
                                 <ShoppingCart size={16} />
                                 View Cart {totalItems > 0 && `(${totalItems})`}
@@ -245,7 +245,7 @@ export function Navbar() {
                                     </Link>
                                     <button
                                         onClick={() => { setMobileOpen(false); logout(); }}
-                                        className="w-full flex items-center justify-center gap-2 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-black active:scale-95 transition-all shadow-md shadow-black/5"
+                                        className="w-full flex items-center justify-center gap-2 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-black active:scale-95 transition-all  "
                                     >
                                         <LogOut size={16} />
                                         Logout

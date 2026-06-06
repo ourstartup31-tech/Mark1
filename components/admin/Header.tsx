@@ -18,7 +18,7 @@ export function Header() {
                         placeholder="Search dashboard..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl py-3 pl-12 pr-6 text-sm font-medium outline-none focus:bg-white focus:border-black focus:shadow-lg focus:shadow-gray-200/50 transition-all"
+                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl py-3 pl-12 pr-6 text-sm font-medium outline-none focus:bg-white focus:border-black   transition-all"
                     />
                 </div>
             </div>

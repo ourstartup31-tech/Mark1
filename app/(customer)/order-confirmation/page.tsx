@@ -77,7 +77,7 @@ function OrderConfirmationContent() {
 
                     {/* Left - Details */}
                     <div className="space-y-6">
-                        <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-xl shadow-gray-200/20">
+                        <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden  ">
                             <div className="px-8 py-6 bg-gray-50 border-b border-gray-50">
                                 <h2 className="font-medium text-[10px] text-gray-400 uppercase tracking-[0.2em]">Transaction Details</h2>
                             </div>
@@ -119,7 +119,7 @@ function OrderConfirmationContent() {
 
                         {/* Order Summary */}
                         {orderData && orderData.order_items && orderData.order_items.length > 0 && (
-                            <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-xl shadow-gray-200/20">
+                            <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden  ">
                                 <div className="px-8 py-6 bg-gray-50 border-b border-gray-50">
                                     <h2 className="font-medium text-[10px] text-gray-400 uppercase tracking-[0.2em]">Order Summary</h2>
                                 </div>
@@ -160,7 +160,7 @@ function OrderConfirmationContent() {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link
                                 href="/"
-                                className="flex-1 flex items-center justify-center gap-3 bg-black text-white font-medium py-5 rounded-2xl hover:bg-gray-900 active:scale-[0.98] transition-all shadow-xl shadow-black/10 uppercase tracking-widest text-[11px]"
+                                className="flex-1 flex items-center justify-center gap-3 bg-black text-white font-medium py-5 rounded-2xl hover:bg-gray-900 active:scale-[0.98] transition-all   uppercase tracking-widest text-[11px]"
                             >
                                 <ShoppingBag size={14} />
                                 Home
@@ -175,7 +175,7 @@ function OrderConfirmationContent() {
                     </div>
 
                     {/* Right - Instructions */}
-                    <div className="bg-[#0A0A0A] text-white rounded-[2rem] p-10 relative overflow-hidden shadow-2xl shadow-black/40">
+                    <div className="bg-[#0A0A0A] text-white rounded-[2rem] p-10 relative overflow-hidden  ">
                         <div
                             className="absolute -bottom-24 -right-24 w-64 h-64 rounded-full blur-[100px] bg-[#D60000]/20 pointer-events-none"
                         />

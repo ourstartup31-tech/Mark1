@@ -32,14 +32,14 @@ export default function SettingsPage() {
                     <p className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-widest">Configure platform-wide preferences</p>
                 </div>
                 <button onClick={handleSave}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium text-xs rounded uppercase tracking-widest hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm">
+                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium text-xs rounded uppercase tracking-widest hover:bg-indigo-700 active:scale-[0.98] transition-all ">
                     <Save size={14} />
                     {saved ? "Saved!" : "Save Changes"}
                 </button>
             </div>
 
             {/* 1. General Settings */}
-            <div className="bg-white rounded border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded border border-slate-200  overflow-hidden">
                 <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-100 bg-slate-50/50">
                     <div className="w-8 h-8 rounded bg-indigo-50 flex items-center justify-center">
                         <Settings size={16} className="text-indigo-600" />
@@ -88,7 +88,7 @@ export default function SettingsPage() {
 
             {/* Save banner */}
             {saved && (
-                <div className="fixed bottom-6 right-6 z-[200] bg-slate-900 text-white text-[10px] font-medium uppercase tracking-widest px-5 py-3 rounded shadow-xl flex items-center gap-3 border border-slate-700">
+                <div className="fixed bottom-6 right-6 z-[200] bg-slate-900 text-white text-[10px] font-medium uppercase tracking-widest px-5 py-3 rounded  flex items-center gap-3 border border-slate-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     Settings saved successfully!
                 </div>

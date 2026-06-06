@@ -41,7 +41,7 @@ export default function SuperAdminDashboard() {
             {/* Simple Metric Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {metrics.map((m) => (
-                    <div key={m.label} className="bg-white border border-slate-200 p-6 rounded shadow-sm">
+                    <div key={m.label} className="bg-white border border-slate-200 p-6 rounded ">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-8 h-8 rounded bg-slate-50 flex items-center justify-center border border-slate-100">
                                 <m.icon size={16} className={m.color || "text-slate-400"} />

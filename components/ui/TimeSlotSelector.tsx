@@ -93,7 +93,7 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
                             className={cn(
                                 "flex-1 py-1.5 rounded-lg text-[10px] font-medium uppercase tracking-widest transition-all",
                                 activeDay === day
-                                    ? "bg-white text-black shadow-sm"
+                                    ? "bg-white text-black "
                                     : "text-gray-400 hover:text-black",
                                 isDisabled && "opacity-40 cursor-not-allowed hover:text-gray-400"
                             )}
@@ -120,7 +120,7 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
                         className={cn(
                             "py-2 px-2 rounded-lg text-[9px] font-medium border transition-all duration-200 text-center leading-tight",
                             isSelected(slot)
-                                ? "bg-black border-black text-white shadow-md"
+                                ? "bg-black border-black text-white "
                                 : "bg-white border-gray-100 text-gray-500 hover:border-black hover:text-black"
                         )}
                     >

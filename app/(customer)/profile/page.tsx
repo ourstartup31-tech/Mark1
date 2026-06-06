@@ -75,7 +75,7 @@ export default function ProfilePage() {
 
                     {/* Main Content Area */}
                     <div className="flex-1 space-y-10">
-                        <div className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm space-y-10">
+                        <div className="bg-white p-10 rounded-[3rem] border border-gray-100  space-y-10">
                             <div>
                                 <h2 className="text-3xl font-medium text-black tracking-tight">Personal Details</h2>
                                 <p className="text-gray-400 font-medium mt-1 italic">Manage your profile information.</p>
@@ -123,7 +123,7 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="pt-6 border-t border-gray-100">
-                                <button className="px-10 py-4 bg-black text-white font-medium rounded-2xl hover:bg-[#D60000] active:scale-95 transition-all text-sm uppercase tracking-widest shadow-xl shadow-black/5">
+                                <button className="px-10 py-4 bg-black text-white font-medium rounded-2xl hover:bg-[#D60000] active:scale-95 transition-all text-sm uppercase tracking-widest  ">
                                     Update Profile
                                 </button>
                                 <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-6 italic">
@@ -133,7 +133,7 @@ export default function ProfilePage() {
                         </div>
 
                         {/* Order History Preview Card */}
-                        <div className="bg-black rounded-[3rem] p-12 text-white relative overflow-hidden group shadow-2xl shadow-black/10">
+                        <div className="bg-black rounded-[3rem] p-12 text-white relative overflow-hidden group  ">
                             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                                 <div className="space-y-2 text-center md:text-left">
                                     <h3 className="text-2xl font-medium tracking-tight">Recent Activity?</h3>

@@ -23,7 +23,7 @@ export default function AdminProfilePage() {
             </Link>
 
             {/* Profile Header Card */}
-            <div className="bg-black rounded-[3rem] p-10 lg:p-16 text-white relative overflow-hidden group shadow-2xl shadow-black/20">
+            <div className="bg-black rounded-[3rem] p-10 lg:p-16 text-white relative overflow-hidden group  ">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#D60000] rounded-full -mr-32 -mt-32 blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-600 rounded-full -ml-24 -mb-24 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity duration-1000" />
                 
@@ -32,13 +32,13 @@ export default function AdminProfilePage() {
                         <div className="w-32 h-32 lg:w-40 lg:h-40 bg-white/10 rounded-[2.5rem] backdrop-blur-md border border-white/20 flex items-center justify-center text-5xl lg:text-6xl font-medium transition-transform duration-500 group-hover:scale-105">
                             {displayName.substring(0, 1).toUpperCase()}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-2xl border-4 border-black flex items-center justify-center shadow-lg">
+                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-2xl border-4 border-black flex items-center justify-center ">
                             <Shield size={18} className="text-white" />
                         </div>
                     </div>
 
                     <div className="text-center md:text-left space-y-4">
-                        <div className="inline-flex px-4 py-1.5 bg-[#D60000] rounded-full text-[10px] font-medium uppercase tracking-widest mb-2 shadow-lg shadow-red-600/20">
+                        <div className="inline-flex px-4 py-1.5 bg-[#D60000] rounded-full text-[10px] font-medium uppercase tracking-widest mb-2  ">
                             System Administrator
                         </div>
                         <h1 className="text-4xl lg:text-5xl font-medium tracking-tight">{displayName}</h1>
@@ -50,7 +50,7 @@ export default function AdminProfilePage() {
             {/* Details Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Account Details */}
-                <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100  space-y-8">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-red-50 rounded-2xl text-[#D60000]">
                             <User size={24} />
@@ -72,7 +72,7 @@ export default function AdminProfilePage() {
                 </div>
 
                 {/* Role & Access */}
-                <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100  space-y-8">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
                             <Shield size={24} />

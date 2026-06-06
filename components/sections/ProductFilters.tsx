@@ -45,7 +45,7 @@ export function ProductFilters({ categories, onApply, onClose, initialFilters, i
     };
 
     return (
-        <div className={cn("flex flex-col bg-white overflow-hidden", isMobile ? "h-full w-full" : "h-[600px] rounded-xl border border-gray-200 shadow-sm")}>
+        <div className={cn("flex flex-col bg-white overflow-hidden", isMobile ? "h-full w-full" : "h-[600px] rounded-xl border border-gray-200 ")}>
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100 flex-shrink-0">
                 <h2 className="text-lg font-medium text-gray-800">Filters</h2>

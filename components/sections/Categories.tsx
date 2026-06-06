@@ -37,7 +37,7 @@ export function Categories() {
                         <AnimatedSection key={cat.id} delay={i * 60}>
                             <button 
                                 onClick={() => handleCategoryClick(cat.name)}
-                                className="w-full group bg-white border border-slate-100 rounded-2xl p-4 sm:p-6 text-center hover:border-black hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                                className="w-full group bg-white border border-slate-100 rounded-2xl p-4 sm:p-6 text-center hover:border-black   hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                             >
                                 <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                                     {cat.emoji}

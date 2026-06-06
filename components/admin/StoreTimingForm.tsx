@@ -82,7 +82,7 @@ export function StoreTimingForm() {
             </div>
 
             <div className="flex justify-end">
-                <Button onClick={handleSave} className="px-10 py-6 rounded-2xl bg-[#D60000] hover:bg-black text-white transition-all shadow-xl shadow-red-600/10 font-medium uppercase tracking-widest text-xs">
+                <Button onClick={handleSave} className="px-10 py-6 rounded-2xl bg-[#D60000] hover:bg-black text-white transition-all   font-medium uppercase tracking-widest text-xs">
                     Save Operating Hours
                 </Button>
             </div>

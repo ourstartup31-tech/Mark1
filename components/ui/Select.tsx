@@ -28,7 +28,7 @@ export function Select({ label, options, onChange, error, className, ...props }:
                 <select
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-black outline-none transition-all focus:border-black focus:bg-white focus:shadow-lg focus:shadow-gray-200/50",
+                        "w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-black outline-none transition-all focus:border-black focus:bg-white  ",
                         error ? "border-red-500 focus:border-red-500" : "",
                         className
                     )}

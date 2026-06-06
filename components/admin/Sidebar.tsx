@@ -56,7 +56,7 @@ export function Sidebar() {
                             className={cn(
                                 "group flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300",
                                 isActive
-                                    ? "bg-[#D60000] text-white shadow-xl shadow-red-600/20"
+                                    ? "bg-[#D60000] text-white  "
                                     : "text-gray-400 hover:text-white hover:bg-white/5"
                             )}
                         >

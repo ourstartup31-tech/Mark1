@@ -48,7 +48,7 @@ export function SearchResults() {
                     ))}
                 </div>
             ) : query && filtered.length === 0 ? (
-                <AnimatedSection className="py-16 text-center bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <AnimatedSection className="py-16 text-center bg-white rounded-2xl border border-gray-100 ">
                     <p className="text-lg text-gray-500 font-medium">
                         No products found for '{query}'.
                     </p>

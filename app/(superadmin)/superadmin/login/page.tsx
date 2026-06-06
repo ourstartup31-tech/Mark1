@@ -103,7 +103,7 @@ export default function SuperAdminLoginPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/60 p-8 lg:p-10 border border-gray-100">
+                    <div className="bg-white rounded-3xl   p-8 lg:p-10 border border-gray-100">
                         <div className="mb-8">
                             <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4"
                                 style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
@@ -155,7 +155,7 @@ export default function SuperAdminLoginPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full h-12 flex items-center justify-center gap-2 text-white font-medium text-sm rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-200"
+                                className="w-full h-12 flex items-center justify-center gap-2 text-white font-medium text-sm rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed  "
                                 style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
                             >
                                 {loading ? (

@@ -142,7 +142,7 @@ function LoginContent() {
                     <div className="hidden md:flex absolute top-10 left-6 z-10 items-center gap-3">
                         <button
                             onClick={() => router.back()}
-                            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow-sm text-gray-700 hover:text-black transition-all backdrop-blur-sm"
+                            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white  text-gray-700 hover:text-black transition-all backdrop-blur-sm"
                             aria-label="Go back"
                         >
                             <ArrowLeft size={18} />
@@ -216,7 +216,7 @@ function LoginContent() {
                                 <button
                                     type="submit"
                                     disabled={loading || !identifier}
-                                    className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all shadow-sm mt-6"
+                                    className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all  mt-6"
                                 >
                                     {loading ? <Loader2 size={18} className="animate-spin" /> : "Request OTP"}
                                 </button>
@@ -231,7 +231,7 @@ function LoginContent() {
                                     <button 
                                         type="button" 
                                         onClick={handleGoogleLogin}
-                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
+                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 "
                                     >
                                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-[18px] h-[18px]" />
                                         Google
@@ -243,7 +243,7 @@ function LoginContent() {
                                             setIdentifier("");
                                             setErrors({});
                                         }}
-                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 shadow-sm"
+                                        className="h-12 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-700 "
                                     >
                                         {loginMethod === "phone" ? (
                                             <><Mail size={18} /> Email</>
@@ -282,7 +282,7 @@ function LoginContent() {
                                     <button
                                         type="submit"
                                         disabled={loading || otp.length < 6}
-                                        className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all shadow-sm mt-6"
+                                        className="w-full h-14 flex items-center justify-center gap-2 bg-[#D60000] text-white font-semibold text-[15px] rounded-md hover:bg-[#b50000] active:scale-[0.98] disabled:opacity-70 transition-all  mt-6"
                                     >
                                         {loading ? <Loader2 size={18} className="animate-spin" /> : "Verify OTP"}
                                     </button>

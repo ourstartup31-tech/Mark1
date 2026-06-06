@@ -47,10 +47,6 @@ export function FeaturedProducts() {
         <section id="products" className="bg-slate-50 py-16 lg:py-24">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <AnimatedSection className="text-center mb-8 lg:mb-12">
-                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-bold text-[#D60000] uppercase tracking-[0.2em] mb-4">
-                        <span className="w-1 h-1 rounded-full bg-[#D60000]" />
-                        Curated Selection
-                    </p>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black tracking-tight mb-2 text-balance">
                         Featured Products
                     </h2>

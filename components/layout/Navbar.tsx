@@ -70,7 +70,7 @@ export function Navbar() {
                     </Link>
 
                     {/* Desktop nav */}
-                    <nav className="hidden lg:flex items-center gap-1 flex-shrink-0">
+                    <nav className="hidden xl:flex items-center gap-1 flex-shrink-0">
                         {navLinks.map((l) => (
                             <Link
                                 key={l.href}
@@ -87,7 +87,7 @@ export function Navbar() {
                     {/* Right actions */}
                     <div className="flex items-center gap-1 sm:gap-3">
                         {/* Persistent Search Bar */}
-                        <div className="hidden md:block relative group w-64 lg:w-72">
+                        <div className="hidden md:block relative group w-48 lg:w-56 xl:w-72">
                             <div className="flex items-center gap-2 bg-gray-50/50 border border-gray-100 rounded-xl px-3 py-2 transition-all group-focus-within:bg-white group-focus-within:border-[#D60000]/20 group-focus-within:shadow-sm">
                                 <button onClick={handleSearch} className="focus:outline-none flex items-center justify-center">
                                     <Search size={15} className="text-gray-400 flex-shrink-0 hover:text-[#D60000] transition-colors" />
@@ -121,7 +121,7 @@ export function Navbar() {
 
                         {/* Auth Button - Desktop */}
                         {role ? (
-                            <div className="hidden sm:flex items-center gap-3">
+                            <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                                 <Link
                                     href="/profile"
                                     className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
@@ -144,7 +144,7 @@ export function Navbar() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
+                                className="hidden lg:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
                             >
                                 Login
                             </Link>
@@ -152,7 +152,7 @@ export function Navbar() {
 
                         {/* Mobile hamburger */}
                         <button
-                            className="md:hidden p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
+                            className="xl:hidden p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
                             onClick={() => setMobileOpen(true)}
                             aria-label="Open menu"
                         >

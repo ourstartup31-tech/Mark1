@@ -62,7 +62,7 @@ export function Hero() {
                 </div>
 
                 {/* RIGHT Visual Area — Ultra-Compact Status Bubble (Mobile Nav-Safe) */}
-                <div className="order-1 lg:order-2 flex justify-end items-start mt-4 xs:mt-0 -mt-12 xs:-mt-24 sm:-mt-40 lg:-mt-80 lg:-mr-16 px-4 sm:px-0">
+                <div className="order-1 lg:order-2 flex justify-end items-start mt-4 xs:mt-0 -mt-12 xs:-mt-24 sm:-mt-40 lg:-mt-60 px-4 sm:px-0">
                     <AnimatedSection delay={200} className="relative">
                         <div className={cn(
                             "group relative flex items-center justify-center p-3 xs:p-5 md:p-8 transition-all duration-500 hover:scale-105 rotate-[-12deg] lg:rotate-[-8deg] origin-center",

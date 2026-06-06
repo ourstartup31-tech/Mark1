@@ -15,7 +15,7 @@ const steps = [
         step: "02",
         Icon: CalendarClock,
         title: "Choose Pickup Time",
-        description: "Select a convenient time slot — today or tomorrow — to collect your order from the store.",
+        description: "Select a convenient time slot â€” today or tomorrow â€” to collect your order from the store.",
     },
     {
         step: "03",
@@ -51,7 +51,7 @@ export function HowItWorks() {
                         return (
                             <AnimatedSection key={step.step} delay={i * 140}>
                                 <div className="group relative h-full bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 sm:p-10 hover:border-white/20 hover:bg-white/[0.04] transition-all duration-500 cursor-default">
-                                    {/* Step indicator — subtle */}
+                                    {/* Step indicator â€” subtle */}
                                     <div className="text-[4rem] sm:text-[5rem] font-medium text-white/[0.02] absolute -top-2 -left-1 leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500">
                                         {step.step}
                                     </div>

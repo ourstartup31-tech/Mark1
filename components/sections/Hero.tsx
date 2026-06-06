@@ -34,7 +34,7 @@ export function Hero() {
                 {/* LEFT Content */}
                 <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left order-2 lg:order-1">
                     <AnimatedSection delay={100}>
-                        <h1 className="text-4xl xs:text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.1] tracking-tight text-balance">
+                        <h1 className="text-4xl xs:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight text-balance">
                             Freshness <br className="hidden xs:block" />
                             <span className="text-white/40">Reserved for You.</span>
                         </h1>

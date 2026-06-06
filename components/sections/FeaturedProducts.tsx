@@ -47,7 +47,7 @@ export function FeaturedProducts() {
         <section id="products" className="bg-slate-50 py-16 lg:py-24">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <AnimatedSection className="text-center mb-8 lg:mb-12">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-black tracking-tight mb-2 text-balance">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-black tracking-tight mb-2 text-balance">
                         Featured Products
                     </h2>
                 </AnimatedSection>

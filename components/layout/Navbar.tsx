@@ -169,7 +169,7 @@ export function Navbar() {
                         className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
                         onClick={() => setMobileOpen(false)}
                     />
-                    <div className="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white shadow-2xl flex flex-col animate-slide-in-r">
+                    <div className="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white shadow-2xl flex flex-col">
                         {/* Drawer header — white */}
                         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 mb-2">
                             <div className="flex items-center gap-2.5">

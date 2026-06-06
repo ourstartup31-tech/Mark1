@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Plus, Minus, ShoppingCart, Check, ImageIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/context/CartContext";
@@ -67,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Image placeholder or actual image */}
-            <div className="relative overflow-hidden group-hover:brightness-[0.98] transition-all duration-300">
+            <Link href={`/product/${product.id}`} className="block relative overflow-hidden group-hover:brightness-[0.98] transition-all duration-300">
                 {product.image ? (
                     <div className="w-full h-44 overflow-hidden">
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -75,14 +76,16 @@ export function ProductCard({ product }: ProductCardProps) {
                 ) : (
                     <ImagePlaceholder id={product.id} />
                 )}
-            </div>
+            </Link>
 
             {/* Content */}
             <div className="p-4 sm:p-5">
                 <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-[0.15em] mb-2">{product.category}</p>
-                <h3 className="font-bold text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
-                    {product.name}
-                </h3>
+                <Link href={`/product/${product.id}`}>
+                    <h3 className="font-bold text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
+                        {product.name}
+                    </h3>
+                </Link>
                 <p className="text-[10px] sm:text-xs text-slate-400 font-medium mb-4">per {product.unit}</p>
 
                 {/* Price */}

@@ -60,20 +60,28 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                 category_id: p.category_id
             }));
 
-            // Static category emojis if they aren't in the DB yet
-            const categoryEmojis: Record<string, string> = {
-                "Fruits & Vegetables": "🥦",
-                "Dairy": "🥛",
-                "Snacks": "🍿",
-                "Beverages": "🧃",
-                "Household": "🏠",
-                "Personal Care": "🪥",
-                "Default": "📁"
+            // Smart category emoji mapper
+            const getCategoryEmoji = (name: string) => {
+                const lowerName = name.toLowerCase();
+                if (lowerName.includes("fruit")) return "🍎";
+                if (lowerName.includes("veg")) return "🥬";
+                if (lowerName.includes("dairy") || lowerName.includes("milk")) return "🥛";
+                if (lowerName.includes("cloth") || lowerName.includes("apparel")) return "👕";
+                if (lowerName.includes("crocery") || lowerName.includes("grocer")) return "🛒";
+                if (lowerName.includes("snack") || lowerName.includes("chips")) return "🍿";
+                if (lowerName.includes("beverage") || lowerName.includes("drink")) return "🧃";
+                if (lowerName.includes("house") || lowerName.includes("home")) return "🏠";
+                if (lowerName.includes("care") || lowerName.includes("health")) return "🪥";
+                if (lowerName.includes("meat") || lowerName.includes("chicken")) return "🍗";
+                if (lowerName.includes("fish") || lowerName.includes("seafood")) return "🐟";
+                if (lowerName.includes("bakery") || lowerName.includes("bread")) return "🍞";
+                // Better default generic icon instead of folder
+                return "🛍️";
             };
 
             const categoriesWithCount = catData.map((cat: any) => ({
                 ...cat,
-                emoji: categoryEmojis[cat.name] || categoryEmojis["Default"],
+                emoji: getCategoryEmoji(cat.name),
                 count: mappedProducts.filter((p: any) => p.category_id === cat.id).length
             }));
 

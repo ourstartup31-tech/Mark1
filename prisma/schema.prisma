@@ -131,21 +131,23 @@ model subscriptions {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model users {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String?
-  phone         String    @unique
-  role          String    @default("customer")
-  store_id      String?   @db.Uuid
-  created_at    DateTime? @default(now()) @db.Timestamp(6)
-  carts         carts[]
-  orders        orders[]
-  owned_stores  stores[]
-  assigned_store stores?  @relation("StoreEmployees", fields: [store_id], references: [id])
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String?
+  phone          String?   @unique
+  email          String?   @unique
+  role           String    @default("customer")
+  store_id       String?   @db.Uuid
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  carts          carts[]
+  orders         orders[]
+  owned_stores   stores[]
+  assigned_store stores?   @relation("StoreEmployees", fields: [store_id], references: [id])
 }
 
 model otp_codes {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  phone      String
+  phone      String?
+  email      String?
   otp        String
   expires_at DateTime
   created_at DateTime @default(now()) @db.Timestamp(6)

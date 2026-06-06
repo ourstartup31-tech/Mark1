@@ -98,12 +98,10 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
     if (firstStore) defaultStoreId = firstStore.id;
 
     cartItems.forEach(item => {
-      let sId = item.products?.store_id || defaultStoreId;
+      let sId = item.products?.store_id || defaultStoreId || "NO_STORE";
       console.log(`[Order Create] Item: ${item.products?.name}, Final StoreID: ${sId}`);
-      if (sId) {
-        if (!itemsByStore[sId]) itemsByStore[sId] = [];
-        itemsByStore[sId].push(item);
-      }
+      if (!itemsByStore[sId]) itemsByStore[sId] = [];
+      itemsByStore[sId].push(item);
     });
 
     const ordersCreated: any[] = [];
@@ -127,7 +125,7 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
         const order = await tx.orders.create({
           data: {
             user_id: user.id,
-            store_id: storeId,
+            store_id: storeId === "NO_STORE" ? null : storeId,
             total_price: storeTotal,
             status: "pending",
             payment_method: payment_method || "pay-at-store",

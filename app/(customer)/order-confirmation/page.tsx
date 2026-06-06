@@ -121,7 +121,7 @@ function OrderConfirmationContent() {
                         {orderData && orderData.order_items && orderData.order_items.length > 0 && (
                             <div className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-xl shadow-gray-200/20">
                                 <div className="px-8 py-6 bg-gray-50 border-b border-gray-50">
-                                    <h2 className="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Items Ordered</h2>
+                                    <h2 className="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Order Summary</h2>
                                 </div>
                                 <div className="divide-y divide-gray-50">
                                     {orderData.order_items.map((item: any) => (
@@ -138,6 +138,20 @@ function OrderConfirmationContent() {
                                             <p className="font-bold text-sm text-black">₹{(Number(item.price) * item.quantity).toFixed(0)}</p>
                                         </div>
                                     ))}
+                                </div>
+                                <div className="px-8 py-6 bg-gray-50 border-t border-gray-50 space-y-3">
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-gray-500 font-medium">Subtotal</span>
+                                        <span className="font-bold text-black">₹{total}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-gray-500 font-medium">Taxes & Fees</span>
+                                        <span className="font-bold text-black">₹0</span>
+                                    </div>
+                                    <div className="pt-3 mt-3 border-t border-gray-200 flex justify-between">
+                                        <span className="font-bold text-base text-black">Total</span>
+                                        <span className="font-black text-xl text-[#D60000]">₹{total}</span>
+                                    </div>
                                 </div>
                             </div>
                         )}

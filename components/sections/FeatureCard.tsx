@@ -19,7 +19,7 @@ export function FeatureCard({ icon, title, description, className }: FeatureCard
             <div className="text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
                 {icon}
             </div>
-            <h3 className="font-bold text-lg text-black mb-2 tracking-tight">{title}</h3>
+            <h3 className="font-medium text-lg text-black mb-2 tracking-tight">{title}</h3>
             <p className="text-gray-500 text-sm font-medium leading-relaxed">{description}</p>
         </div>
     );

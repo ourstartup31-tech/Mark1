@@ -34,7 +34,7 @@ export function Hero() {
                 {/* LEFT Content */}
                 <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left order-2 lg:order-1">
                     <AnimatedSection delay={100}>
-                        <h1 className="text-4xl xs:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight text-balance">
+                        <h1 className="text-4xl xs:text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.1] tracking-tight text-balance">
                             Freshness <br className="hidden xs:block" />
                             <span className="text-white/40">Reserved for You.</span>
                         </h1>
@@ -50,11 +50,11 @@ export function Hero() {
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mt-10">
                             <a
                                 href="#categories"
-                                className="w-full sm:w-auto bg-[#D60000] text-white text-[11px] uppercase tracking-widest px-8 py-4 rounded font-bold hover:bg-[#B50000] transition-all shadow-lg shadow-red-600/20 active:scale-95 text-center"
+                                className="w-full sm:w-auto bg-[#D60000] text-white text-[11px] uppercase tracking-widest px-8 py-4 rounded font-medium hover:bg-[#B50000] transition-all shadow-lg shadow-red-600/20 active:scale-95 text-center"
                             >
                                 Start Shopping
                             </a>
-                            <button className="w-full sm:w-auto bg-white/10 text-white border border-white/20 text-[11px] uppercase tracking-widest px-8 py-4 rounded font-bold hover:bg-white/20 transition-all active:scale-95 backdrop-blur-sm">
+                            <button className="w-full sm:w-auto bg-white/10 text-white border border-white/20 text-[11px] uppercase tracking-widest px-8 py-4 rounded font-medium hover:bg-white/20 transition-all active:scale-95 backdrop-blur-sm">
                                 How it Works
                             </button>
                         </div>

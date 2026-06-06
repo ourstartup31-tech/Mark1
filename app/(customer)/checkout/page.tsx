@@ -90,8 +90,8 @@ export default function CheckoutPage() {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="text-5xl">🛒</div>
-                    <h2 className="text-2xl font-bold">Your cart is empty</h2>
-                    <Link href="/" className="inline-block bg-[#D60000] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#b50000] transition-all">
+                    <h2 className="text-2xl font-medium">Your cart is empty</h2>
+                    <Link href="/" className="inline-block bg-[#D60000] text-white font-medium px-6 py-3 rounded-xl hover:bg-[#b50000] transition-all">
                         Back to Shopping
                     </Link>
                 </div>
@@ -108,9 +108,9 @@ export default function CheckoutPage() {
                         <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
                             <Store size={22} />
                         </div>
-                        <span className="font-bold text-xl tracking-tight">SuperMarket</span>
+                        <span className="font-medium text-xl tracking-tight">SuperMarket</span>
                     </Link>
-                    <div className="hidden md:flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    <div className="hidden md:flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em]">
                         <span className="text-gray-300">Cart</span>
                         <span className="text-gray-200">/</span>
                         <span className="text-black">Checkout</span>
@@ -124,12 +124,12 @@ export default function CheckoutPage() {
                 <div className="mb-12">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors text-xs font-bold uppercase tracking-widest"
+                        className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors text-xs font-medium uppercase tracking-widest"
                     >
                         <ArrowLeft size={14} />
                         Back to Store
                     </Link>
-                    <h1 className="mt-4 text-4xl font-bold text-black tracking-tight">Finalize Order</h1>
+                    <h1 className="mt-4 text-4xl font-medium text-black tracking-tight">Finalize Order</h1>
                     <p className="text-gray-400 font-medium mt-2">Confirm your pickup details and billing information.</p>
                 </div>
 
@@ -138,12 +138,12 @@ export default function CheckoutPage() {
                     {/* Left — Billing */}
                     <div className="space-y-8">
                         {apiError && (
-                            <div className="p-4 bg-red-50 border border-red-100 text-red-600 text-sm font-bold rounded-2xl animate-in fade-in slide-in-from-top-2">
+                            <div className="p-4 bg-red-50 border border-red-100 text-red-600 text-sm font-medium rounded-2xl animate-in fade-in slide-in-from-top-2">
                                 ⚠️ {apiError}
                             </div>
                         )}
                         <div className="bg-white rounded-[2rem] border border-gray-100 p-10">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-[#D60000]" />
                                 Billing Information
                             </h2>
@@ -188,40 +188,40 @@ export default function CheckoutPage() {
 
                         {/* Pickup details */}
                         <div className="bg-white rounded-[2rem] border border-gray-100 p-10">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-[#D60000]" />
                                 Pickup & Delivery
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
                                     <MapPin size={18} className="text-[#D60000] mb-3" />
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Store Location</p>
-                                    <p className="font-bold text-black text-sm leading-relaxed">{STORE_ADDRESS}</p>
+                                    <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Store Location</p>
+                                    <p className="font-medium text-black text-sm leading-relaxed">{STORE_ADDRESS}</p>
                                 </div>
                                 {pickupSlot?.slot ? (
                                     <div className="p-6 bg-black text-white rounded-2xl border border-black shadow-xl shadow-black/10">
                                         <Store size={18} className="text-white mb-3" />
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Schedule</p>
-                                        <p className="font-bold text-white text-sm capitalize">
+                                        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Schedule</p>
+                                        <p className="font-medium text-white text-sm capitalize">
                                             {pickupSlot.day}, {pickupSlot.slot}
                                         </p>
                                     </div>
                                 ) : (
                                     <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100">
-                                        <p className="text-xs font-bold text-amber-600">Please select a pickup slot in your cart.</p>
+                                        <p className="text-xs font-medium text-amber-600">Please select a pickup slot in your cart.</p>
                                     </div>
                                 )}
                                 <div className="md:col-span-2 p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <span className="text-2xl">{paymentMethod === "pay-online" ? "📱" : "🏪"}</span>
                                         <div>
-                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Method</p>
-                                            <p className="font-bold text-black text-sm">
+                                            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-0.5">Method</p>
+                                            <p className="font-medium text-black text-sm">
                                                 {paymentMethod === "pay-online" ? "Online Transaction" : "Pay in Person"}
                                             </p>
                                         </div>
                                     </div>
-                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Selected</span>
+                                    <span className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">Selected</span>
                                 </div>
                             </div>
                         </div>
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
                     {/* Right — Order summary */}
                     <div className="space-y-6">
                         <div className="bg-white rounded-[2rem] border border-gray-100 p-8 sticky top-32">
-                            <h2 className="font-bold text-xl text-black mb-8 tracking-tight">Order Summary</h2>
+                            <h2 className="font-medium text-xl text-black mb-8 tracking-tight">Order Summary</h2>
 
                             <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
                                 {items.map((item) => (
@@ -239,10 +239,10 @@ export default function CheckoutPage() {
                                             <span className="text-xl">{item.products.emoji || "📦"}</span>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-bold text-black truncate">{item.products.name}</p>
-                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Qty: {item.quantity}</p>
+                                            <p className="text-sm font-medium text-black truncate">{item.products.name}</p>
+                                            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Qty: {item.quantity}</p>
                                         </div>
-                                        <p className="font-bold text-sm text-black">
+                                        <p className="font-medium text-sm text-black">
                                             ₹{(Number(item.price) * item.quantity).toFixed(0)}
                                         </p>
                                     </div>
@@ -252,23 +252,23 @@ export default function CheckoutPage() {
                             <div className="space-y-3 py-6 border-t border-gray-100">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-400 font-medium italic">Subtotal</span>
-                                    <span className="font-bold text-black">₹{totalPrice.toFixed(0)}</span>
+                                    <span className="font-medium text-black">₹{totalPrice.toFixed(0)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-400 font-medium italic flex items-center gap-1"><Store size={14} /> Pickup Fee</span>
-                                    <span className="font-bold text-green-500 uppercase tracking-widest text-[11px]">Free</span>
+                                    <span className="font-medium text-green-500 uppercase tracking-widest text-[11px]">Free</span>
                                 </div>
                             </div>
 
                             <div className="flex justify-between py-6 border-t border-gray-100">
-                                <span className="font-bold text-black text-lg">Total</span>
-                                <span className="font-bold text-2xl text-black">₹{totalPrice.toFixed(0)}</span>
+                                <span className="font-medium text-black text-lg">Total</span>
+                                <span className="font-medium text-2xl text-black">₹{totalPrice.toFixed(0)}</span>
                             </div>
 
                             <button
                                 onClick={handlePlaceOrder}
                                 disabled={loading || !isValid || !pickupSlot?.slot}
-                                className="w-full py-5 bg-[#D60000] text-white font-bold rounded-2xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-red-600/10 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+                                className="w-full py-5 bg-[#D60000] text-white font-medium rounded-2xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-red-600/10 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
                             >
                                 {loading ? (
                                     <>
@@ -283,7 +283,7 @@ export default function CheckoutPage() {
                                 )}
                             </button>
 
-                            <p className="text-[10px] text-gray-400 text-center mt-6 font-bold uppercase tracking-widest">
+                            <p className="text-[10px] text-gray-400 text-center mt-6 font-medium uppercase tracking-widest">
                                 🔒 Encrypted Checkout
                             </p>
                         </div>

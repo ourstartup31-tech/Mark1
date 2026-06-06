@@ -20,7 +20,7 @@ export function Select({ label, options, onChange, error, className, ...props }:
     return (
         <div className="space-y-2">
             {label && (
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">
+                <label className="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] ml-1">
                     {label}
                 </label>
             )}
@@ -28,7 +28,7 @@ export function Select({ label, options, onChange, error, className, ...props }:
                 <select
                     onChange={(e) => onChange(e.target.value)}
                     className={cn(
-                        "w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-bold text-black outline-none transition-all focus:border-black focus:bg-white focus:shadow-lg focus:shadow-gray-200/50",
+                        "w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-black outline-none transition-all focus:border-black focus:bg-white focus:shadow-lg focus:shadow-gray-200/50",
                         error ? "border-red-500 focus:border-red-500" : "",
                         className
                     )}
@@ -45,7 +45,7 @@ export function Select({ label, options, onChange, error, className, ...props }:
                     <ChevronDown size={18} />
                 </div>
             </div>
-            {error && <p className="text-xs font-bold text-[#D60000] ml-1">{error}</p>}
+            {error && <p className="text-xs font-medium text-[#D60000] ml-1">{error}</p>}
         </div>
     );
 }

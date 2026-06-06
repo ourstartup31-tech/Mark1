@@ -27,7 +27,7 @@ export function StatsCard({ label, value, icon: Icon, trend, className }: StatsC
                 </div>
                 {trend && (
                     <span className={cn(
-                        "px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider",
+                        "px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wider",
                         trend.isUp ? "bg-green-50 text-green-600" : "bg-[#D60000]/5 text-[#D60000]"
                     )}>
                         {trend.isUp ? "+" : "-"}{trend.value}%
@@ -36,8 +36,8 @@ export function StatsCard({ label, value, icon: Icon, trend, className }: StatsC
             </div>
 
             <div>
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mb-1">{label}</p>
-                <p className="text-3xl font-bold text-black tracking-tight">{value}</p>
+                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mb-1">{label}</p>
+                <p className="text-3xl font-medium text-black tracking-tight">{value}</p>
             </div>
 
             <div className="mt-6 h-1 w-full bg-gray-50 rounded-full overflow-hidden">

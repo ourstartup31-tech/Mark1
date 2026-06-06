@@ -27,7 +27,7 @@ export function SearchResults() {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <AnimatedSection className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+                <h1 className="text-2xl sm:text-3xl font-medium text-black mb-2">
                     Search Results
                 </h1>
                 {query ? (

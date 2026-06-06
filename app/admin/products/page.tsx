@@ -64,19 +64,19 @@ export default function ProductsPage() {
                             <ImageIcon size={16} className="text-gray-300" />
                         )}
                     </div>
-                    <span className="font-bold text-black">{item.name}</span>
+                    <span className="font-medium text-black">{item.name}</span>
                 </div>
             )
         },
         { header: "Category", accessor: "category" as const },
         {
             header: "Price",
-            accessor: (item: any) => <span className="font-bold">₹{item.price}</span>
+            accessor: (item: any) => <span className="font-medium">₹{item.price}</span>
         },
         {
             header: "Stock",
             accessor: (item: any) => (
-                <span className={`font-bold ${item.stock > 0 ? "text-green-500" : "text-gray-400"}`}>
+                <span className={`font-medium ${item.stock > 0 ? "text-green-500" : "text-gray-400"}`}>
                     {item.stock > 0 ? `${item.stock} in Stock` : "Out of Stock"}
                 </span>
             )
@@ -107,7 +107,7 @@ export default function ProductsPage() {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-[#D60000] rounded-full animate-spin" />
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Products...</p>
+                <p className="text-gray-400 font-medium text-xs uppercase tracking-widest">Loading Products...</p>
             </div>
         );
     }
@@ -121,7 +121,7 @@ export default function ProductsPage() {
             )}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-black tracking-tight">Manage Products</h1>
+                    <h1 className="text-4xl font-medium text-black tracking-tight">Manage Products</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Add, edit and manage your store inventory.</p>
                 </div>
                 <Button
@@ -135,11 +135,11 @@ export default function ProductsPage() {
 
             {/* Only category filter if needed, search is in Header */}
             <div className="bg-white p-6 rounded-[2rem] border border-gray-100 flex items-center gap-4">
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest pl-4">Filter By Category</p>
+                <p className="text-sm font-medium text-gray-400 uppercase tracking-widest pl-4">Filter By Category</p>
                 <select
                     value={activeCategory}
                     onChange={(e) => setActiveCategory(e.target.value)}
-                    className="bg-gray-50 border border-gray-100 rounded-xl px-6 py-3 text-sm font-bold outline-none focus:border-black transition-all"
+                    className="bg-gray-50 border border-gray-100 rounded-xl px-6 py-3 text-sm font-medium outline-none focus:border-black transition-all"
                 >
                     <option value="All">All Categories</option>
                     {categories.map(cat => (
@@ -180,17 +180,17 @@ export default function ProductsPage() {
                 title="Delete Product"
             >
                 <div className="space-y-6">
-                    <p className="text-gray-500 font-medium">Are you sure you want to delete <span className="text-black font-bold">"{selectedProduct?.name}"</span>? This action cannot be undone.</p>
+                    <p className="text-gray-500 font-medium">Are you sure you want to delete <span className="text-black font-medium">"{selectedProduct?.name}"</span>? This action cannot be undone.</p>
                     <div className="flex gap-4">
                         <Button
                             onClick={() => setIsDeleteModalOpen(false)}
-                            className="flex-1 bg-gray-50 text-gray-400 font-bold py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
+                            className="flex-1 bg-gray-50 text-gray-400 font-medium py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
                         >
                             Cancel
                         </Button>
                         <Button
                             onClick={handleDelete}
-                            className="flex-1 bg-[#D60000] text-white font-bold py-4 rounded-xl hover:bg-black transition-all"
+                            className="flex-1 bg-[#D60000] text-white font-medium py-4 rounded-xl hover:bg-black transition-all"
                         >
                             Yes, Delete
                         </Button>

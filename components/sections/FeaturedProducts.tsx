@@ -47,7 +47,7 @@ export function FeaturedProducts() {
         <section id="products" className="bg-slate-50 py-16 lg:py-24">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <AnimatedSection className="text-center mb-8 lg:mb-12">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black tracking-tight mb-2 text-balance">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-black tracking-tight mb-2 text-balance">
                         Featured Products
                     </h2>
                 </AnimatedSection>
@@ -73,7 +73,7 @@ export function FeaturedProducts() {
                                     <div className={cn("mb-2 flex items-center justify-center", isActive ? "scale-110 transition-transform" : "")}>
                                         {getCategoryIcon(tab)}
                                     </div>
-                                    <span className={cn("text-[10px] sm:text-xs leading-tight line-clamp-2", isActive ? "font-bold text-black" : "font-medium")}>
+                                    <span className={cn("text-[10px] sm:text-xs leading-tight line-clamp-2", isActive ? "font-medium text-black" : "font-medium")}>
                                         {tab}
                                     </span>
                                 </button>
@@ -84,11 +84,8 @@ export function FeaturedProducts() {
                     {/* Right Content - Products Grid */}
                     <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white relative">
                         <div className="sticky top-0 bg-white/95 backdrop-blur z-10 pb-4 mb-2 border-b border-gray-100 flex justify-between items-center">
-                            <h3 className="text-lg sm:text-xl font-bold text-black">
+                            <h3 className="text-lg sm:text-xl font-medium text-black">
                                 {activeCategory === ALL ? "All Items" : activeCategory}
-                                <span className="text-sm font-normal text-gray-500 ml-2">
-                                    ({filtered.length} products)
-                                </span>
                             </h3>
                         </div>
 
@@ -112,7 +109,7 @@ export function FeaturedProducts() {
                 <AnimatedSection delay={100} className="text-center mt-8 sm:mt-12">
                     <button 
                         onClick={handleViewAll}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-black text-black text-[11px] uppercase tracking-widest font-bold px-8 py-4 rounded hover:bg-black hover:text-white active:scale-95 transition-all"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-black text-black text-[11px] uppercase tracking-widest font-medium px-8 py-4 rounded hover:bg-black hover:text-white active:scale-95 transition-all"
                     >
                         View All Products
                         <span>→</span>

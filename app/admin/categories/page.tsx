@@ -60,13 +60,13 @@ export default function CategoriesPage() {
                     <div className="p-2 bg-gray-50 rounded-lg text-gray-400">
                         <ListTree size={14} />
                     </div>
-                    <span className="font-bold text-black">{item.name}</span>
+                    <span className="font-medium text-black">{item.name}</span>
                 </div>
             )
         },
         {
             header: "Number of Products",
-            accessor: (item: any) => <span className="text-gray-400 font-bold">{item.count ?? 0} Items</span>
+            accessor: (item: any) => <span className="text-gray-400 font-medium">{item.count ?? 0} Items</span>
         },
         {
             header: "Actions",
@@ -94,7 +94,7 @@ export default function CategoriesPage() {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin" />
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Categories...</p>
+                <p className="text-gray-400 font-medium text-xs uppercase tracking-widest">Loading Categories...</p>
             </div>
         );
     }
@@ -108,7 +108,7 @@ export default function CategoriesPage() {
             )}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-black tracking-tight">Manage Categories</h1>
+                    <h1 className="text-4xl font-medium text-black tracking-tight">Manage Categories</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Organize your products into logical groups.</p>
                 </div>
                 <Button
@@ -173,17 +173,17 @@ export default function CategoriesPage() {
                 title="Delete Category"
             >
                 <div className="space-y-6">
-                    <p className="text-gray-500 font-medium">Are you sure you want to delete <span className="text-black font-bold">"{selectedCategory?.name}"</span>? All products in this category will remain, but the category itself will be removed.</p>
+                    <p className="text-gray-500 font-medium">Are you sure you want to delete <span className="text-black font-medium">"{selectedCategory?.name}"</span>? All products in this category will remain, but the category itself will be removed.</p>
                     <div className="flex gap-4">
                         <Button
                             onClick={() => setIsDeleteModalOpen(false)}
-                            className="flex-1 bg-gray-50 text-gray-400 font-bold py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
+                            className="flex-1 bg-gray-50 text-gray-400 font-medium py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
                         >
                             Cancel
                         </Button>
                         <Button
                             onClick={handleDelete}
-                            className="flex-1 bg-[#D60000] text-white font-bold py-4 rounded-xl hover:bg-black transition-all"
+                            className="flex-1 bg-[#D60000] text-white font-medium py-4 rounded-xl hover:bg-black transition-all"
                         >
                             Confirm Delete
                         </Button>

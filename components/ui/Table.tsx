@@ -26,7 +26,7 @@ export function Table<T>({ columns, data, onRowClick, className }: TableProps<T>
                             <th
                                 key={idx}
                                 className={cn(
-                                    "px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]",
+                                    "px-6 py-4 text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em]",
                                     column.className
                                 )}
                             >

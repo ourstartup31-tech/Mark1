@@ -27,7 +27,7 @@ export function Header() {
             <div className="flex items-center gap-6">
                 <button
                     onClick={logout}
-                    className="flex items-center gap-3 px-4 py-2 rounded-xl text-gray-400 hover:text-[#D60000] hover:bg-red-50 transition-all font-bold text-xs uppercase tracking-widest group"
+                    className="flex items-center gap-3 px-4 py-2 rounded-xl text-gray-400 hover:text-[#D60000] hover:bg-red-50 transition-all font-medium text-xs uppercase tracking-widest group"
                 >
                     <LogOut size={16} className="group-hover:scale-110 transition-transform" />
                     Logout
@@ -37,15 +37,15 @@ export function Header() {
 
                 <Link href="/admin/profile" className="flex items-center gap-4 group">
                     <div className="text-right hidden sm:block">
-                        <p className="text-sm font-bold text-black group-hover:text-[#D60000] transition-colors">
+                        <p className="text-sm font-medium text-black group-hover:text-[#D60000] transition-colors">
                             {user?.name || (user?.role === 'admin' ? 'Admin User' : 'Staff')}
                         </p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
                             {user?.phone || 'No Phone'}
                         </p>
                     </div>
                     <div className="relative">
-                        <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-bold group-hover:scale-105 transition-transform duration-300">
+                        <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-medium group-hover:scale-105 transition-transform duration-300">
                             {(user?.name || (user?.role === 'admin' ? 'Admin' : 'User')).substring(0, 2).toUpperCase()}
                         </div>
                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-4 border-white" />

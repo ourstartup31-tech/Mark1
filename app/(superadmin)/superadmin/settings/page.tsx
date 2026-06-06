@@ -17,7 +17,7 @@ export default function SettingsPage() {
 
     const InputField = ({ label, value, onChange, type = "text", placeholder = "" }: { label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string }) => (
         <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{label}</label>
+            <label className="block text-xs font-medium text-slate-500 uppercase tracking-widest mb-2">{label}</label>
             <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
                 className="w-full h-11 px-4 rounded border border-slate-200 text-sm text-slate-900 outline-none focus:border-indigo-500 bg-slate-50/50" />
         </div>
@@ -28,11 +28,11 @@ export default function SettingsPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-900 uppercase tracking-wider">Platform Settings</h2>
+                    <h2 className="text-xl font-medium text-slate-900 uppercase tracking-wider">Platform Settings</h2>
                     <p className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-widest">Configure platform-wide preferences</p>
                 </div>
                 <button onClick={handleSave}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-bold text-xs rounded uppercase tracking-widest hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm">
+                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium text-xs rounded uppercase tracking-widest hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm">
                     <Save size={14} />
                     {saved ? "Saved!" : "Save Changes"}
                 </button>
@@ -45,7 +45,7 @@ export default function SettingsPage() {
                         <Settings size={16} className="text-indigo-600" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-slate-900 text-sm uppercase tracking-tight">General Settings</h3>
+                        <h3 className="font-medium text-slate-900 text-sm uppercase tracking-tight">General Settings</h3>
                         <p className="text-[10px] text-slate-500 uppercase tracking-widest">Platform identity and contact info</p>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ export default function SettingsPage() {
                         placeholder="support@yourplatform.com"
                     />
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Platform Logo URL</label>
+                        <label className="block text-xs font-medium text-slate-500 uppercase tracking-widest mb-2">Platform Logo URL</label>
                         <div className="flex gap-3">
                             <input
                                 value={localSettings.logoUrl}
@@ -88,7 +88,7 @@ export default function SettingsPage() {
 
             {/* Save banner */}
             {saved && (
-                <div className="fixed bottom-6 right-6 z-[200] bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest px-5 py-3 rounded shadow-xl flex items-center gap-3 border border-slate-700">
+                <div className="fixed bottom-6 right-6 z-[200] bg-slate-900 text-white text-[10px] font-medium uppercase tracking-widest px-5 py-3 rounded shadow-xl flex items-center gap-3 border border-slate-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     Settings saved successfully!
                 </div>

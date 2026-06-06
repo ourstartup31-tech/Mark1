@@ -64,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
                 {product.stock === 0 && <Badge variant="default" className="shadow-sm bg-red-600 text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">Out of stock</Badge>}
                 {product.badge && <Badge variant="default" className="shadow-sm bg-black text-white px-2 py-0.5 text-[10px] uppercase tracking-wider">{product.badge}</Badge>}
-                {discount > 0 && <Badge variant="secondary" className="bg-green-50 text-green-700 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">{discount}% off</Badge>}
+                {discount > 0 && <Badge variant="secondary" className="bg-green-50 text-green-700 border-none px-2 py-0.5 text-[10px] uppercase font-medium tracking-wider">{discount}% off</Badge>}
             </div>
 
             {/* Image placeholder or actual image */}
@@ -80,9 +80,9 @@ export function ProductCard({ product }: ProductCardProps) {
 
             {/* Content */}
             <div className="p-4 sm:p-5">
-                <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-[0.15em] mb-2">{product.category}</p>
+                <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium uppercase tracking-[0.15em] mb-2">{product.category}</p>
                 <Link href={`/product/${product.id}`}>
-                    <h3 className="font-bold text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
+                    <h3 className="font-medium text-sm sm:text-base text-black leading-[1.3] mb-1 group-hover:text-[#D60000] transition-colors line-clamp-2 min-h-[2.6rem]">
                         {product.name}
                     </h3>
                 </Link>
@@ -90,7 +90,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-5">
-                    <span className="text-lg sm:text-xl font-bold text-black tracking-tight">₹{product.price}</span>
+                    <span className="text-lg sm:text-xl font-medium text-black tracking-tight">₹{product.price}</span>
                     {product.originalPrice && (
                         <span className="text-xs sm:text-sm text-slate-300 line-through font-medium">₹{product.originalPrice}</span>
                     )}
@@ -100,7 +100,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 {product.stock === 0 ? (
                     <button
                         disabled
-                        className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-bold text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 bg-slate-100 text-slate-400 cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-medium text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 bg-slate-100 text-slate-400 cursor-not-allowed"
                     >
                         Out of stock
                     </button>
@@ -108,7 +108,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     <button
                         onClick={handleAdd}
                         className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-bold text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300",
+                            "w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl font-medium text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300",
                             justAdded
                                 ? "bg-green-500 text-white scale-95 shadow-lg shadow-green-500/20"
                                 : "bg-white border-2 border-slate-50 text-black hover:bg-black hover:text-white hover:border-black active:scale-95 shadow-sm"
@@ -130,7 +130,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         </button>
                         <button
                             onClick={openCart}
-                            className="flex-1 flex items-center justify-center h-10 sm:h-11 rounded-lg bg-black text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-slate-900 transition-all shadow-md shadow-black/10"
+                            className="flex-1 flex items-center justify-center h-10 sm:h-11 rounded-lg bg-black text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-slate-900 transition-all shadow-md shadow-black/10"
                         >
                             {quantity} in Cart
                         </button>

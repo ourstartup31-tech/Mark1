@@ -32,7 +32,7 @@ export default function AdminLayout({
                         <div className="w-8 h-8 bg-black rounded-lg" />
                     </div>
                 </div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] animate-pulse">
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] animate-pulse">
                     Authenticating Security Clearance...
                 </p>
             </div>
@@ -70,7 +70,7 @@ export default function AdminLayout({
                     </button>
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-[#D60000] rounded-lg" />
-                        <span className="font-bold text-sm tracking-widest uppercase">Admin</span>
+                        <span className="font-medium text-sm tracking-widest uppercase">Admin</span>
                     </div>
                 </div>
 

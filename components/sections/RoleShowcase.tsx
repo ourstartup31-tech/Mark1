@@ -33,11 +33,11 @@ export function RoleShowcase() {
         <section className="bg-gray-50 py-20 lg:py-24">
             <div className="max-w-7xl mx-auto px-6">
                 <AnimatedSection className="text-center mb-16">
-                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-bold text-[#D60000] uppercase tracking-[0.2em] mb-4">
+                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-medium text-[#D60000] uppercase tracking-[0.2em] mb-4">
                         <span className="w-1 h-1 rounded-full bg-[#D60000]" />
                         Platform Roles
                     </p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-medium text-black tracking-tight">
                         Built for Everyone
                     </h2>
                     <p className="mt-4 text-gray-400 font-medium max-w-sm mx-auto">
@@ -52,13 +52,13 @@ export function RoleShowcase() {
                                 <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
                                     {role.emoji}
                                 </div>
-                                <h3 className="font-bold text-xl text-black mb-3 tracking-tight">{role.title}</h3>
+                                <h3 className="font-medium text-xl text-black mb-3 tracking-tight">{role.title}</h3>
                                 <p className="text-gray-500 text-sm font-medium leading-relaxed mb-8">
                                     {role.description}
                                 </p>
                                 <a
                                     href={role.link}
-                                    className="inline-flex items-center gap-2 text-xs font-bold text-black uppercase tracking-widest group-hover:text-[#D60000] transition-colors"
+                                    className="inline-flex items-center gap-2 text-xs font-medium text-black uppercase tracking-widest group-hover:text-[#D60000] transition-colors"
                                 >
                                     {role.cta} <span className="text-[14px]">→</span>
                                 </a>

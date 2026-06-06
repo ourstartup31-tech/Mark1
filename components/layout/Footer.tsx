@@ -14,12 +14,12 @@ export function Footer() {
                             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white text-black rounded-lg sm:rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
                                 <Store size={20} />
                             </div>
-                            <span className="font-bold text-xl tracking-tight uppercase tracking-[0.05em]">SuperMarket</span>
+                            <span className="font-medium text-xl tracking-tight uppercase tracking-[0.05em]">SuperMarket</span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-8">
                             Experience the future of local shopping. Pre-order fresh groceries and collect them at your convenience.
                         </p>
-                        <div className="space-y-3 text-[11px] text-gray-500 font-bold uppercase tracking-widest">
+                        <div className="space-y-3 text-[11px] text-gray-500 font-medium uppercase tracking-widest">
                             <p className="flex items-center justify-start gap-2">📍 123 Market Street, City</p>
                             <p className="flex items-center justify-start gap-2">📞 +91 98765 43210</p>
                             <p className="flex items-center justify-start gap-2">✉ hello@supermarket.in</p>
@@ -58,7 +58,7 @@ export function Footer() {
                             },
                         ].map((col) => (
                             <div key={col.title} className="text-left">
-                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-6 border-b border-white/[0.05] block pb-2 sm:pb-0">
+                                <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-400 mb-6 border-b border-white/[0.05] block pb-2 sm:pb-0">
                                     {col.title}
                                 </p>
                                 <ul className="space-y-3">
@@ -66,7 +66,7 @@ export function Footer() {
                                         <li key={l.label}>
                                             <Link
                                                 href={l.href}
-                                                className="text-gray-500 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors duration-300"
+                                                className="text-gray-500 text-[11px] font-medium uppercase tracking-widest hover:text-white transition-colors duration-300"
                                             >
                                                 {l.label}
                                             </Link>
@@ -79,7 +79,7 @@ export function Footer() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-10">
-                    <p className="text-gray-600 text-[10px] font-bold uppercase tracking-[0.15em] text-left">
+                    <p className="text-gray-600 text-[10px] font-medium uppercase tracking-[0.15em] text-left">
                         © {year} SuperMarket. Crafted for Quality.
                     </p>
                 </div>

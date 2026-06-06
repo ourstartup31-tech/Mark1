@@ -10,7 +10,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
       <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 pt-32 pb-24 w-full">
-        <h1 className="text-4xl font-bold text-black mb-8">Our Story</h1>
+        <h1 className="text-4xl font-medium text-black mb-8">Our Story</h1>
         <div className="prose prose-slate max-w-none text-gray-600">
           <p className="mb-4 text-lg">
             Welcome to SuperMarket. We started with a simple vision: to make everyday grocery shopping 

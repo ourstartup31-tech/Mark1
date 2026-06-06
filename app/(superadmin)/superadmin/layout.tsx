@@ -23,7 +23,7 @@ export default function SuperAdminDashboardLayout({ children }: { children: Reac
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
                 <div className="w-10 h-10 border-2 border-slate-100 border-t-indigo-600 rounded-full animate-spin" />
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
                     Authenticating SuperAdmin...
                 </p>
             </div>

@@ -82,9 +82,9 @@ export default function CartPage() {
                     </button>
                     <div className="flex items-center gap-2">
                         <ShoppingBag size={16} className="text-[#D60000]" />
-                        <span className="font-bold text-sm text-black uppercase tracking-widest">My Cart</span>
+                        <span className="font-medium text-sm text-black uppercase tracking-widest">My Cart</span>
                         {totalItems > 0 && (
-                            <span className="bg-[#D60000] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                            <span className="bg-[#D60000] text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
                                 {totalItems}
                             </span>
                         )}
@@ -100,12 +100,12 @@ export default function CartPage() {
                         <ShoppingCart size={40} className="text-gray-200" />
                     </div>
                     <div className="text-center">
-                        <p className="font-bold text-xl text-black">Your cart is empty</p>
+                        <p className="font-medium text-xl text-black">Your cart is empty</p>
                         <p className="text-gray-400 text-sm mt-2">Browse our products and add items to your cart.</p>
                     </div>
                     <Link
                         href="/#categories"
-                        className="mt-2 bg-black text-white font-bold px-8 py-3.5 rounded-xl hover:bg-[#D60000] active:scale-95 transition-all text-sm"
+                        className="mt-2 bg-black text-white font-medium px-8 py-3.5 rounded-xl hover:bg-[#D60000] active:scale-95 transition-all text-sm"
                     >
                         Browse Products
                     </Link>
@@ -122,7 +122,7 @@ export default function CartPage() {
                         {/* Items Card */}
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
-                                <h2 className="font-bold text-sm text-black uppercase tracking-widest">
+                                <h2 className="font-medium text-sm text-black uppercase tracking-widest">
                                     Items ({totalItems})
                                 </h2>
                             </div>
@@ -136,12 +136,12 @@ export default function CartPage() {
 
                                         {/* Name + Price */}
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-bold text-sm text-black truncate">{item.products.name}</p>
+                                            <p className="font-medium text-sm text-black truncate">{item.products.name}</p>
                                             <p className="text-xs text-gray-400 mt-0.5">₹{Number(item.price).toFixed(0)} × {item.quantity}</p>
                                         </div>
 
                                         {/* Total */}
-                                        <p className="font-bold text-sm text-black w-16 text-right">
+                                        <p className="font-medium text-sm text-black w-16 text-right">
                                             ₹{(Number(item.price) * item.quantity).toFixed(0)}
                                         </p>
 
@@ -149,14 +149,14 @@ export default function CartPage() {
                                         <div className="flex items-center gap-1.5">
                                             <button
                                                 onClick={() => decrement(item.product_id)}
-                                                className="w-7 h-7 rounded-lg bg-gray-100 text-gray-600 font-bold text-sm flex items-center justify-center hover:bg-black hover:text-white transition-all"
+                                                className="w-7 h-7 rounded-lg bg-gray-100 text-gray-600 font-medium text-sm flex items-center justify-center hover:bg-black hover:text-white transition-all"
                                             >
                                                 −
                                             </button>
-                                            <span className="w-6 text-center font-bold text-sm">{item.quantity}</span>
+                                            <span className="w-6 text-center font-medium text-sm">{item.quantity}</span>
                                             <button
                                                 onClick={() => increment(item.product_id)}
-                                                className="w-7 h-7 rounded-lg bg-black text-white font-bold text-sm flex items-center justify-center hover:bg-[#D60000] transition-all"
+                                                className="w-7 h-7 rounded-lg bg-black text-white font-medium text-sm flex items-center justify-center hover:bg-[#D60000] transition-all"
                                             >
                                                 +
                                             </button>
@@ -177,7 +177,7 @@ export default function CartPage() {
 
                         {/* Pickup Schedule Card */}
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                            <h3 className="font-bold text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <h3 className="font-medium text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <CalendarClock size={14} className="text-[#D60000]" />
                                 Pickup Schedule
                             </h3>
@@ -186,7 +186,7 @@ export default function CartPage() {
 
                         {/* Payment Method Card */}
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                            <h3 className="font-bold text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <h3 className="font-medium text-sm text-black uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <CreditCard size={14} className="text-[#D60000]" />
                                 Payment Method
                             </h3>
@@ -211,7 +211,7 @@ export default function CartPage() {
                                             className={paymentMethod === method.id ? "text-white" : "text-gray-400"}
                                         />
                                         <div>
-                                            <p className={cn("font-bold text-xs", paymentMethod === method.id ? "text-white" : "text-black")}>
+                                            <p className={cn("font-medium text-xs", paymentMethod === method.id ? "text-white" : "text-black")}>
                                                 {method.label}
                                             </p>
                                             <p className={cn("text-[10px] font-semibold uppercase tracking-widest mt-0.5", paymentMethod === method.id ? "text-white/50" : "text-gray-400")}>
@@ -228,13 +228,13 @@ export default function CartPage() {
                     <div className="lg:sticky lg:top-20 self-start">
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div className="px-5 py-4 border-b border-gray-50">
-                                <h2 className="font-bold text-sm text-black uppercase tracking-widest">Order Summary</h2>
+                                <h2 className="font-medium text-sm text-black uppercase tracking-widest">Order Summary</h2>
                             </div>
                             <div className="px-5 py-4 space-y-3">
                                 {items.map((item) => (
                                     <div key={item.id} className="flex justify-between items-center">
                                         <span className="text-xs text-gray-500 truncate max-w-[55%]">{item.products.name} × {item.quantity}</span>
-                                        <span className="text-xs font-bold text-black">₹{(Number(item.price) * item.quantity).toFixed(0)}</span>
+                                        <span className="text-xs font-medium text-black">₹{(Number(item.price) * item.quantity).toFixed(0)}</span>
                                     </div>
                                 ))}
 
@@ -242,18 +242,18 @@ export default function CartPage() {
 
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Subtotal</span>
-                                    <span className="text-sm font-bold text-black">₹{totalPrice.toFixed(0)}</span>
+                                    <span className="text-sm font-medium text-black">₹{totalPrice.toFixed(0)}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400 flex items-center gap-1"><Store size={11} /> Pickup Fee</span>
-                                    <span className="text-xs font-bold text-green-500 uppercase tracking-widest">Free</span>
+                                    <span className="text-xs font-medium text-green-500 uppercase tracking-widest">Free</span>
                                 </div>
 
                                 <div className="h-px bg-gray-100 my-1" />
 
                                 <div className="flex justify-between items-center pt-1">
-                                    <span className="font-bold text-sm text-black">Total</span>
-                                    <span className="font-bold text-xl text-black">₹{totalPrice.toFixed(0)}</span>
+                                    <span className="font-medium text-sm text-black">Total</span>
+                                    <span className="font-medium text-xl text-black">₹{totalPrice.toFixed(0)}</span>
                                 </div>
                             </div>
 
@@ -266,7 +266,7 @@ export default function CartPage() {
                                 <button
                                     onClick={handleCheckout}
                                     disabled={!canCheckout}
-                                    className="w-full py-4 bg-[#D60000] text-white font-bold rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 text-xs uppercase tracking-widest shadow-lg shadow-red-600/15"
+                                    className="w-full py-4 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 text-xs uppercase tracking-widest shadow-lg shadow-red-600/15"
                                 >
                                     Place Order
                                 </button>

@@ -81,11 +81,11 @@ export default function ProductDetailPage() {
                 <div className="flex-1 flex items-center justify-center pt-24">
                     <div className="text-center">
                         <span className="text-6xl mb-4 block">🔍</span>
-                        <h1 className="text-2xl font-bold text-gray-800 mb-2">Product Not Found</h1>
+                        <h1 className="text-2xl font-medium text-gray-800 mb-2">Product Not Found</h1>
                         <p className="text-gray-500 mb-6">The product you are looking for does not exist or has been removed.</p>
                         <button 
                             onClick={() => router.push("/shop")}
-                            className="bg-black text-white px-6 py-3 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-gray-800 transition-colors"
+                            className="bg-black text-white px-6 py-3 rounded-lg font-medium text-sm uppercase tracking-widest hover:bg-gray-800 transition-colors"
                         >
                             Return to Shop
                         </button>
@@ -107,7 +107,7 @@ export default function ProductDetailPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <button 
                         onClick={() => router.back()}
-                        className="flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-black uppercase tracking-wider mb-8 transition-colors"
+                        className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black uppercase tracking-wider mb-8 transition-colors"
                     >
                         <ArrowLeft size={16} />
                         Back
@@ -141,10 +141,10 @@ export default function ProductDetailPage() {
                         {/* Right: Product Details */}
                         <AnimatedSection delay={100} className="flex flex-col md:col-span-3">
                             <div className="mb-6">
-                                <p className="text-[10px] text-[#D60000] font-bold uppercase tracking-[0.2em] mb-2">
+                                <p className="text-[10px] text-[#D60000] font-medium uppercase tracking-[0.2em] mb-2">
                                     {product.category}
                                 </p>
-                                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black tracking-tight mb-3 leading-tight">
+                                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-black tracking-tight mb-3 leading-tight">
                                     {product.name}
                                 </h1>
                                 <p className="text-sm text-gray-500 mb-5 leading-relaxed max-w-xl">
@@ -153,7 +153,7 @@ export default function ProductDetailPage() {
                                 </p>
                                 
                                 <div className="flex items-baseline gap-3 mb-1">
-                                    <span className="text-3xl font-bold text-black tracking-tight">₹{product.price}</span>
+                                    <span className="text-3xl font-medium text-black tracking-tight">₹{product.price}</span>
                                     {product.originalPrice && (
                                         <span className="text-lg text-gray-400 line-through font-medium">₹{product.originalPrice}</span>
                                     )}
@@ -167,14 +167,14 @@ export default function ProductDetailPage() {
                             <div className="mb-8">
                                 {product.stock === 0 ? (
                                     <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-center">
-                                        <p className="text-red-600 font-bold uppercase tracking-wider text-sm mb-1">Out of Stock</p>
+                                        <p className="text-red-600 font-medium uppercase tracking-wider text-sm mb-1">Out of Stock</p>
                                         <p className="text-red-400 text-xs">We'll restock this item soon.</p>
                                     </div>
                                 ) : quantity === 0 ? (
                                     <button
                                         onClick={handleAdd}
                                         className={cn(
-                                            "w-full md:w-auto min-w-[200px] flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition-all duration-300",
+                                            "w-full md:w-auto min-w-[200px] flex items-center justify-center gap-3 py-4 rounded-xl font-medium text-sm uppercase tracking-widest transition-all duration-300",
                                             justAdded
                                                 ? "bg-green-500 text-white scale-95 shadow-xl shadow-green-500/30"
                                                 : "bg-[#D60000] text-white hover:bg-black active:scale-95 shadow-xl shadow-[#D60000]/20"
@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
                                         </button>
                                         <button
                                             onClick={openCart}
-                                            className="flex-1 flex items-center justify-center h-14 rounded-xl bg-black text-white font-bold text-sm uppercase tracking-widest hover:bg-gray-900 transition-all shadow-xl shadow-black/20"
+                                            className="flex-1 flex items-center justify-center h-14 rounded-xl bg-black text-white font-medium text-sm uppercase tracking-widest hover:bg-gray-900 transition-all shadow-xl shadow-black/20"
                                         >
                                             {quantity} in Cart
                                         </button>
@@ -215,7 +215,7 @@ export default function ProductDetailPage() {
                                     </div>
                                 )}
                                 {product.stock > 0 && product.stock <= 10 && (
-                                    <p className="text-orange-500 text-xs font-bold mt-3 flex items-center gap-1.5">
+                                    <p className="text-orange-500 text-xs font-medium mt-3 flex items-center gap-1.5">
                                         <span>⏳</span> Hurry! Only {product.stock} left in stock.
                                     </p>
                                 )}
@@ -228,7 +228,7 @@ export default function ProductDetailPage() {
                                         <ShieldCheck size={20} />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-black uppercase tracking-wider mb-0.5">Quality Assured</p>
+                                        <p className="text-xs font-medium text-black uppercase tracking-wider mb-0.5">Quality Assured</p>
                                         <p className="text-[10px] text-gray-500">100% Genuine</p>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@ export default function ProductDetailPage() {
                                         <Truck size={20} />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-black uppercase tracking-wider mb-0.5">Fast Delivery</p>
+                                        <p className="text-xs font-medium text-black uppercase tracking-wider mb-0.5">Fast Delivery</p>
                                         <p className="text-[10px] text-gray-500">Same day shipping</p>
                                     </div>
                                 </div>

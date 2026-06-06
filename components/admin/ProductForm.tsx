@@ -101,7 +101,7 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">Product Image</label>
+                    <label className="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] ml-1">Product Image</label>
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -131,7 +131,7 @@ export function ProductForm({ initialData, defaultCategory, onSubmit, onCancel }
                             <div className="p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform">
                                 <Upload size={20} className="text-gray-400" />
                             </div>
-                            <p className="text-xs font-bold text-gray-400">Click to upload or drag and drop</p>
+                            <p className="text-xs font-medium text-gray-400">Click to upload or drag and drop</p>
                         </div>
                     )}
                 </div>

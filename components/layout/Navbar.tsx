@@ -63,7 +63,7 @@ export function Navbar() {
                             <Store size={18} className="text-[#D60000]" />
                         </div>
                         <div className="hidden xs:block">
-                            <p className="font-bold text-base sm:text-lg leading-none tracking-tight text-black">
+                            <p className="font-medium text-base sm:text-lg leading-none tracking-tight text-black">
                                 Super<span className="text-gray-600">Market</span>
                             </p>
                         </div>
@@ -112,7 +112,7 @@ export function Navbar() {
                             {totalItems > 0 && (
                                 <span
                                     key={badgeKey}
-                                    className="absolute top-1 right-1 w-5 h-5 bg-[#D60000] text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white"
+                                    className="absolute top-1 right-1 w-5 h-5 bg-[#D60000] text-white text-[10px] font-medium rounded-full flex items-center justify-center ring-2 ring-white"
                                 >
                                     {totalItems > 99 ? "99+" : totalItems}
                                 </span>
@@ -124,19 +124,19 @@ export function Navbar() {
                             <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                                 <Link
                                     href="/profile"
-                                    className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
+                                    className="text-xs font-medium text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
                                 >
                                     My Profile
                                 </Link>
                                 <Link
                                     href="/orders"
-                                    className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
+                                    className="text-xs font-medium text-gray-500 hover:text-black uppercase tracking-widest transition-colors"
                                 >
                                     My Orders
                                 </Link>
                                 <button
                                     onClick={logout}
-                                    className="inline-flex items-center gap-1.5 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-black active:scale-95 transition-all shadow-sm"
+                                    className="inline-flex items-center gap-1.5 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-black active:scale-95 transition-all shadow-sm"
                                 >
                                     Logout
                                 </button>
@@ -144,7 +144,7 @@ export function Navbar() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="hidden lg:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-bold px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
+                                className="hidden lg:inline-flex items-center gap-1.5 bg-black text-white text-[11px] uppercase tracking-widest font-medium px-5 py-2.5 rounded-lg hover:bg-gray-900 active:scale-95 transition-all shadow-sm"
                             >
                                 Login
                             </Link>
@@ -176,7 +176,7 @@ export function Navbar() {
                                 <div className="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center shadow-sm">
                                     <Store size={16} className="text-[#D60000]" />
                                 </div>
-                                <span className="font-bold text-base text-black uppercase tracking-tight">
+                                <span className="font-medium text-base text-black uppercase tracking-tight">
                                     SuperMarket
                                 </span>
                             </div>
@@ -209,7 +209,7 @@ export function Navbar() {
                                 <Link
                                     key={l.href}
                                     href={l.href}
-                                    className="flex items-center px-4 py-3.5 text-sm font-bold text-gray-500 hover:text-black hover:bg-gray-50 rounded transition-all uppercase tracking-widest"
+                                    className="flex items-center px-4 py-3.5 text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-50 rounded transition-all uppercase tracking-widest"
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     {l.label}
@@ -220,7 +220,7 @@ export function Navbar() {
                         <div className="px-6 pb-8 space-y-3">
                             <button
                                 onClick={() => { setMobileOpen(false); router.push("/cart"); }}
-                                className="w-full flex items-center justify-center gap-2 bg-black text-white text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-gray-900 active:scale-95 transition-all shadow-md shadow-black/5"
+                                className="w-full flex items-center justify-center gap-2 bg-black text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-gray-900 active:scale-95 transition-all shadow-md shadow-black/5"
                             >
                                 <ShoppingCart size={16} />
                                 View Cart {totalItems > 0 && `(${totalItems})`}
@@ -229,7 +229,7 @@ export function Navbar() {
                                 <>
                                     <Link
                                         href="/profile"
-                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-slate-50 transition-colors"
                                         onClick={() => setMobileOpen(false)}
                                     >
                                         <User size={16} />
@@ -237,7 +237,7 @@ export function Navbar() {
                                     </Link>
                                     <Link
                                         href="/orders"
-                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-slate-50 transition-colors"
                                         onClick={() => setMobileOpen(false)}
                                     >
                                         <Package size={16} />
@@ -245,7 +245,7 @@ export function Navbar() {
                                     </Link>
                                     <button
                                         onClick={() => { setMobileOpen(false); logout(); }}
-                                        className="w-full flex items-center justify-center gap-2 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-black active:scale-95 transition-all shadow-md shadow-black/5"
+                                        className="w-full flex items-center justify-center gap-2 bg-[#D60000] text-white text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-black active:scale-95 transition-all shadow-md shadow-black/5"
                                     >
                                         <LogOut size={16} />
                                         Logout
@@ -254,7 +254,7 @@ export function Navbar() {
                             ) : (
                                 <Link
                                     href="/login"
-                                    className="w-full flex items-center justify-center border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-bold py-4 rounded hover:bg-slate-50 transition-colors"
+                                    className="w-full flex items-center justify-center border-2 border-slate-100 text-black text-[11px] uppercase tracking-widest font-medium py-4 rounded hover:bg-slate-50 transition-colors"
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     Login

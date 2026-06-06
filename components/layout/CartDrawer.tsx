@@ -94,9 +94,9 @@ export function CartDrawer() {
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 flex-shrink-0">
                     <div className="flex items-center gap-2">
                         <ShoppingBag size={16} className="text-[#D60000]" />
-                        <h2 className="font-bold text-sm text-black uppercase tracking-widest">Your Cart</h2>
+                        <h2 className="font-medium text-sm text-black uppercase tracking-widest">Your Cart</h2>
                         {totalItems > 0 && (
-                            <span className="bg-[#D60000] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                            <span className="bg-[#D60000] text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
                                 {totalItems}
                             </span>
                         )}
@@ -117,7 +117,7 @@ export function CartDrawer() {
                             <ShoppingCart size={26} className="text-gray-200" />
                         </div>
                         <div className="text-center">
-                            <p className="font-bold text-base text-black tracking-tight">Your cart is empty</p>
+                            <p className="font-medium text-base text-black tracking-tight">Your cart is empty</p>
                             <p className="text-gray-400 text-xs font-medium mt-1 max-w-[180px] mx-auto">Looks like you haven't added anything yet.</p>
                         </div>
                         <button
@@ -125,7 +125,7 @@ export function CartDrawer() {
                                 closeCart();
                                 router.push("/#categories");
                             }}
-                            className="mt-2 w-full bg-black text-white font-bold px-6 py-3 rounded-xl hover:bg-gray-900 active:scale-95 transition-all text-sm"
+                            className="mt-2 w-full bg-black text-white font-medium px-6 py-3 rounded-xl hover:bg-gray-900 active:scale-95 transition-all text-sm"
                         >
                             Browse Products
                         </button>
@@ -147,7 +147,7 @@ export function CartDrawer() {
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="font-semibold text-[11px] text-black truncate uppercase tracking-tight">{item.products.name}</p>
-                                            <p className="text-black font-bold text-xs mt-0.5">
+                                            <p className="text-black font-medium text-xs mt-0.5">
                                                 ₹{(Number(item.price) * item.quantity).toFixed(0)}
                                             </p>
                                         </div>
@@ -155,14 +155,14 @@ export function CartDrawer() {
                                         <div className="flex items-center gap-1">
                                             <button
                                                 onClick={() => decrement(item.product_id)}
-                                                className="w-6 h-6 rounded-md bg-slate-50 text-slate-500 font-bold text-xs flex items-center justify-center hover:bg-black hover:text-white transition-all border border-transparent"
+                                                className="w-6 h-6 rounded-md bg-slate-50 text-slate-500 font-medium text-xs flex items-center justify-center hover:bg-black hover:text-white transition-all border border-transparent"
                                             >
                                                 −
                                             </button>
-                                            <span className="w-5 text-center font-bold text-xs">{item.quantity}</span>
+                                            <span className="w-5 text-center font-medium text-xs">{item.quantity}</span>
                                             <button
                                                 onClick={() => increment(item.product_id)}
-                                                className="w-6 h-6 rounded-md bg-black text-white font-bold text-xs flex items-center justify-center hover:bg-slate-800 transition-all"
+                                                className="w-6 h-6 rounded-md bg-black text-white font-medium text-xs flex items-center justify-center hover:bg-slate-800 transition-all"
                                             >
                                                 +
                                             </button>
@@ -175,7 +175,7 @@ export function CartDrawer() {
 
                             {/* Pickup time selector */}
                             <div className="px-3 py-3">
-                                <h3 className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
+                                <h3 className="text-[9px] font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
                                     <CalendarClock size={10} className="text-[#D60000]" />
                                     Pickup Schedule
                                 </h3>
@@ -189,7 +189,7 @@ export function CartDrawer() {
 
                             {/* Payment method */}
                             <div className="px-3 py-3">
-                                <h3 className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
+                                <h3 className="text-[9px] font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
                                     <CreditCard size={10} className="text-[#D60000]" />
                                     Payment Preference
                                 </h3>
@@ -211,10 +211,10 @@ export function CartDrawer() {
                                         >
                                             <method.icon size={16} className={cn("transition-colors", paymentMethod === method.id ? "text-white" : "text-slate-400")} />
                                             <div className="text-center">
-                                                <span className={cn("block font-bold text-[10px] tracking-tight", paymentMethod === method.id ? "text-white" : "text-black")}>
+                                                <span className={cn("block font-medium text-[10px] tracking-tight", paymentMethod === method.id ? "text-white" : "text-black")}>
                                                     {method.label}
                                                 </span>
-                                                <span className={cn("text-[8px] font-bold uppercase tracking-widest", paymentMethod === method.id ? "text-white/50" : "text-slate-400")}>
+                                                <span className={cn("text-[8px] font-medium uppercase tracking-widest", paymentMethod === method.id ? "text-white/50" : "text-slate-400")}>
                                                     {method.sub}
                                                 </span>
                                             </div>
@@ -228,24 +228,24 @@ export function CartDrawer() {
                         <div className="border-t border-gray-100 px-4 py-3 space-y-2.5 bg-white flex-shrink-0">
                             <div className="flex items-center justify-between">
                                 <span className="font-medium text-gray-400 text-xs">Subtotal</span>
-                                <span className="font-bold text-black text-sm">₹{totalPrice.toFixed(0)}</span>
+                                <span className="font-medium text-black text-sm">₹{totalPrice.toFixed(0)}</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <span className="font-medium text-gray-400 text-xs flex items-center gap-1.5">
                                     <Store size={11} /> Pickup Fee
                                 </span>
-                                <span className="font-bold text-green-500 text-xs tracking-widest uppercase">Free</span>
+                                <span className="font-medium text-green-500 text-xs tracking-widest uppercase">Free</span>
                             </div>
 
                             <div className="h-px bg-gray-100" />
 
                             <div className="flex items-center justify-between">
-                                <span className="font-bold text-black text-sm">Total</span>
-                                <span className="font-bold text-base text-black">₹{totalPrice.toFixed(0)}</span>
+                                <span className="font-medium text-black text-sm">Total</span>
+                                <span className="font-medium text-base text-black">₹{totalPrice.toFixed(0)}</span>
                             </div>
 
                             {!canCheckout && (
-                                <p className="text-[9px] text-amber-600 font-bold uppercase tracking-wider text-center bg-amber-50 rounded-lg py-2 px-3 border border-amber-100">
+                                <p className="text-[9px] text-amber-600 font-medium uppercase tracking-wider text-center bg-amber-50 rounded-lg py-2 px-3 border border-amber-100">
                                     ⚠ Select a pickup slot to continue
                                 </p>
                             )}
@@ -253,7 +253,7 @@ export function CartDrawer() {
                             <button
                                 onClick={handleCheckout}
                                 disabled={!canCheckout}
-                                className="w-full py-3.5 bg-[#D60000] text-white font-bold rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-red-600/15 text-xs uppercase tracking-widest"
+                                className="w-full py-3.5 bg-[#D60000] text-white font-medium rounded-xl hover:bg-black active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-red-600/15 text-xs uppercase tracking-widest"
                             >
                                 Secure Checkout
                             </button>

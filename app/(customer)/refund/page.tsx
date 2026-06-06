@@ -10,7 +10,7 @@ export default function RefundPolicy() {
     <main className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
       <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 pt-32 pb-24 w-full">
-        <h1 className="text-4xl font-bold text-black mb-8">Return & Refund Policy</h1>
+        <h1 className="text-4xl font-medium text-black mb-8">Return & Refund Policy</h1>
         <div className="prose prose-slate max-w-none text-gray-600">
           <p className="mb-4">Last Updated: June 2026</p>
           <h2 className="text-2xl font-semibold text-black mt-8 mb-4">1. Returns</h2>

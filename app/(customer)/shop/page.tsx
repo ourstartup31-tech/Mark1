@@ -34,7 +34,7 @@ export default function ShopPage() {
                 <section className="max-w-7xl mx-auto px-4 sm:px-6">
                     <AnimatedSection className="flex items-center justify-between mt-4 mb-8">
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-black tracking-tight">
+                            <h1 className="text-2xl sm:text-3xl font-medium text-black tracking-tight">
                                 Shop All
                             </h1>
                             <p className="text-sm text-gray-500 mt-1">
@@ -43,7 +43,7 @@ export default function ShopPage() {
                         </div>
                         <button 
                             onClick={() => setIsMobileFilterOpen(true)}
-                            className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold shadow-sm"
+                            className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium shadow-sm"
                         >
                             <Filter size={16} />
                             Filters
@@ -75,11 +75,11 @@ export default function ShopPage() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-gray-100">
                                     <span className="text-4xl mb-4">🔍</span>
-                                    <h3 className="text-lg font-bold text-gray-800">No products found</h3>
+                                    <h3 className="text-lg font-medium text-gray-800">No products found</h3>
                                     <p className="text-gray-500">Try adjusting your filters.</p>
                                     <button 
                                         onClick={() => setFilters({ categories: [], maxPrice: null, inStockOnly: false })}
-                                        className="mt-4 text-[#D60000] font-bold text-sm uppercase tracking-wider hover:underline"
+                                        className="mt-4 text-[#D60000] font-medium text-sm uppercase tracking-wider hover:underline"
                                     >
                                         Clear Filters
                                     </button>

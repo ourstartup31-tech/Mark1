@@ -75,14 +75,14 @@ export default function OrdersPage() {
     const columns = [
         {
             header: "Order ID",
-            accessor: (item: any) => <span className="font-bold text-black text-xs">{item.id.slice(0, 8).toUpperCase()}</span>
+            accessor: (item: any) => <span className="font-medium text-black text-xs">{item.id.slice(0, 8).toUpperCase()}</span>
         },
         { header: "Customer Name", accessor: (item: any) => <span>{item.customer}</span> },
         { header: "Phone", accessor: (item: any) => <span>{item.phone}</span> },
         { header: "Item Count", accessor: (item: any) => <span>{item.item_count} items</span> },
         {
             header: "Amount",
-            accessor: (item: any) => <span className="font-bold">{item.total}</span>
+            accessor: (item: any) => <span className="font-medium">{item.total}</span>
         },
         { 
             header: "Date/Time", 
@@ -105,7 +105,7 @@ export default function OrdersPage() {
                     "Cancelled": "bg-red-50 text-red-600",
                 };
                 return (
-                    <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${colors[item.status] || "bg-gray-50 text-gray-600"}`}>
+                    <span className={`px-3 py-1 rounded-full text-[9px] font-medium uppercase tracking-widest ${colors[item.status] || "bg-gray-50 text-gray-600"}`}>
                         {item.status}
                     </span>
                 );
@@ -129,7 +129,7 @@ export default function OrdersPage() {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-amber-600 rounded-full animate-spin" />
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Orders...</p>
+                <p className="text-gray-400 font-medium text-xs uppercase tracking-widest">Loading Orders...</p>
             </div>
         );
     }
@@ -143,7 +143,7 @@ export default function OrdersPage() {
             )}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-black tracking-tight">Order Overview</h1>
+                    <h1 className="text-4xl font-medium text-black tracking-tight">Order Overview</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Track and manage customer pickup orders.</p>
                 </div>
             </div>
@@ -152,8 +152,8 @@ export default function OrdersPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {stats.map((stat, idx) => (
                     <div key={idx} className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{stat.label}</span>
-                        <span className={`text-xl font-bold ${stat.color}`}>{stat.count}</span>
+                        <span className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">{stat.label}</span>
+                        <span className={`text-xl font-medium ${stat.color}`}>{stat.count}</span>
                     </div>
                 ))}
             </div>
@@ -173,7 +173,7 @@ export default function OrdersPage() {
                     </div>
                     <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-2">Status:</span>
+                            <span className="text-xs font-medium text-gray-400 uppercase tracking-widest ml-2">Status:</span>
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -189,7 +189,7 @@ export default function OrdersPage() {
                             </select>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-2">Date:</span>
+                            <span className="text-xs font-medium text-gray-400 uppercase tracking-widest ml-2">Date:</span>
                             <select
                                 value={dateFilter}
                                 onChange={(e) => setDateFilter(e.target.value)}
@@ -207,11 +207,11 @@ export default function OrdersPage() {
                 {dateFilter === "Custom" && (
                     <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 w-fit">
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400">From</span>
+                            <span className="text-xs font-medium text-gray-400">From</span>
                             <input type="date" value={customStart} onChange={e => setCustomStart(e.target.value)} className="bg-gray-50 border border-gray-100 rounded-lg py-1.5 px-3 text-sm" />
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400">To</span>
+                            <span className="text-xs font-medium text-gray-400">To</span>
                             <input type="date" value={customEnd} onChange={e => setCustomEnd(e.target.value)} className="bg-gray-50 border border-gray-100 rounded-lg py-1.5 px-3 text-sm" />
                         </div>
                     </div>

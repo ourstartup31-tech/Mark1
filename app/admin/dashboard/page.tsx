@@ -25,7 +25,7 @@ const columns = [
     {
         header: "Status",
         accessor: (item: any) => (
-            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${item.status === "Completed" ? "bg-green-50 text-green-600" :
+            <span className={`px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest ${item.status === "Completed" ? "bg-green-50 text-green-600" :
                 item.status === "Pending" ? "bg-amber-50 text-amber-600" :
                     "bg-blue-50 text-blue-600"
                 }`}>
@@ -46,11 +46,11 @@ export default function DashboardPage() {
             {/* Page Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-black tracking-tight">Dashboard Overview</h1>
+                    <h1 className="text-4xl font-medium text-black tracking-tight">Dashboard Overview</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Welcome back! Here's what's happening today.</p>
                 </div>
                 <div className="flex items-center gap-3 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm">
-                    <div className="px-4 py-2 bg-gray-50 rounded-xl flex items-center gap-3 text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    <div className="px-4 py-2 bg-gray-50 rounded-xl flex items-center gap-3 text-xs font-medium text-gray-500 uppercase tracking-widest">
                         <Calendar size={14} className="text-[#D60000]" />
                         March 1, 2026
                     </div>
@@ -88,8 +88,8 @@ export default function DashboardPage() {
                 {/* Recent Orders Table */}
                 <div className="lg:col-span-2 space-y-6">
                     <div className="flex items-center justify-between px-2">
-                        <h3 className="text-xl font-bold text-black tracking-tight">Recent Activity</h3>
-                        <Link href="/admin/orders" className="text-[10px] font-bold text-[#D60000] uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all">
+                        <h3 className="text-xl font-medium text-black tracking-tight">Recent Activity</h3>
+                        <Link href="/admin/orders" className="text-[10px] font-medium text-[#D60000] uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all">
                             View All Orders <ArrowRight size={14} />
                         </Link>
                     </div>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
 
                 {/* Store Status / Quick Actions */}
                 <div className="space-y-6">
-                    <h3 className="text-xl font-bold text-black tracking-tight px-2">Store Status</h3>
+                    <h3 className="text-xl font-medium text-black tracking-tight px-2">Store Status</h3>
                     <div className={cn(
                         "rounded-[2.5rem] p-10 text-white relative overflow-hidden group transition-all duration-500",
                         isStoreActive ? "bg-black" : "bg-gray-400"
@@ -110,12 +110,12 @@ export default function DashboardPage() {
                                     "w-2 h-2 rounded-full",
                                     isStoreActive ? "bg-green-500 animate-pulse" : "bg-red-500"
                                 )} />
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-400">
                                     {isStoreActive ? "Live Now" : "Currently Closed"}
                                 </span>
                             </div>
                             <p className="text-sm font-medium text-gray-400 mb-1">Current Status</p>
-                            <p className="text-3xl font-bold mb-8">
+                            <p className="text-3xl font-medium mb-8">
                                 Store is {isStoreActive ? "Open" : "Closed"}
                             </p>
 
@@ -123,7 +123,7 @@ export default function DashboardPage() {
 
                             <button 
                                 onClick={toggleStoreStatus}
-                                className="w-full mt-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-[#D60000] hover:text-white transition-all flex items-center justify-center gap-2"
+                                className="w-full mt-10 py-4 bg-white text-black font-medium rounded-2xl hover:bg-[#D60000] hover:text-white transition-all flex items-center justify-center gap-2"
                             >
                                 {isStoreActive ? "Close Store" : "Open Store"} <ArrowUpRight size={16} />
                             </button>

@@ -18,7 +18,7 @@ export default function SuperAdminGroupLayout({ children }: { children: React.Re
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-white gap-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin" />
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest animate-pulse">
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest animate-pulse">
                     Verifying Superadmin Access...
                 </p>
             </div>

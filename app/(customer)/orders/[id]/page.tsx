@@ -48,7 +48,7 @@ export default function CustomerOrderDetailsPage() {
             <div className="min-h-screen flex items-center justify-center bg-white">
                 <div className="text-center space-y-4">
                     <div className="w-12 h-12 border-4 border-gray-100 border-t-[#D60000] rounded-full animate-spin mx-auto" />
-                    <p className="font-bold text-gray-400 uppercase tracking-widest text-[10px]">Loading Order Details...</p>
+                    <p className="font-medium text-gray-400 uppercase tracking-widest text-[10px]">Loading Order Details...</p>
                 </div>
             </div>
         );
@@ -60,8 +60,8 @@ export default function CustomerOrderDetailsPage() {
                 <div className="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-2">
                     <Package size={32} />
                 </div>
-                <p className="text-red-500 font-bold">{error || "Order not found"}</p>
-                <button onClick={() => router.push("/orders")} className="bg-black text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-gray-900 transition-colors">
+                <p className="text-red-500 font-medium">{error || "Order not found"}</p>
+                <button onClick={() => router.push("/orders")} className="bg-black text-white px-6 py-2 rounded-xl font-medium text-sm hover:bg-gray-900 transition-colors">
                     Back to My Orders
                 </button>
             </div>
@@ -96,14 +96,14 @@ export default function CustomerOrderDetailsPage() {
                             <ArrowLeft size={20} />
                         </button>
                         <div>
-                            <h1 className="font-bold text-xl tracking-tight text-black flex items-center gap-3">
+                            <h1 className="font-medium text-xl tracking-tight text-black flex items-center gap-3">
                                 Order #{order.id.slice(0, 8).toUpperCase()}
                             </h1>
                             <p className="text-xs text-gray-400 font-medium mt-1">Placed on {orderDate} at {orderTime}</p>
                         </div>
                     </div>
                     <div className={cn(
-                        "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest border w-fit flex flex-col",
+                        "px-4 py-2 rounded-xl text-xs font-medium uppercase tracking-widest border w-fit flex flex-col",
                         getStatusColor(order.status)
                     )}>
                         {order.status}
@@ -118,7 +118,7 @@ export default function CustomerOrderDetailsPage() {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Status Timeline Card */}
                         <div className="bg-gray-50 rounded-[2rem] p-6 border border-gray-100">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Tracking Information</h2>
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-6">Tracking Information</h2>
                             
                             <div className="space-y-4">
                                 {/* Timeline Item */}
@@ -128,7 +128,7 @@ export default function CustomerOrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-200 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.created_at ? "text-black" : "text-gray-400")}>Pending</p>
+                                        <p className={cn("text-sm font-medium", order.created_at ? "text-black" : "text-gray-400")}>Pending</p>
                                         {order.created_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.created_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@ export default function CustomerOrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-200 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.confirmed_at ? "text-black" : "text-gray-400")}>Confirmed</p>
+                                        <p className={cn("text-sm font-medium", order.confirmed_at ? "text-black" : "text-gray-400")}>Confirmed</p>
                                         {order.confirmed_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.confirmed_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@ export default function CustomerOrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-200 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.preparing_at ? "text-black" : "text-gray-400")}>Preparing</p>
+                                        <p className={cn("text-sm font-medium", order.preparing_at ? "text-black" : "text-gray-400")}>Preparing</p>
                                         {order.preparing_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.preparing_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@ export default function CustomerOrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-200 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.out_for_delivery_at ? "text-black" : "text-gray-400")}>Out For Delivery</p>
+                                        <p className={cn("text-sm font-medium", order.out_for_delivery_at ? "text-black" : "text-gray-400")}>Out For Delivery</p>
                                         {order.out_for_delivery_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.out_for_delivery_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@ export default function CustomerOrderDetailsPage() {
                                         <div className={cn("w-3 h-3 rounded-full mt-1", order.delivered_at ? "bg-green-500" : "bg-gray-200")} />
                                     </div>
                                     <div>
-                                        <p className={cn("text-sm font-bold", order.delivered_at ? "text-black" : "text-gray-400")}>Delivered</p>
+                                        <p className={cn("text-sm font-medium", order.delivered_at ? "text-black" : "text-gray-400")}>Delivered</p>
                                         {order.delivered_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.delivered_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@ export default function CustomerOrderDetailsPage() {
                             
                             {order.status === "Cancelled" && (
                                 <div className="mt-6 bg-red-50 p-4 rounded-xl border border-red-100">
-                                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                    <p className="text-xs font-medium text-red-600 uppercase tracking-widest mb-1 flex items-center gap-2">
                                         <XCircle size={14} /> Cancelled
                                     </p>
                                     <p className="text-[10px] text-gray-500 mb-2">{new Date(order.cancelled_at || order.status_changed_at).toLocaleString("en-IN")}</p>
@@ -190,19 +190,19 @@ export default function CustomerOrderDetailsPage() {
 
                         {/* Order Items Table */}
                         <div className="space-y-4">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-2">Items Ordered</h2>
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest pl-2">Items Ordered</h2>
                             {order.order_items?.map((item: any) => (
                                 <div key={item.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-shadow">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center font-bold text-2xl border border-gray-100">
+                                        <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center font-medium text-2xl border border-gray-100">
                                             {item.products?.emoji || "📦"}
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-black">{item.products?.name}</p>
+                                            <p className="text-sm font-medium text-black">{item.products?.name}</p>
                                             <p className="text-xs text-gray-500 font-medium mt-0.5">₹{Number(item.price).toFixed(2)} × {item.quantity}</p>
                                         </div>
                                     </div>
-                                    <p className="text-sm font-bold text-black">₹{(Number(item.price) * item.quantity).toFixed(2)}</p>
+                                    <p className="text-sm font-medium text-black">₹{(Number(item.price) * item.quantity).toFixed(2)}</p>
                                 </div>
                             ))}
                         </div>
@@ -213,7 +213,7 @@ export default function CustomerOrderDetailsPage() {
                         
                         {/* Pickup Info Card */}
                         <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Pickup Details</h2>
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-6">Pickup Details</h2>
                             
                             <div className="space-y-6">
                                 <div className="flex items-start gap-3">
@@ -221,8 +221,8 @@ export default function CustomerOrderDetailsPage() {
                                         <Calendar size={18} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Schedule</p>
-                                        <p className="text-sm font-bold text-black capitalize">
+                                        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-1">Schedule</p>
+                                        <p className="text-sm font-medium text-black capitalize">
                                             {order.pickup_day && order.pickup_slot
                                                 ? `${order.pickup_day}, ${order.pickup_slot}`
                                                 : "Not specified"}
@@ -235,8 +235,8 @@ export default function CustomerOrderDetailsPage() {
                                         <MapPin size={18} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Store Address</p>
-                                        <p className="text-sm font-bold text-black">{order.stores?.name || "Supermarket"}</p>
+                                        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-1">Store Address</p>
+                                        <p className="text-sm font-medium text-black">{order.stores?.name || "Supermarket"}</p>
                                         <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                                             {order.stores?.address || "Address not provided"}
                                         </p>
@@ -247,18 +247,18 @@ export default function CustomerOrderDetailsPage() {
 
                         {/* Payment Summary */}
                         <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
+                            <h2 className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
                             <div className="space-y-4 mb-6">
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 font-medium">Subtotal ({order.order_items?.reduce((a: number, b: any) => a + b.quantity, 0)} items)</span>
-                                    <span className="text-sm font-bold text-black">₹{Number(order.total_price).toFixed(2)}</span>
+                                    <span className="text-sm font-medium text-black">₹{Number(order.total_price).toFixed(2)}</span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 font-medium">Taxes & Fees</span>
-                                    <span className="text-sm font-bold text-black">₹0.00</span>
+                                    <span className="text-sm font-medium text-black">₹0.00</span>
                                 </div>
                                 <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                                    <span className="text-sm font-bold text-black">Grand Total</span>
+                                    <span className="text-sm font-medium text-black">Grand Total</span>
                                     <span className="text-xl font-black text-[#D60000]">₹{Number(order.total_price).toFixed(2)}</span>
                                 </div>
                             </div>
@@ -268,8 +268,8 @@ export default function CustomerOrderDetailsPage() {
                                     <CreditCard size={18} />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Method</p>
-                                    <p className="text-xs font-bold text-black uppercase tracking-wider">{order.payment_method || "Pay at Store"}</p>
+                                    <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-0.5">Method</p>
+                                    <p className="text-xs font-medium text-black uppercase tracking-wider">{order.payment_method || "Pay at Store"}</p>
                                 </div>
                             </div>
                         </div>

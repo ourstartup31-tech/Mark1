@@ -50,11 +50,11 @@ export function Pricing() {
         <section className="bg-white py-20 lg:py-24">
             <div className="max-w-7xl mx-auto px-6">
                 <AnimatedSection className="text-center mb-16">
-                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-bold text-[#D60000] uppercase tracking-[0.2em] mb-4">
+                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-medium text-[#D60000] uppercase tracking-[0.2em] mb-4">
                         <span className="w-1 h-1 rounded-full bg-[#D60000]" />
                         Membership Plans
                     </p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-medium text-black tracking-tight">
                         Choose Your Plan
                     </h2>
                     <p className="mt-4 text-gray-400 font-medium max-w-sm mx-auto">

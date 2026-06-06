@@ -55,12 +55,12 @@ export default function StaffPage() {
             header: "Staff Member",
             accessor: (item: any) => (
                 <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-bold text-xs uppercase">
+                    <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-medium text-xs uppercase">
                         {item.name.split(' ').map((n: string) => n[0]).join('')}
                     </div>
                     <div>
-                        <p className="font-bold text-black">{item.name}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{item.email}</p>
+                        <p className="font-medium text-black">{item.name}</p>
+                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">{item.email}</p>
                     </div>
                 </div>
             )
@@ -69,7 +69,7 @@ export default function StaffPage() {
         {
             header: "Status",
             accessor: (item: any) => (
-                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${item.status === "Active" ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-400"
+                <span className={`px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest ${item.status === "Active" ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-400"
                     }`}>
                     {item.status}
                 </span>
@@ -101,7 +101,7 @@ export default function StaffPage() {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin" />
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Staff...</p>
+                <p className="text-gray-400 font-medium text-xs uppercase tracking-widest">Loading Staff...</p>
             </div>
         );
     }
@@ -115,7 +115,7 @@ export default function StaffPage() {
             )}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-black tracking-tight">Manage Staff</h1>
+                    <h1 className="text-4xl font-medium text-black tracking-tight">Manage Staff</h1>
                     <p className="text-gray-400 font-medium mt-1 italic">Control who has access to the store management system.</p>
                 </div>
                 <Button
@@ -158,17 +158,17 @@ export default function StaffPage() {
                 title="Remove Staff"
             >
                 <div className="space-y-6">
-                    <p className="text-gray-500 font-medium">Are you sure you want to remove <span className="text-black font-bold">"{selectedStaff?.name}"</span> from your team? They will lose all dashboard access.</p>
+                    <p className="text-gray-500 font-medium">Are you sure you want to remove <span className="text-black font-medium">"{selectedStaff?.name}"</span> from your team? They will lose all dashboard access.</p>
                     <div className="flex gap-4">
                         <Button
                             onClick={() => setIsDeleteModalOpen(false)}
-                            className="flex-1 bg-gray-50 text-gray-400 font-bold py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
+                            className="flex-1 bg-gray-50 text-gray-400 font-medium py-4 rounded-xl border border-gray-100 hover:bg-white hover:text-black transition-all"
                         >
                             Cancel
                         </Button>
                         <Button
                             onClick={handleDelete}
-                            className="flex-1 bg-[#D60000] text-white font-bold py-4 rounded-xl hover:bg-black transition-all"
+                            className="flex-1 bg-[#D60000] text-white font-medium py-4 rounded-xl hover:bg-black transition-all"
                         >
                             Confirm Removal
                         </Button>

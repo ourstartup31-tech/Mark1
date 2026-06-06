@@ -26,7 +26,7 @@ export default function SuperAdminHeader({ onMobileMenuOpen }: { onMobileMenuOpe
 
             {/* Page title */}
             <div className="flex-1 min-w-0">
-                <h1 className="text-sm font-bold text-slate-900 uppercase tracking-wider truncate">{page.title}</h1>
+                <h1 className="text-sm font-medium text-slate-900 uppercase tracking-wider truncate">{page.title}</h1>
             </div>
 
             {/* Search */}
@@ -43,7 +43,7 @@ export default function SuperAdminHeader({ onMobileMenuOpen }: { onMobileMenuOpe
 
             {/* Avatar */}
             <div className="w-8 h-8 rounded bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0">
-                <span className="text-slate-600 font-bold text-[10px] uppercase">SA</span>
+                <span className="text-slate-600 font-medium text-[10px] uppercase">SA</span>
             </div>
         </header>
     );

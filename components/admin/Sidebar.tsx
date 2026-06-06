@@ -35,10 +35,10 @@ export function Sidebar() {
                         <ShoppingBag className="text-white" size={24} />
                     </div>
                     <div>
-                        <h1 className="text-white font-bold text-lg leading-tight uppercase tracking-widest">
+                        <h1 className="text-white font-medium text-lg leading-tight uppercase tracking-widest">
                             Store<span className="text-[#D60000]">Admin</span>
                         </h1>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-0.5">
+                        <p className="text-[10px] text-gray-500 font-medium uppercase tracking-[0.2em] mt-0.5">
                             Supermarket v1.0
                         </p>
                     </div>
@@ -62,7 +62,7 @@ export function Sidebar() {
                         >
                             <div className="flex items-center gap-4">
                                 <item.icon size={20} className={cn("transition-colors", isActive ? "text-white" : "group-hover:text-white")} />
-                                <span className="font-bold text-sm tracking-tight">{item.label}</span>
+                                <span className="font-medium text-sm tracking-tight">{item.label}</span>
                             </div>
                             {isActive && <ChevronRight size={16} className="text-white/50" />}
                         </Link>
@@ -73,8 +73,8 @@ export function Sidebar() {
             {/* Footer / Store Badge */}
             <div className="p-8">
                 <div className="bg-white/5 rounded-3xl p-6 border border-white/5">
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Managed Store</p>
-                    <p className="text-white font-bold text-sm">Downtown Market</p>
+                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-3">Managed Store</p>
+                    <p className="text-white font-medium text-sm">Downtown Market</p>
                     <p className="text-gray-500 text-xs mt-1">Terminal ID: 8820-A</p>
                 </div>
             </div>

@@ -38,8 +38,8 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
                             <Layers size={18} className="text-white" />
                         </div>
                         <div className="min-w-0">
-                            <p className="text-white font-bold text-sm tracking-tight truncate">SuperMart</p>
-                            <p className="text-slate-400 text-[9px] font-bold tracking-widest uppercase">Admin Panel</p>
+                            <p className="text-white font-medium text-sm tracking-tight truncate">SuperMart</p>
+                            <p className="text-slate-400 text-[9px] font-medium tracking-widest uppercase">Admin Panel</p>
                         </div>
                     </div>
                 )}
@@ -62,7 +62,7 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
             {/* Nav */}
             <nav className="flex-1 py-4 px-3 space-y-0.5 overflow-y-auto">
                 {!collapsed && (
-                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-2 mb-3">Platform</p>
+                    <p className="text-[10px] font-medium text-white/30 uppercase tracking-widest px-2 mb-3">Platform</p>
                 )}
                 {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
                     const isActive = currentPath === href || currentPath.startsWith(href + "/");
@@ -88,11 +88,11 @@ export default function SuperAdminSidebar({ collapsed, onToggleCollapse, current
             <div className="px-3 pb-4 border-t border-white/5 pt-4">
                 <div className={`flex items-center gap-3 px-3 py-3 rounded-lg bg-white/5 mb-2 ${collapsed ? "justify-center" : ""}`}>
                     <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-xs uppercase">S</span>
+                        <span className="text-white font-medium text-xs uppercase">S</span>
                     </div>
                     {!collapsed && (
                         <div className="min-w-0 flex-1">
-                            <p className="text-white text-[11px] font-bold truncate">Superadmin</p>
+                            <p className="text-white text-[11px] font-medium truncate">Superadmin</p>
                             <p className="text-slate-500 text-[10px] truncate uppercase font-medium">Owner Access</p>
                         </div>
                     )}

@@ -132,7 +132,7 @@ function LoginContent() {
                         <ArrowLeft size={22} />
                     </button>
                     <h1 className="text-3xl font-extrabold text-[#D60000] mb-8">FreshMart</h1>
-                    <h2 className="text-[28px] font-bold text-black mb-2">Ready to Shop?</h2>
+                    <h2 className="text-[28px] font-medium text-black mb-2">Ready to Shop?</h2>
                     <p className="text-gray-500 text-center text-sm font-medium">Join the club for premium freshness delivered to your door.</p>
                 </div>
 
@@ -147,7 +147,7 @@ function LoginContent() {
                         >
                             <ArrowLeft size={18} />
                         </button>
-                        <h1 className="text-2xl font-bold tracking-tight text-[#D60000]">FreshMart</h1>
+                        <h1 className="text-2xl font-medium tracking-tight text-[#D60000]">FreshMart</h1>
                     </div>
 
                     <div className="px-6 md:px-0 w-full md:h-full">
@@ -172,13 +172,13 @@ function LoginContent() {
                     <div className="w-full max-w-[400px]">
                         {/* Desktop Header */}
                         <div className="hidden md:block mb-10">
-                            <h2 className="text-3xl font-bold text-black mb-3">Ready to Shop?</h2>
+                            <h2 className="text-3xl font-medium text-black mb-3">Ready to Shop?</h2>
                             <p className="text-gray-500 text-sm font-medium">Join the club for premium freshness delivered to your door.</p>
                         </div>
 
                         {/* Status Messages */}
                         {successMessage && (
-                            <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 text-sm font-bold rounded-xl flex items-center gap-3">
+                            <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 text-sm font-medium rounded-xl flex items-center gap-3">
                                 <CheckCircle2 size={18} />
                                 {successMessage}
                             </div>
@@ -188,7 +188,7 @@ function LoginContent() {
                         {step === "input" ? (
                             <form onSubmit={handleSendOtp} className="space-y-6">
                                 <div>
-                                    <label className="block text-[13px] font-bold text-black mb-2">
+                                    <label className="block text-[13px] font-medium text-black mb-2">
                                         {loginMethod === "phone" ? "Mobile Number" : "Email Address"}
                                     </label>
                                     <Input
@@ -223,7 +223,7 @@ function LoginContent() {
 
                                 <div className="flex items-center gap-4 py-4">
                                     <div className="flex-1 h-px bg-gray-200"></div>
-                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Or continue with</span>
+                                    <span className="text-[11px] font-medium text-gray-400 uppercase tracking-widest">Or continue with</span>
                                     <div className="flex-1 h-px bg-gray-200"></div>
                                 </div>
 
@@ -256,7 +256,7 @@ function LoginContent() {
                         ) : (
                             <form onSubmit={handleVerifyOtp} className="space-y-6">
                                 <div className="relative">
-                                    <label className="block text-[13px] font-bold text-black mb-2">6-Digit OTP</label>
+                                    <label className="block text-[13px] font-medium text-black mb-2">6-Digit OTP</label>
                                     <Input
                                         type="text"
                                         name="otp"
@@ -272,7 +272,7 @@ function LoginContent() {
                                         className="h-14 font-medium"
                                     />
                                     {receivedOtp && (
-                                        <p className="absolute -top-6 right-0 text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
+                                        <p className="absolute -top-6 right-0 text-[10px] text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded">
                                             Demo OTP: {receivedOtp}
                                         </p>
                                     )}

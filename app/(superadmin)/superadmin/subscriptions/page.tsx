@@ -17,7 +17,7 @@ export default function SubscriptionsPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-900 uppercase tracking-wider">Store Subscriptions</h2>
+                    <h2 className="text-xl font-medium text-slate-900 uppercase tracking-wider">Store Subscriptions</h2>
                     <p className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-widest">Manage store billing and plan status</p>
                 </div>
             </div>
@@ -42,16 +42,16 @@ export default function SubscriptionsPage() {
                         <thead>
                             <tr className="bg-slate-50 border-b border-slate-200">
                                 {["Store Name", "Plan", "Start Date", "Expiry Date", "Status", "Actions"].map(h => (
-                                    <th key={h} className="px-5 py-3 font-bold text-slate-500 uppercase tracking-widest border-r border-slate-100 last:border-0">{h}</th>
+                                    <th key={h} className="px-5 py-3 font-medium text-slate-500 uppercase tracking-widest border-r border-slate-100 last:border-0">{h}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {filtered.map(store => (
                                 <tr key={store.id} className="hover:bg-slate-50/50">
-                                    <td className="px-5 py-4 font-bold text-slate-900 border-r border-slate-50 last:border-0">{store.name}</td>
+                                    <td className="px-5 py-4 font-medium text-slate-900 border-r border-slate-50 last:border-0">{store.name}</td>
                                     <td className="px-5 py-4 border-r border-slate-50 last:border-0">
-                                        <span className="px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-[10px] font-bold uppercase text-slate-500">
+                                        <span className="px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-[10px] font-medium uppercase text-slate-500">
                                             {store.plan}
                                         </span>
                                     </td>
@@ -62,7 +62,7 @@ export default function SubscriptionsPage() {
                                         Mar 24, 2027
                                     </td>
                                     <td className="px-5 py-4 border-r border-slate-50 last:border-0">
-                                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${store.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
+                                        <span className={`text-[10px] font-medium uppercase px-2 py-0.5 rounded border ${store.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
                                             store.status === "Expired" ? "bg-red-50 text-red-700 border-red-100" :
                                                 "bg-slate-100 text-slate-600 border-slate-200"
                                             }`}>
@@ -71,9 +71,9 @@ export default function SubscriptionsPage() {
                                     </td>
                                     <td className="px-5 py-4">
                                         <div className="flex items-center gap-3">
-                                            <button className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 hover:underline">Extend</button>
-                                            <button className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 hover:underline">Upgrade</button>
-                                            <button className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:underline">Cancel</button>
+                                            <button className="text-[10px] font-medium uppercase tracking-widest text-indigo-600 hover:underline">Extend</button>
+                                            <button className="text-[10px] font-medium uppercase tracking-widest text-indigo-600 hover:underline">Upgrade</button>
+                                            <button className="text-[10px] font-medium uppercase tracking-widest text-red-500 hover:underline">Cancel</button>
                                         </div>
                                     </td>
                                 </tr>

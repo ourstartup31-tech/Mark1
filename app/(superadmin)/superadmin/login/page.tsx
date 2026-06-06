@@ -46,19 +46,19 @@ export default function SuperAdminLoginPage() {
                         <Layers size={22} className="text-white" />
                     </div>
                     <div>
-                        <p className="text-white font-bold text-lg tracking-tight">SuperMart Platform</p>
+                        <p className="text-white font-medium text-lg tracking-tight">SuperMart Platform</p>
                         <p className="text-indigo-400 text-xs font-medium tracking-widest uppercase">Control Center</p>
                     </div>
                 </div>
 
                 {/* Copy */}
                 <div className="relative z-10 space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest"
                         style={{ background: "rgba(99,102,241,0.2)", color: "#a5b4fc" }}>
                         <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
                         Platform Superadmin
                     </div>
-                    <h1 className="text-5xl xl:text-6xl font-bold text-white leading-[1.05] tracking-tight">
+                    <h1 className="text-5xl xl:text-6xl font-medium text-white leading-[1.05] tracking-tight">
                         Platform<br />
                         <span style={{ background: "linear-gradient(90deg, #6366f1, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                             Command
@@ -98,7 +98,7 @@ export default function SuperAdminLoginPage() {
                             <Layers size={22} className="text-white" />
                         </div>
                         <div>
-                            <p className="font-bold text-gray-900 tracking-tight">SuperMart Platform</p>
+                            <p className="font-medium text-gray-900 tracking-tight">SuperMart Platform</p>
                             <p className="text-xs text-indigo-600 font-medium">Control Center</p>
                         </div>
                     </div>
@@ -109,14 +109,14 @@ export default function SuperAdminLoginPage() {
                                 style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
                                 <ShieldCheck size={24} className="text-white" />
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Superadmin Login</h2>
+                            <h2 className="text-2xl font-medium text-gray-900 tracking-tight">Superadmin Login</h2>
                             <p className="text-gray-400 text-sm mt-1">Access the platform control center</p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-5">
                             {/* Email */}
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
+                                <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
                                 <input
                                     type="email"
                                     value={form.email}
@@ -128,7 +128,7 @@ export default function SuperAdminLoginPage() {
 
                             {/* Password */}
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Password</label>
+                                <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">Password</label>
                                 <div className="relative">
                                     <input
                                         type={showPw ? "text" : "password"}
@@ -155,7 +155,7 @@ export default function SuperAdminLoginPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full h-12 flex items-center justify-center gap-2 text-white font-bold text-sm rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-200"
+                                className="w-full h-12 flex items-center justify-center gap-2 text-white font-medium text-sm rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-200"
                                 style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
                             >
                                 {loading ? (
@@ -169,7 +169,7 @@ export default function SuperAdminLoginPage() {
 
                     {/* Hint */}
                     <div className="mt-6 p-4 bg-indigo-50 border border-indigo-100 rounded-2xl">
-                        <p className="text-xs font-bold text-indigo-700 mb-1">Demo Credentials</p>
+                        <p className="text-xs font-medium text-indigo-700 mb-1">Demo Credentials</p>
                         <p className="text-xs text-indigo-500 font-medium">Email: superadmin@platform.com</p>
                         <p className="text-xs text-indigo-500 font-medium">Password: super123</p>
                         <p className="text-xs text-indigo-400 mt-1">Or use phone 8888888888 / PIN 1234 on customer login</p>

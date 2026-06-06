@@ -48,8 +48,8 @@ export function ProductFilters({ categories, onApply, onClose, initialFilters, i
         <div className={cn("flex flex-col bg-white overflow-hidden", isMobile ? "h-full w-full" : "h-[600px] rounded-xl border border-gray-200 shadow-sm")}>
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100 flex-shrink-0">
-                <h2 className="text-lg font-bold text-gray-800">Filters</h2>
-                <button onClick={handleClearAll} className="text-xs font-bold text-[#D60000] uppercase tracking-wider hover:underline">
+                <h2 className="text-lg font-medium text-gray-800">Filters</h2>
+                <button onClick={handleClearAll} className="text-xs font-medium text-[#D60000] uppercase tracking-wider hover:underline">
                     Clear All
                 </button>
             </div>
@@ -103,7 +103,7 @@ export function ProductFilters({ categories, onApply, onClose, initialFilters, i
                                 onChange={(e) => setFilters({ ...filters, maxPrice: parseInt(e.target.value) })}
                                 className="w-full accent-[#D60000]"
                             />
-                            <div className="flex justify-between text-xs font-bold text-gray-500">
+                            <div className="flex justify-between text-xs font-medium text-gray-500">
                                 <span>₹10</span>
                                 <span className="text-[#D60000] text-sm">₹{filters.maxPrice || 2000}</span>
                             </div>
@@ -131,14 +131,14 @@ export function ProductFilters({ categories, onApply, onClose, initialFilters, i
                 {isMobile && onClose && (
                     <button 
                         onClick={onClose}
-                        className="flex-1 py-3 text-sm font-bold text-gray-600 border border-gray-200 rounded uppercase tracking-wider hover:bg-gray-50 transition-colors"
+                        className="flex-1 py-3 text-sm font-medium text-gray-600 border border-gray-200 rounded uppercase tracking-wider hover:bg-gray-50 transition-colors"
                     >
                         Close
                     </button>
                 )}
                 <button 
                     onClick={handleApply}
-                    className="flex-1 py-3 text-sm font-bold text-white bg-[#D60000] rounded uppercase tracking-wider hover:bg-red-700 active:scale-95 transition-all"
+                    className="flex-1 py-3 text-sm font-medium text-white bg-[#D60000] rounded uppercase tracking-wider hover:bg-red-700 active:scale-95 transition-all"
                 >
                     Apply
                 </button>

@@ -29,7 +29,7 @@ export function Toggle({ enabled, onChange, label, className }: ToggleProps) {
                 />
             </button>
             {label && (
-                <span className="text-sm font-bold text-black">{label}</span>
+                <span className="text-sm font-medium text-black">{label}</span>
             )}
         </div>
     );

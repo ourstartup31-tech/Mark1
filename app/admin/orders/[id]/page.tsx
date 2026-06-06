@@ -88,7 +88,7 @@ export default function OrderDetailsPage() {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-gray-100 border-t-amber-600 rounded-full animate-spin" />
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">Loading Order Details...</p>
+                <p className="text-gray-400 font-medium text-xs uppercase tracking-widest">Loading Order Details...</p>
             </div>
         );
     }
@@ -96,7 +96,7 @@ export default function OrderDetailsPage() {
     if (error || !order) {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4 text-center">
-                <p className="text-red-500 font-bold">{error || "Order not found"}</p>
+                <p className="text-red-500 font-medium">{error || "Order not found"}</p>
                 <button onClick={() => router.back()} className="text-gray-500 underline text-sm">Go Back</button>
             </div>
         );
@@ -128,12 +128,12 @@ export default function OrderDetailsPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-400 hover:text-black transition-colors mb-4 text-sm font-bold">
+                    <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-400 hover:text-black transition-colors mb-4 text-sm font-medium">
                         <ArrowLeft size={16} /> Back to Orders
                     </button>
-                    <h1 className="text-3xl font-bold text-black tracking-tight flex items-center gap-3">
+                    <h1 className="text-3xl font-medium text-black tracking-tight flex items-center gap-3">
                         Order #{order.id.slice(0, 8).toUpperCase()}
-                        <span className={cn("px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border", statusColors[order.status] || "bg-gray-50 text-gray-600")}>
+                        <span className={cn("px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border", statusColors[order.status] || "bg-gray-50 text-gray-600")}>
                             {order.status}
                         </span>
                     </h1>
@@ -146,7 +146,7 @@ export default function OrderDetailsPage() {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Customer & Delivery Card */}
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Customer & Pickup Info</h2>
+                        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Customer & Pickup Info</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
@@ -154,8 +154,8 @@ export default function OrderDetailsPage() {
                                         <User size={18} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Customer</p>
-                                        <p className="text-sm font-bold text-black">{order.users?.name || "Unknown Customer"}</p>
+                                        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-1">Customer</p>
+                                        <p className="text-sm font-medium text-black">{order.users?.name || "Unknown Customer"}</p>
                                         <p className="text-xs text-gray-500 mt-0.5">{order.users?.phone || "No Phone Number"}</p>
                                     </div>
                                 </div>
@@ -164,8 +164,8 @@ export default function OrderDetailsPage() {
                                         <Calendar size={18} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Pickup Schedule</p>
-                                        <p className="text-sm font-bold text-black capitalize">
+                                        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-1">Pickup Schedule</p>
+                                        <p className="text-sm font-medium text-black capitalize">
                                             {order.pickup_day && order.pickup_slot
                                                 ? `${order.pickup_day}, ${order.pickup_slot}`
                                                 : "Not specified"}
@@ -179,8 +179,8 @@ export default function OrderDetailsPage() {
                                     <MapPin size={18} />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Pickup Store Address</p>
-                                    <p className="text-sm font-bold text-black">{order.stores?.name || "Supermarket"}</p>
+                                    <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-1">Pickup Store Address</p>
+                                    <p className="text-sm font-medium text-black">{order.stores?.name || "Supermarket"}</p>
                                     <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[200px]">
                                         {order.stores?.address || "Address not provided"}
                                     </p>
@@ -191,20 +191,20 @@ export default function OrderDetailsPage() {
 
                     {/* Order Items Table */}
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Line Items</h2>
+                        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Line Items</h2>
                         <div className="space-y-4">
                             {order.order_items?.map((item: any) => (
                                 <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm border border-gray-100">
+                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-medium text-2xl shadow-sm border border-gray-100">
                                             {item.products?.emoji || "📦"}
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-black">{item.products?.name}</p>
+                                            <p className="text-sm font-medium text-black">{item.products?.name}</p>
                                             <p className="text-xs text-gray-500 font-medium mt-0.5">₹{Number(item.price).toFixed(2)} × {item.quantity}</p>
                                         </div>
                                     </div>
-                                    <p className="text-sm font-bold text-black">₹{(Number(item.price) * item.quantity).toFixed(2)}</p>
+                                    <p className="text-sm font-medium text-black">₹{(Number(item.price) * item.quantity).toFixed(2)}</p>
                                 </div>
                             ))}
                         </div>
@@ -215,18 +215,18 @@ export default function OrderDetailsPage() {
                 <div className="space-y-6">
                     {/* Payment Summary */}
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
+                        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Payment Summary</h2>
                         <div className="space-y-4 mb-6">
                             <div className="flex items-center justify-between">
                                 <span className="text-xs text-gray-500 font-medium">Subtotal ({order.order_items?.reduce((a: number, b: any) => a + b.quantity, 0)} items)</span>
-                                <span className="text-sm font-bold text-black">₹{Number(order.total_price).toFixed(2)}</span>
+                                <span className="text-sm font-medium text-black">₹{Number(order.total_price).toFixed(2)}</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <span className="text-xs text-gray-500 font-medium">Taxes & Fees</span>
-                                <span className="text-sm font-bold text-black">₹0.00</span>
+                                <span className="text-sm font-medium text-black">₹0.00</span>
                             </div>
                             <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                                <span className="text-sm font-bold text-black">Grand Total</span>
+                                <span className="text-sm font-medium text-black">Grand Total</span>
                                 <span className="text-xl font-black text-amber-500">₹{Number(order.total_price).toFixed(2)}</span>
                             </div>
                         </div>
@@ -236,22 +236,22 @@ export default function OrderDetailsPage() {
                                 <CreditCard size={18} />
                             </div>
                             <div>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Payment Method</p>
-                                <p className="text-sm font-bold text-black uppercase tracking-wider">{order.payment_method || "Pay at Store"}</p>
+                                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-0.5">Payment Method</p>
+                                <p className="text-sm font-medium text-black uppercase tracking-wider">{order.payment_method || "Pay at Store"}</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Status Update Card */}
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Manage Status</h2>
+                        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">Manage Status</h2>
                         
                         <div className="grid grid-cols-2 gap-3 mb-6">
                             <button
                                 disabled={!isTransitionAllowed(order.status, "Pending") && order.status !== "Pending"}
                                 onClick={() => updateStatus("Pending")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Pending" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-white border-gray-50 text-gray-400 hover:border-amber-100 hover:text-amber-500"
                                 )}
                             >
@@ -261,7 +261,7 @@ export default function OrderDetailsPage() {
                                 disabled={!isTransitionAllowed(order.status, "Confirmed") && order.status !== "Confirmed"}
                                 onClick={() => updateStatus("Confirmed")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Confirmed" ? "bg-blue-50 border-blue-200 text-blue-600" : "bg-white border-gray-50 text-gray-400 hover:border-blue-100 hover:text-blue-500"
                                 )}
                             >
@@ -271,7 +271,7 @@ export default function OrderDetailsPage() {
                                 disabled={!isTransitionAllowed(order.status, "Preparing") && order.status !== "Preparing"}
                                 onClick={() => updateStatus("Preparing")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Preparing" ? "bg-purple-50 border-purple-200 text-purple-600" : "bg-white border-gray-50 text-gray-400 hover:border-purple-100 hover:text-purple-500"
                                 )}
                             >
@@ -281,7 +281,7 @@ export default function OrderDetailsPage() {
                                 disabled={!isTransitionAllowed(order.status, "Out For Delivery") && order.status !== "Out For Delivery"}
                                 onClick={() => updateStatus("Out For Delivery")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Out For Delivery" ? "bg-indigo-50 border-indigo-200 text-indigo-600" : "bg-white border-gray-50 text-gray-400 hover:border-indigo-100 hover:text-indigo-500"
                                 )}
                             >
@@ -291,7 +291,7 @@ export default function OrderDetailsPage() {
                                 disabled={!isTransitionAllowed(order.status, "Delivered") && order.status !== "Delivered"}
                                 onClick={() => updateStatus("Delivered")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Delivered" ? "bg-green-50 border-green-200 text-green-600" : "bg-white border-gray-50 text-gray-400 hover:border-green-100 hover:text-green-500"
                                 )}
                             >
@@ -301,7 +301,7 @@ export default function OrderDetailsPage() {
                                 disabled={!isTransitionAllowed(order.status, "Cancelled") && order.status !== "Cancelled"}
                                 onClick={() => updateStatus("Cancelled")}
                                 className={cn(
-                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-bold text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
+                                    "flex items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all font-medium text-[10px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed",
                                     order.status === "Cancelled" ? "bg-red-50 border-red-200 text-red-600" : "bg-white border-gray-50 text-gray-400 hover:border-red-100 hover:text-red-500"
                                 )}
                             >
@@ -311,7 +311,7 @@ export default function OrderDetailsPage() {
 
                         {showCancelPrompt && order.status !== "Cancelled" && (
                             <div className="mb-6 bg-red-50 p-4 rounded-2xl border border-red-100">
-                                <p className="text-xs font-bold text-red-600 mb-2 uppercase tracking-widest">Reason for Cancellation</p>
+                                <p className="text-xs font-medium text-red-600 mb-2 uppercase tracking-widest">Reason for Cancellation</p>
                                 <textarea
                                     value={cancellationReason}
                                     onChange={(e) => setCancellationReason(e.target.value)}
@@ -322,13 +322,13 @@ export default function OrderDetailsPage() {
                                 <div className="flex gap-2">
                                     <button 
                                         onClick={() => setShowCancelPrompt(false)}
-                                        className="flex-1 bg-white border border-gray-200 text-gray-500 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-gray-50"
+                                        className="flex-1 bg-white border border-gray-200 text-gray-500 py-2 rounded-xl text-xs font-medium uppercase tracking-wider hover:bg-gray-50"
                                     >
                                         Back
                                     </button>
                                     <button 
                                         onClick={() => updateStatus("Cancelled")}
-                                        className="flex-1 bg-red-600 text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-red-700"
+                                        className="flex-1 bg-red-600 text-white py-2 rounded-xl text-xs font-medium uppercase tracking-wider hover:bg-red-700"
                                     >
                                         Confirm Cancel
                                     </button>
@@ -337,7 +337,7 @@ export default function OrderDetailsPage() {
                         )}
 
                         <div className="pt-4 border-t border-gray-100">
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Order Timeline</p>
+                            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-4">Order Timeline</p>
                             <div className="space-y-4">
                                 {/* Timeline Item */}
                                 <div className="flex gap-4">
@@ -346,7 +346,7 @@ export default function OrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-100 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.created_at ? "text-black" : "text-gray-400")}>Pending</p>
+                                        <p className={cn("text-sm font-medium", order.created_at ? "text-black" : "text-gray-400")}>Pending</p>
                                         {order.created_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.created_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -357,7 +357,7 @@ export default function OrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-100 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.confirmed_at ? "text-black" : "text-gray-400")}>Confirmed</p>
+                                        <p className={cn("text-sm font-medium", order.confirmed_at ? "text-black" : "text-gray-400")}>Confirmed</p>
                                         {order.confirmed_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.confirmed_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -368,7 +368,7 @@ export default function OrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-100 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.preparing_at ? "text-black" : "text-gray-400")}>Preparing</p>
+                                        <p className={cn("text-sm font-medium", order.preparing_at ? "text-black" : "text-gray-400")}>Preparing</p>
                                         {order.preparing_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.preparing_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -379,7 +379,7 @@ export default function OrderDetailsPage() {
                                         <div className="w-px h-full bg-gray-100 my-1" />
                                     </div>
                                     <div className="pb-4">
-                                        <p className={cn("text-sm font-bold", order.out_for_delivery_at ? "text-black" : "text-gray-400")}>Out For Delivery</p>
+                                        <p className={cn("text-sm font-medium", order.out_for_delivery_at ? "text-black" : "text-gray-400")}>Out For Delivery</p>
                                         {order.out_for_delivery_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.out_for_delivery_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -389,7 +389,7 @@ export default function OrderDetailsPage() {
                                         <div className={cn("w-3 h-3 rounded-full mt-1", order.delivered_at ? "bg-green-500" : "bg-gray-200")} />
                                     </div>
                                     <div>
-                                        <p className={cn("text-sm font-bold", order.delivered_at ? "text-black" : "text-gray-400")}>Delivered</p>
+                                        <p className={cn("text-sm font-medium", order.delivered_at ? "text-black" : "text-gray-400")}>Delivered</p>
                                         {order.delivered_at && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(order.delivered_at).toLocaleString("en-IN")}</p>}
                                     </div>
                                 </div>
@@ -397,7 +397,7 @@ export default function OrderDetailsPage() {
                             
                             {order.status === "Cancelled" && (
                                 <div className="mt-6 bg-red-50 p-4 rounded-xl border border-red-100">
-                                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                    <p className="text-xs font-medium text-red-600 uppercase tracking-widest mb-1 flex items-center gap-2">
                                         <XCircle size={14} /> Cancelled
                                     </p>
                                     <p className="text-[10px] text-gray-500 mb-2">{new Date(order.cancelled_at || order.status_changed_at).toLocaleString("en-IN")}</p>
@@ -408,7 +408,7 @@ export default function OrderDetailsPage() {
                             {order.changed_by && (
                                 <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
                                     <span className="text-xs text-gray-500">Last changed by:</span>
-                                    <span className="text-xs font-bold text-black">{order.changed_by.slice(0, 8)}...</span>
+                                    <span className="text-xs font-medium text-black">{order.changed_by.slice(0, 8)}...</span>
                                 </div>
                             )}
                         </div>

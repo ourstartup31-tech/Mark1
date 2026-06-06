@@ -75,19 +75,19 @@ export default function StoresManagement() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Platform Management</h2>
+                    <h2 className="text-xl font-medium text-slate-900 uppercase tracking-tight">Platform Management</h2>
                     <p className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-widest">Manage everything for your stores and administrators</p>
                 </div>
                 <div className="flex items-center bg-slate-100 p-1 rounded-lg">
                     <button 
                         onClick={() => setActiveTab("stores")}
-                        className={`px-4 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === "stores" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "stores" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
                     >
                         Stores
                     </button>
                     <button 
                         onClick={() => setActiveTab("admins")}
-                        className={`px-4 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === "admins" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                        className={`px-4 py-1.5 rounded-md text-[10px] font-medium uppercase tracking-widest transition-all ${activeTab === "admins" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
                     >
                         Administrators
                     </button>
@@ -112,7 +112,7 @@ export default function StoresManagement() {
                         </div>
                         <button 
                             onClick={() => setIsStoreModalOpen(true)}
-                            className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 h-full"
+                            className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 h-full"
                         >
                             <Plus size={14} />
                             Add New Store
@@ -126,32 +126,32 @@ export default function StoresManagement() {
                                 <thead>
                                     <tr className="bg-slate-50/50 border-b border-slate-100">
                                         {["Store Name", "City", "Owner Name", "Plan", "Status", "Actions"].map(h => (
-                                            <th key={h} className="px-6 py-4 font-bold text-slate-400 uppercase tracking-widest border-r border-slate-50 last:border-0">{h}</th>
+                                            <th key={h} className="px-6 py-4 font-medium text-slate-400 uppercase tracking-widest border-r border-slate-50 last:border-0">{h}</th>
                                         ))}
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {filteredStores.map(store => (
                                         <tr key={store.id} className="hover:bg-slate-50/30 transition-colors">
-                                            <td className="px-6 py-4 font-bold text-slate-900 border-r border-slate-50 last:border-0">{store.name}</td>
+                                            <td className="px-6 py-4 font-medium text-slate-900 border-r border-slate-50 last:border-0">{store.name}</td>
                                             <td className="px-6 py-4 text-slate-500 border-r border-slate-50 last:border-0 font-medium">{store.city}</td>
                                             <td className="px-6 py-4 text-slate-600 border-r border-slate-50 last:border-0">{store.owner}</td>
                                             <td className="px-6 py-4 border-r border-slate-50 last:border-0">
-                                                <span className={`px-2 py-0.5 rounded-full border text-[9px] font-bold uppercase ${PLAN_STYLES[store.plan] || PLAN_STYLES.Basic}`}>
+                                                <span className={`px-2 py-0.5 rounded-full border text-[9px] font-medium uppercase ${PLAN_STYLES[store.plan] || PLAN_STYLES.Basic}`}>
                                                     {store.plan}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 border-r border-slate-50 last:border-0">
-                                                <span className={`text-[9px] font-bold uppercase px-2.5 py-1 rounded-full border ${STATUS_STYLES[store.status] || "bg-slate-100 text-slate-600 border-slate-200"}`}>
+                                                <span className={`text-[9px] font-medium uppercase px-2.5 py-1 rounded-full border ${STATUS_STYLES[store.status] || "bg-slate-100 text-slate-600 border-slate-200"}`}>
                                                     {store.status}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <button className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-800">Edit</button>
+                                                    <button className="text-[10px] font-medium uppercase tracking-widest text-indigo-600 hover:text-indigo-800">Edit</button>
                                                     <button
                                                         onClick={() => toggleStoreStatus(store.id)}
-                                                        className={`text-[10px] font-bold uppercase tracking-widest ${store.status === "Active" ? "text-amber-500 hover:text-amber-700" : "text-emerald-500 hover:text-emerald-700"}`}
+                                                        className={`text-[10px] font-medium uppercase tracking-widest ${store.status === "Active" ? "text-amber-500 hover:text-amber-700" : "text-emerald-500 hover:text-emerald-700"}`}
                                                     >
                                                         {store.status === "Active" ? "Suspend" : "Activate"}
                                                     </button>
@@ -160,7 +160,7 @@ export default function StoresManagement() {
                                         </tr>
                                     ))}
                                     {filteredStores.length === 0 && (
-                                        <tr><td colSpan={6} className="text-center text-slate-300 py-16 uppercase tracking-widest text-[10px] font-bold">No stores matching your search.</td></tr>
+                                        <tr><td colSpan={6} className="text-center text-slate-300 py-16 uppercase tracking-widest text-[10px] font-medium">No stores matching your search.</td></tr>
                                     )}
                                 </tbody>
                             </table>
@@ -186,7 +186,7 @@ export default function StoresManagement() {
                         </div>
                         <button 
                             onClick={() => setIsAdminModalOpen(true)}
-                            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-100 h-full"
+                            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-100 h-full"
                         >
                             <Plus size={14} className="text-indigo-400" />
                             Add Store Admin
@@ -199,35 +199,35 @@ export default function StoresManagement() {
                                 <thead>
                                     <tr className="bg-slate-50/50 border-b border-slate-100">
                                         {["Admin Name", "Phone", "Store Assigned", "Status", "Actions"].map(h => (
-                                            <th key={h} className="px-6 py-4 font-bold text-slate-400 uppercase tracking-widest border-r border-slate-50 last:border-0">{h}</th>
+                                            <th key={h} className="px-6 py-4 font-medium text-slate-400 uppercase tracking-widest border-r border-slate-50 last:border-0">{h}</th>
                                         ))}
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {filteredAdmins.map(admin => (
                                         <tr key={admin.id} className="hover:bg-slate-50/30 transition-colors">
-                                            <td className="px-6 py-4 font-bold text-slate-900 border-r border-slate-50 last:border-0">{admin.name}</td>
+                                            <td className="px-6 py-4 font-medium text-slate-900 border-r border-slate-50 last:border-0">{admin.name}</td>
                                             <td className="px-6 py-4 text-slate-500 border-r border-slate-50 last:border-0 font-medium">{admin.phone}</td>
                                             <td className="px-6 py-4 border-r border-slate-50 last:border-0">
-                                                <span className="px-2.5 py-1 rounded-full border border-indigo-100 bg-indigo-50 text-[9px] font-bold uppercase text-indigo-700">
+                                                <span className="px-2.5 py-1 rounded-full border border-indigo-100 bg-indigo-50 text-[9px] font-medium uppercase text-indigo-700">
                                                     {admin.assignedStore}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 border-r border-slate-50 last:border-0">
-                                                <span className={`text-[9px] font-bold uppercase px-2.5 py-1 rounded-full border ${admin.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-700 border-red-100"}`}>
+                                                <span className={`text-[9px] font-medium uppercase px-2.5 py-1 rounded-full border ${admin.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-700 border-red-100"}`}>
                                                     {admin.status}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <button onClick={() => toggleAdminStatus(admin.id)} className="text-[10px] font-bold uppercase tracking-widest text-amber-500 hover:text-amber-700">Suspend</button>
-                                                    <button onClick={() => deleteAdmin(admin.id)} className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700">Delete</button>
+                                                    <button onClick={() => toggleAdminStatus(admin.id)} className="text-[10px] font-medium uppercase tracking-widest text-amber-500 hover:text-amber-700">Suspend</button>
+                                                    <button onClick={() => deleteAdmin(admin.id)} className="text-[10px] font-medium uppercase tracking-widest text-red-500 hover:text-red-700">Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
                                     ))}
                                     {filteredAdmins.length === 0 && (
-                                        <tr><td colSpan={5} className="text-center text-slate-300 py-16 uppercase tracking-widest text-[10px] font-bold">No admins listed.</td></tr>
+                                        <tr><td colSpan={5} className="text-center text-slate-300 py-16 uppercase tracking-widest text-[10px] font-medium">No admins listed.</td></tr>
                                     )}
                                 </tbody>
                             </table>
@@ -242,8 +242,8 @@ export default function StoresManagement() {
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                             <div>
-                                <h3 className="font-bold text-slate-900 uppercase tracking-widest text-sm">Create New Store</h3>
-                                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Setup store profile and administrator</p>
+                                <h3 className="font-medium text-slate-900 uppercase tracking-widest text-sm">Create New Store</h3>
+                                <p className="text-[9px] text-slate-500 font-medium uppercase tracking-widest mt-0.5">Setup store profile and administrator</p>
                             </div>
                             <button onClick={() => setIsStoreModalOpen(false)} className="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200/50 transition-colors">
                                 <X size={20} />
@@ -256,11 +256,11 @@ export default function StoresManagement() {
                                     <div className="w-6 h-6 rounded bg-indigo-50 flex items-center justify-center text-indigo-600">
                                         <Search size={12} />
                                     </div>
-                                    <span className="text-[10px] font-bold text-slate-800 uppercase tracking-widest">Store Profile</span>
+                                    <span className="text-[10px] font-medium text-slate-800 uppercase tracking-widest">Store Profile</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="col-span-2 sm:col-span-1">
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Store Name</label>
+                                        <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Store Name</label>
                                         <input
                                             required
                                             value={newStore.name}
@@ -270,7 +270,7 @@ export default function StoresManagement() {
                                         />
                                     </div>
                                     <div className="col-span-2 sm:col-span-1">
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">City</label>
+                                        <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">City</label>
                                         <input
                                             required
                                             value={newStore.city}
@@ -288,11 +288,11 @@ export default function StoresManagement() {
                                     <div className="w-6 h-6 rounded bg-emerald-50 flex items-center justify-center text-emerald-600">
                                         <Plus size={12} />
                                     </div>
-                                    <span className="text-[10px] font-bold text-slate-800 uppercase tracking-widest">Initial Administrator</span>
+                                    <span className="text-[10px] font-medium text-slate-800 uppercase tracking-widest">Initial Administrator</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="col-span-2 sm:col-span-1">
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Admin Name</label>
+                                        <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Admin Name</label>
                                         <input
                                             value={newStore.adminName}
                                             onChange={e => setNewStore({ ...newStore, adminName: e.target.value })}
@@ -301,7 +301,7 @@ export default function StoresManagement() {
                                         />
                                     </div>
                                     <div className="col-span-2 sm:col-span-1">
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Admin Phone</label>
+                                        <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Admin Phone</label>
                                         <input
                                             value={newStore.adminPhone}
                                             onChange={e => setNewStore({ ...newStore, adminPhone: e.target.value })}
@@ -314,7 +314,7 @@ export default function StoresManagement() {
 
                             <button
                                 type="submit"
-                                className="w-full h-11 bg-slate-900 text-white rounded font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 mt-2"
+                                className="w-full h-11 bg-slate-900 text-white rounded font-medium text-[10px] uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 mt-2"
                             >
                                 Setup Store & Assign Admin
                             </button>
@@ -328,14 +328,14 @@ export default function StoresManagement() {
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                            <h3 className="font-bold text-slate-900 uppercase tracking-widest text-sm">Create New Admin</h3>
+                            <h3 className="font-medium text-slate-900 uppercase tracking-widest text-sm">Create New Admin</h3>
                             <button onClick={() => setIsAdminModalOpen(false)} className="text-slate-400 hover:text-slate-600">
                                 <X size={20} />
                             </button>
                         </div>
                         <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Full Name</label>
+                                <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Full Name</label>
                                 <input
                                     required
                                     value={newAdmin.name}
@@ -345,7 +345,7 @@ export default function StoresManagement() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Phone Number</label>
+                                <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Phone Number</label>
                                 <input
                                     required
                                     value={newAdmin.phone}
@@ -355,7 +355,7 @@ export default function StoresManagement() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Assign Store</label>
+                                <label className="block text-[10px] font-medium text-slate-500 uppercase tracking-widest mb-1">Assign Store</label>
                                 <select
                                     required
                                     value={newAdmin.store_id}
@@ -370,7 +370,7 @@ export default function StoresManagement() {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full h-11 bg-indigo-600 text-white rounded font-bold text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-colors mt-2"
+                                className="w-full h-11 bg-indigo-600 text-white rounded font-medium text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-colors mt-2"
                             >
                                 Assign Store Admin
                             </button>

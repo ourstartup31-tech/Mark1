@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import React from "react";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -15,7 +15,7 @@ const steps = [
         step: "02",
         Icon: CalendarClock,
         title: "Choose Pickup Time",
-        description: "Select a convenient time slot â€” today or tomorrow â€” to collect your order from the store.",
+        description: "Select a convenient time slot — today or tomorrow — to collect your order from the store.",
     },
     {
         step: "03",
@@ -33,11 +33,11 @@ export function HowItWorks() {
 
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
                 <AnimatedSection className="text-center mb-12 lg:mb-20">
-                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-bold text-[#D60000] uppercase tracking-[0.2em] mb-4">
+                    <p className="text-[10px] items-center justify-center inline-flex gap-2 font-medium text-[#D60000] uppercase tracking-[0.2em] mb-4">
                         <span className="w-1 h-1 rounded-full bg-[#D60000]" />
                         Simple & Seamless
                     </p>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight text-balance">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white tracking-tight text-balance">
                         How Store Pickup Works
                     </h2>
                     <p className="mt-5 text-sm sm:text-base text-gray-400 font-medium max-w-xs sm:max-w-sm mx-auto">
@@ -51,8 +51,8 @@ export function HowItWorks() {
                         return (
                             <AnimatedSection key={step.step} delay={i * 140}>
                                 <div className="group relative h-full bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 sm:p-10 hover:border-white/20 hover:bg-white/[0.04] transition-all duration-500 cursor-default">
-                                    {/* Step indicator â€” subtle */}
-                                    <div className="text-[4rem] sm:text-[5rem] font-bold text-white/[0.02] absolute -top-2 -left-1 leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500">
+                                    {/* Step indicator — subtle */}
+                                    <div className="text-[4rem] sm:text-[5rem] font-medium text-white/[0.02] absolute -top-2 -left-1 leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500">
                                         {step.step}
                                     </div>
 
@@ -61,7 +61,7 @@ export function HowItWorks() {
                                             <Icon size={22} className="text-white/60 group-hover:text-white transition-colors sm:w-6 sm:h-6" />
                                         </div>
 
-                                        <h3 className="font-bold text-lg sm:text-xl text-white mb-4 tracking-tight uppercase tracking-widest">{step.title}</h3>
+                                        <h3 className="font-medium text-lg sm:text-xl text-white mb-4 tracking-tight uppercase tracking-widest">{step.title}</h3>
                                         <p className="text-gray-400 text-sm font-medium leading-[1.6]">{step.description}</p>
                                     </div>
                                 </div>

@@ -39,12 +39,12 @@ export function PricingCard({
         >
             {badge && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <Badge variant={highlighted ? "default" : "black"} className="px-4 py-1.5 uppercase font-bold tracking-widest text-[10px]">{badge}</Badge>
+                    <Badge variant={highlighted ? "default" : "black"} className="px-4 py-1.5 uppercase font-medium tracking-widest text-[10px]">{badge}</Badge>
                 </div>
             )}
 
             <div className="mb-8">
-                <h3 className={cn("font-bold text-2xl mb-2 tracking-tight", highlighted ? "text-white" : "text-black")}>
+                <h3 className={cn("font-medium text-2xl mb-2 tracking-tight", highlighted ? "text-white" : "text-black")}>
                     {name}
                 </h3>
                 <p className={cn("text-xs font-medium uppercase tracking-[0.1em]", highlighted ? "text-gray-400" : "text-gray-400")}>
@@ -53,7 +53,7 @@ export function PricingCard({
             </div>
 
             <div className="mb-10">
-                <span className="text-5xl font-bold tracking-tighter">{price}</span>
+                <span className="text-5xl font-medium tracking-tighter">{price}</span>
                 {price !== "Free" && (
                     <span className={cn("text-sm font-medium ml-1", highlighted ? "text-gray-500" : "text-gray-400")}>
                         {period}
@@ -78,7 +78,7 @@ export function PricingCard({
             <Button
                 variant={highlighted ? "white" : "outline"}
                 className={cn(
-                    "w-full py-6 rounded-xl font-bold transition-all active:scale-95",
+                    "w-full py-6 rounded-xl font-medium transition-all active:scale-95",
                     highlighted ? "bg-white text-black hover:bg-gray-100" : "border-gray-200 hover:border-black"
                 )}
             >

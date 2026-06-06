@@ -52,7 +52,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             )}>
                 {/* Header */}
                 <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 sticky top-0 bg-white z-10">
-                    <h2 className="text-xl font-bold tracking-tight text-black">{title}</h2>
+                    <h2 className="text-xl font-medium tracking-tight text-black">{title}</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-xl transition-colors group"

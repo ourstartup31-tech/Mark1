@@ -91,7 +91,7 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
                             disabled={isDisabled}
                             onClick={() => handleDayChange(day)}
                             className={cn(
-                                "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                                "flex-1 py-1.5 rounded-lg text-[10px] font-medium uppercase tracking-widest transition-all",
                                 activeDay === day
                                     ? "bg-white text-black shadow-sm"
                                     : "text-gray-400 hover:text-black",
@@ -118,7 +118,7 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
                         type="button"
                         onClick={() => onChange({ day: activeDay, slot })}
                         className={cn(
-                            "py-2 px-2 rounded-lg text-[9px] font-bold border transition-all duration-200 text-center leading-tight",
+                            "py-2 px-2 rounded-lg text-[9px] font-medium border transition-all duration-200 text-center leading-tight",
                             isSelected(slot)
                                 ? "bg-black border-black text-white shadow-md"
                                 : "bg-white border-gray-100 text-gray-500 hover:border-black hover:text-black"
@@ -132,7 +132,7 @@ export function TimeSlotSelector({ value, onChange }: TimeSlotSelectorProps) {
             {value?.slot && (
                 <div className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#D60000] flex-shrink-0" />
-                    <p className="text-[9px] font-bold text-black uppercase tracking-wide truncate">
+                    <p className="text-[9px] font-medium text-black uppercase tracking-wide truncate">
                         {value.day} @ {value.slot}
                     </p>
                 </div>

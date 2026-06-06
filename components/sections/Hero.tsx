@@ -67,8 +67,8 @@ export function Hero() {
                         <div className={cn(
                             "group relative flex items-center justify-center p-3 xs:p-5 md:p-8 transition-all duration-500 hover:scale-105 rotate-[-12deg] lg:rotate-[-8deg] origin-center",
                             isOpen
-                                ? "bg-[#27AE60]  "
-                                : "bg-rose-500  "
+                                ? "bg-[#27AE60] shadow-[5px_5px_0_#000000] lg:shadow-[8px_8px_0_#000000]"
+                                : "bg-rose-500 shadow-[5px_5px_0_#000000] lg:shadow-[8px_8px_0_#000000]"
                         )}
                             style={{
                                 borderRadius: '45% 55% 50% 50% / 50% 50% 45% 55%',

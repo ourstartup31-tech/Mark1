@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/sections/ProductCard";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useCart } from "@/context/CartContext";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 const ALL = "All";
 
 export function FeaturedProducts() {
+    const router = useRouter();
     const { searchQuery, setSearchQuery } = useCart();
     const { products, categories, activeCategory, setActiveCategory } = useStore();
 
@@ -23,11 +25,7 @@ export function FeaturedProducts() {
     const displayTabs = [ALL, ...categories.map(c => c.name)];
 
     const handleViewAll = () => {
-        setActiveCategory(ALL);
-        setSearchQuery(""); // Clear search when viewing all
-        // Scroll to top of products section if not already there
-        const section = document.getElementById("products");
-        if (section) section.scrollIntoView({ behavior: "smooth" });
+        router.push("/shop");
     };
 
     return (

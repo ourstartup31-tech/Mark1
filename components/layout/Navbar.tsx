@@ -9,10 +9,10 @@ import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#categories", label: "Categories" },
-    { href: "#products", label: "Offers" },
-    { href: "#pickup", label: "Pickup Info" },
+    { href: "/#home", label: "Home" },
+    { href: "/#categories", label: "Categories" },
+    { href: "/#products", label: "Offers" },
+    { href: "/#pickup", label: "Pickup Info" },
 ];
 
 export function Navbar() {
